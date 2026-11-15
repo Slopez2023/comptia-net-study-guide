@@ -67,7 +67,7 @@
         const misses = Object.entries(missed).sort((a, b) => b[1] - a[1]);
         run.innerHTML = `<div class="panel" style="border-top:6px solid ${pct >= 80 ? "var(--good)" : "var(--warn)"}">
           <div class="eyebrow">Result</div><div style="font-size:2.4rem;font-weight:800">${right}/${qs.length} · ${pct}%</div>
-          <p>${pct >= 85 ? "Exam-ready on this set. 🎉" : pct >= 70 ? "Close. Review the misses below." : "This is useful data, and now you know where to focus."}</p>
+          <p>${pct >= 85 ? "Exam-ready on this set." : pct >= 70 ? "Close. Review the misses below." : "This is useful data, and now you know where to focus."}</p>
           ${misses.length ? `<h3>Rewatch these</h3><ul>${misses.map(([o, n]) => { const l = ALL_LESSONS.find((x) => x.id === o); return `<li><a href="${lessonUrl(l)}">${o} ${esc(l.title)}</a> (missed ${n})</li>`; }).join("")}</ul>` : ""}
           <button class="btn primary" type="button" id="again">Another round</button></div>`;
         $("#again").onclick = start;
@@ -113,7 +113,7 @@
       cur = deck.shift();
       const card = $("#card");
       card.classList.remove("flipped");
-      if (!cur) { card.innerHTML = total ? `<div>🎉 Round complete: ${total} cards.<br><small>Shuffle again, or switch sets.</small></div>` : `<div>No cards for that filter.</div>`; $("#count").textContent = ""; return; }
+      if (!cur) { card.innerHTML = total ? `<div>Round complete: ${total} cards.<br><small>Shuffle again, or switch sets.</small></div>` : `<div>No cards for that filter.</div>`; $("#count").textContent = ""; return; }
       card.innerHTML = `<div><small>${esc(cur.set)}${cur.obj ? " · " + esc(cur.obj) : ""}</small>${esc(cur.front)}<div class="back">${esc(cur.back)}</div></div>`;
       $("#count").textContent = `${gotN} / ${total} got it`;
     }
@@ -166,7 +166,7 @@
       $$(".subnet-grid input").forEach((i) => { i.value = ""; i.style.borderColor = ""; });
       $("#out").innerHTML = "";
       $("#a-net").focus();
-      t0 = Date.now(); clearInterval(tick); tick = setInterval(() => { $("#timer").textContent = `⏱ ${Math.round((Date.now() - t0) / 1000)} s`; }, 500);
+      t0 = Date.now(); clearInterval(tick); tick = setInterval(() => { $("#timer").textContent = `${Math.round((Date.now() - t0) / 1000)} s`; }, 500);
       stats();
     }
     function explain() {
@@ -185,7 +185,7 @@
       const secs = Math.round((Date.now() - t0) / 1000);
       clearInterval(tick);
       const st = S(); st.subnet.push({ ok, secs, t: Date.now() }); st.subnet = st.subnet.slice(-500); save();
-      $("#out").innerHTML = `<div class="result ${ok ? "ok" : "no"}"><strong>${ok ? `✓ All correct in ${secs} s${secs <= 30 ? " ⚡" : ""}` : "✗ Some fields are off (red)."}</strong>${explain()}<button class="btn primary" type="button" id="nx">Next problem →</button></div>`;
+      $("#out").innerHTML = `<div class="result ${ok ? "ok" : "no"}"><strong>${ok ? `✓ All correct in ${secs} s${secs <= 30 ? " · under 30 s" : ""}` : "✗ Some fields are off (red)."}</strong>${explain()}<button class="btn primary" type="button" id="nx">Next problem →</button></div>`;
       $("#nx").onclick = gen; $("#nx").focus();
       stats();
     }
@@ -229,7 +229,7 @@
         n++; if (ok) { right++; streak++; } else streak = 0;
         $$("#pc .choice").forEach((x) => { x.disabled = true; if (opts[Number(x.dataset.i)] === p) x.classList.add("right"); });
         if (!ok) b.classList.add("wrong");
-        $("#pscore").textContent = `${right}/${n} · ${Math.round((right / n) * 100)}% · streak ${streak}${streak >= 10 ? " 🔥" : ""}`;
+        $("#pscore").textContent = `${right}/${n} · ${Math.round((right / n) * 100)}% · streak ${streak}${streak >= 10 ? " · on fire" : ""}`;
         $("#pout").innerHTML = `<p class="result ${ok ? "ok" : "no"}"><b>${esc(p.port)}</b> = <b>${esc(p.acronym)}</b> (${esc(p.transport)}). ${esc(p.notes || "")}</p>`;
         setTimeout(pick, ok ? 900 : 2600);
       });

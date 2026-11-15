@@ -94,14 +94,16 @@
     const cfg = SEQS[key];
     const body = shell(box, cfg.title, cfg.intro);
     let i = 0, score = 0, asked = 0;
-    const W = 720, colW = W / cfg.actors.length, rowH = 46, top = 64;
+    const W = 720, colW = W / cfg.actors.length, rowH = 46, top = 44;
     const x = (a) => colW * a + colW / 2;
     body.innerHTML = `<div class="seq-actors" style="grid-template-columns:repeat(${cfg.actors.length},1fr)">${cfg.actors.map((a) => `<div>${a}</div>`).join("")}</div>
       <div class="svg-fig seq-fig"><svg viewBox="0 0 ${W} ${top + rowH * cfg.steps.length + 10}" role="img" aria-label="${esc(cfg.title)}"></svg></div>
       <div class="seq-panel"></div>`;
     const svg = $("svg", body), panel = $(".seq-panel", body);
-    const lifelines = cfg.actors.map((_, a) => `<line x1="${x(a)}" y1="0" x2="${x(a)}" y2="${top + rowH * cfg.steps.length}" class="wire" stroke-dasharray="3 5"/>`).join("");
     function draw() {
+      const h = top + rowH * Math.max(i, 1) - 20;
+      svg.setAttribute("viewBox", `0 0 ${W} ${h}`);
+      const lifelines = cfg.actors.map((_, a) => `<line x1="${x(a)}" y1="0" x2="${x(a)}" y2="${h}" class="wire" stroke-dasharray="3 5"/>`).join("");
       let arrows = "";
       cfg.steps.slice(0, i).forEach((s, k) => {
         const y = top + rowH * k - 20, cur = k === i - 1;
@@ -135,7 +137,7 @@
         $("[data-act=next]", panel).focus({ preventScroll: true });
       };
       if (s.ask) {
-        panel.innerHTML = `<p class="q-text">🤔 ${esc(s.ask)}</p><div class="choices">${s.choices.map((c, k) => `<button class="choice" type="button" data-k="${k}"><span class="k">${"ABC"[k]}</span><span>${esc(c)}</span></button>`).join("")}</div>
+        panel.innerHTML = `<p class="q-text"><span class="predict">Predict</span>${esc(s.ask)}</p><div class="choices">${s.choices.map((c, k) => `<button class="choice" type="button" data-k="${k}"><span class="k">${"ABC"[k]}</span><span>${esc(c)}</span></button>`).join("")}</div>
           <p class="score" style="margin-top:8px">Step ${i + 1} of ${cfg.steps.length}</p>`;
         $$(".choice", panel).forEach((b) => b.onclick = () => {
           const ok = Number(b.dataset.k) === s.answer; asked++; if (ok) score++;
@@ -182,7 +184,7 @@
       const l = L[i];
       const reveal = (msg) => { i++; draw(); panel.innerHTML = `${msg || ""}<p class="seq-detail">${l.note}</p><p><button class="btn primary" type="button">Next layer down →</button></p>`; $("button", panel).onclick = step; };
       if (!l.ask) { panel.innerHTML = `<p><button class="btn primary" type="button">Start at the top →</button></p>`; $("button", panel).onclick = () => reveal(); return; }
-      panel.innerHTML = `<p class="q-text">🤔 ${esc(l.ask)}</p><div class="choices">${l.choices.map((c, k) => `<button class="choice" type="button" data-k="${k}"><span class="k">${"ABC"[k]}</span><span>${esc(c)}</span></button>`).join("")}</div>`;
+      panel.innerHTML = `<p class="q-text"><span class="predict">Predict</span>${esc(l.ask)}</p><div class="choices">${l.choices.map((c, k) => `<button class="choice" type="button" data-k="${k}"><span class="k">${"ABC"[k]}</span><span>${esc(c)}</span></button>`).join("")}</div>`;
       $$(".choice", panel).forEach((b) => b.onclick = () => { const ok = Number(b.dataset.k) === l.answer; reveal(`<div class="result ${ok ? "ok" : "no"}">${ok ? "✓ Right." : `✗ It's: <b>${esc(l.choices[l.answer])}</b>.`}</div>`); });
     }
     step();
@@ -206,7 +208,7 @@
         mark.innerHTML = ok ? "✓" : `✗ <b>${esc(r.right)}</b>${r.why ? ` <span class="muted">${esc(r.why)}</span>` : ""}`;
         s.parentElement.classList.toggle("ok", ok); s.parentElement.classList.toggle("no", !ok);
       });
-      $(".match-out", body).innerHTML = `<div class="result ${right === rows.length ? "ok" : "no"}">${right} of ${rows.length} correct${right === rows.length ? ". Exam-ready on this set. 🎉" : ". Read the fixes, then try a new set."}</div>`;
+      $(".match-out", body).innerHTML = `<div class="result ${right === rows.length ? "ok" : "no"}">${right} of ${rows.length} correct${right === rows.length ? ". Exam-ready on this set." : ". Read the fixes, then try a new set."}</div>`;
       logActivity(name, right === rows.length);
     };
     $("[data-act=new]", body).onclick = () => box.dispatchEvent(new CustomEvent("np-rerender"));
@@ -280,7 +282,7 @@
       items: steps.map((t) => ({ text: t })),
       check: (order) => {
         const marks = order.map((v, pos) => v === pos), ok = marks.every(Boolean);
-        return { ok, marks, html: `<div class="result ${ok ? "ok" : "no"}">${ok ? "✓ Perfect order. 🎉" : `${marks.filter(Boolean).length} of 7 in the right spot. The red ones are out of place.`}</div>` };
+        return { ok, marks, html: `<div class="result ${ok ? "ok" : "no"}">${ok ? "✓ Perfect order." : `${marks.filter(Boolean).length} of 7 in the right spot. The red ones are out of place.`}</div>` };
       },
     });
   }
@@ -308,7 +310,7 @@
         const ok = res.every((x) => x.got.startsWith(x.f.want));
         return { ok, marks: null, html: `<div class="table-wrap"><table><tr><th>Test traffic</th><th>Should be</th><th>Your rules do</th></tr>${res.map((x) =>
           `<tr><td>${esc(x.f.label)}</td><td>${x.f.want}</td><td style="font-weight:700;color:${x.got.startsWith(x.f.want) ? "var(--good)" : "var(--bad)"}">${x.got} ${x.got.startsWith(x.f.want) ? "✓" : "✗"}</td></tr>`).join("")}</table></div>
-          <div class="result ${ok ? "ok" : "no"}">${ok ? "✓ All traffic handled correctly. Specific rules first, broad deny last. 🎉" : "Some traffic is handled wrong. Hint: the most specific rules go at the top, and <code>deny any any</code> goes at the bottom."}</div>` };
+          <div class="result ${ok ? "ok" : "no"}">${ok ? "✓ All traffic handled correctly. Specific rules first, broad deny last." : "Some traffic is handled wrong. Hint: the most specific rules go at the top, and <code>deny any any</code> goes at the bottom."}</div>` };
       },
     });
   }

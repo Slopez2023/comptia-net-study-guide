@@ -18,7 +18,7 @@ YouTube's embedded player won't run on pages opened straight from a `file://` pa
 
 ```
 index.html            Hub: "Do this next", countdown, today's checklist, chapters, weak spots
-plan.html             16-day plan, Nov 14 → Nov 30 (exam date is editable)
+plan.html             16-day plan, Sun Nov 15 → Mon Nov 30 (exam date is editable)
 chapters/00–06        One page per chapter. Each lesson follows the same numbered steps:
                       Goal → Watch → Read → See it for real → Learn/See it → Try it
                       → Exam traps → Scenario → Quick check → Say it back → Finish

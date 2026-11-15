@@ -49,33 +49,31 @@
   ];
   const ALL_LESSONS = CHAPTERS.flatMap((c) => c.lessons.map((l) => ({ ...l, chapter: c })));
 
-  /* ---------------- 16-day plan (Sat Nov 14 → Mon Nov 30, 2026) ---------------- */
+  /* ---------------- 16-day plan (Day 1 = Sun Nov 15 → exam Mon Nov 30, 2026) ---------------- */
   const PLAN = [
-    { date: "2026-11-14", title: "Set up and get a baseline", lessons: ["0.1", "0.2"], tasks: [
+    { date: "2026-11-15", title: "Start here + the OSI model", lessons: ["0.1", "0.2", "1.1"], tasks: [
       { id: "book", text: "Book the exam (Pearson VUE) for Mon Nov 30 or earlier", href: "https://www.comptia.org/en-us/certifications/network/" },
-      { id: "base", text: "Baseline: 20 mixed questions, no studying first", href: "practice/quiz.html?n=20" } ] },
-    { date: "2026-11-15", title: "How networks are layered", lessons: ["1.1", "1.2", "1.3"], tasks: [
-      { id: "fc", text: "Flashcards for 1.1–1.3 (10 min)", href: "practice/flashcards.html?obj=1.1,1.2,1.3" } ] },
-    { date: "2026-11-16", title: "Ports and cables", lessons: ["1.4", "1.5"], tasks: [
+      { id: "base", text: "Baseline: 20 mixed questions, before studying", href: "practice/quiz.html?n=20" } ] },
+    { date: "2026-11-16", title: "Devices, cloud and ports", lessons: ["1.2", "1.3", "1.4"], tasks: [
       { id: "ports", text: "Ports drill until 90%+", href: "practice/ports.html" } ] },
-    { date: "2026-11-17", title: "Subnetting day", lessons: ["1.6", "1.7"], tasks: [
+    { date: "2026-11-17", title: "Cables and topologies", lessons: ["1.5", "1.6"], tasks: [
+      { id: "fc", text: "Flashcards for 1.4–1.6 (10 min)", href: "practice/flashcards.html?obj=1.4,1.5,1.6" } ] },
+    { date: "2026-11-18", title: "Subnetting day", lessons: ["1.7"], tasks: [
       { id: "sub", text: "40 subnet drills, aim for under 30 s each", href: "practice/subnetting.html" } ] },
-    { date: "2026-11-18", title: "Modern networks + Domain 1 check", lessons: ["1.8"], tasks: [
-      { id: "sub", text: "10 subnet drills", href: "practice/subnetting.html" },
-      { id: "d1", text: "Domain 1 quiz", href: "practice/quiz.html?domain=1" } ] },
-    { date: "2026-11-19", title: "Routing and switching", lessons: ["2.1", "2.2"], tasks: [
+    { date: "2026-11-19", title: "Modern networks + routing", lessons: ["1.8", "2.1"], tasks: [
+      { id: "d1", text: "Domain 1 quiz", href: "practice/quiz.html?domain=1" },
       { id: "sub", text: "10 subnet drills", href: "practice/subnetting.html" } ] },
-    { date: "2026-11-20", title: "Wireless and the server room", lessons: ["2.3", "2.4"], tasks: [
+    { date: "2026-11-20", title: "Switching, wireless, the server room", lessons: ["2.2", "2.3", "2.4"], tasks: [
       { id: "d2", text: "Domain 2 quiz", href: "practice/quiz.html?domain=2" } ] },
-    { date: "2026-11-21", title: "Operations + first practice exam", lessons: ["3.1", "3.2", "3.3"], tasks: [
-      { id: "pe1", text: "Full practice exam #1 (see 6.2 for sources). Log every miss.", href: "chapters/06-final-review.html#L6-2" } ] },
-    { date: "2026-11-22", title: "DHCP, DNS and remote access", lessons: ["3.4", "3.5"], tasks: [
-      { id: "d3", text: "Domain 3 quiz", href: "practice/quiz.html?domain=3" } ] },
+    { date: "2026-11-21", title: "Documentation, monitoring, recovery", lessons: ["3.1", "3.2", "3.3"], tasks: [
+      { id: "due", text: "Clear your due-today review", href: "practice/review.html" } ] },
+    { date: "2026-11-22", title: "DHCP, DNS, remote access + practice exam #1", lessons: ["3.4", "3.5"], tasks: [
+      { id: "pe1", text: "Full practice exam #1 (sources in 6.2). Log every miss.", href: "chapters/06-final-review.html#L6-2" } ] },
     { date: "2026-11-23", title: "Security in one day", lessons: ["4.1", "4.2", "4.3"], tasks: [
-      { id: "d4", text: "Domain 4 quiz", href: "practice/quiz.html?domain=4" } ] },
-    { date: "2026-11-24", title: "Troubleshooting part 1", lessons: ["5.1", "5.2"], tasks: [
+      { id: "d3", text: "Domain 3 + 4 quiz", href: "practice/quiz.html?domain=4" } ] },
+    { date: "2026-11-24", title: "Troubleshooting part 1", lessons: ["5.1", "5.2", "5.3"], tasks: [
       { id: "sub", text: "10 subnet drills", href: "practice/subnetting.html" } ] },
-    { date: "2026-11-25", title: "Troubleshooting part 2 (biggest domain)", lessons: ["5.3", "5.4", "5.5"], tasks: [
+    { date: "2026-11-25", title: "Troubleshooting part 2 (biggest domain)", lessons: ["5.4", "5.5"], tasks: [
       { id: "d5", text: "Domain 5 quiz", href: "practice/quiz.html?domain=5" } ] },
     { date: "2026-11-26", title: "Thanksgiving: light day, weak spots only", lessons: [], tasks: [
       { id: "weak", text: "Weak-spot quiz (auto-picks your misses)", href: "practice/quiz.html?weak=1" },
@@ -101,6 +99,22 @@
   let S = load();
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* private mode: progress just won't persist */ } }
   window.addEventListener("storage", (e) => { if (e.key === KEY) S = load(); });
+
+  /* ---------------- Icons (simple 24px stroke icons) ---------------- */
+  const ICONS = {
+    play: '<path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none"/>',
+    timer: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9.5 2h5"/>',
+    contrast: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',
+    speaker: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+    stop: '<rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor" stroke="none"/>',
+    ruler: '<path d="M3 15.5 15.5 3 21 8.5 8.5 21z"/><path d="m7 11.5 2 2M10 8.5l2 2M13 5.5l2 2"/>',
+    eyeoff: '<path d="M3 3l18 18M10.6 6.1A9.8 9.8 0 0 1 12 6c5 0 9 6 9 6a16 16 0 0 1-2.6 3.2M6.6 6.7C4.2 8.3 3 12 3 12s4 6 9 6a9.4 9.4 0 0 0 4-.9"/>',
+    eye: '<path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.5"/>',
+    download: '<path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 20h14"/>',
+    upload: '<path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 20h14"/>',
+    printer: '<path d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/>',
+  };
+  const icon = (n) => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ""}</svg>`;
 
   /* ---------------- Helpers ---------------- */
   const $ = (s, el = document) => el.querySelector(s);
@@ -167,8 +181,8 @@
       <div class="crumb">${esc(document.body.dataset.crumb || "")}</div>
       <div class="topbar-actions">
         ${nxt ? `<a class="btn small primary" href="${lessonUrl(nxt)}" title="Your next unfinished lesson">Next: ${esc(nxt.id)} →</a>` : ""}
-        <button class="btn small timer" type="button" title="25-minute focus timer">⏱ 25:00</button>
-        <button class="btn small ghost theme" type="button" title="Light / dark" aria-label="Toggle light or dark mode">◐</button>
+        <button class="btn small timer" type="button" title="25-minute focus timer">${icon("timer")}<span>25:00</span></button>
+        <button class="btn small ghost theme icon-only" type="button" title="Light / dark" aria-label="Toggle light or dark mode">${icon("contrast")}</button>
       </div></div>`;
     $(".theme", bar).onclick = toggleTheme;
     setupTimer($(".timer", bar));
@@ -176,15 +190,16 @@
 
   function setupTimer(btn) {
     let end = Number(sessionStorage.getItem("np-timer") || 0), iv = null;
+    const label = btn.querySelector("span");
     const fmt = (ms) => { const s = Math.max(0, Math.ceil(ms / 1000)); return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0"); };
     function tick() {
       const left = end - Date.now();
-      if (left <= 0) { stop(); toast("25 minutes done. Stand up, water, 5-minute break. 🎉"); return; }
-      btn.textContent = "⏱ " + fmt(left);
+      if (left <= 0) { stop(); toast("25 minutes done. Stand up, get water, take 5."); return; }
+      label.textContent = fmt(left);
     }
     function start() { end = Date.now() + 25 * 60e3; sessionStorage.setItem("np-timer", end); run(); }
     function run() { btn.classList.add("running"); tick(); iv = setInterval(tick, 1000); }
-    function stop() { clearInterval(iv); end = 0; sessionStorage.removeItem("np-timer"); btn.classList.remove("running"); btn.textContent = "⏱ 25:00"; }
+    function stop() { clearInterval(iv); end = 0; sessionStorage.removeItem("np-timer"); btn.classList.remove("running"); label.textContent = "25:00"; }
     btn.onclick = () => (end > Date.now() ? stop() : start());
     if (end > Date.now()) run(); else if (end) stop();
   }
@@ -196,7 +211,7 @@
     el.className = "video" + (wide ? " wide" : "") + (watched ? " is-watched" : "");
     el.innerHTML = `<div class="video-frame">
         <img loading="lazy" alt="" src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg">
-        <button class="video-play" type="button" aria-label="Play ${esc(v.title)}"><span>▶</span></button>
+        <button class="video-play" type="button" aria-label="Play ${esc(v.title)}"><span>${icon("play")}</span></button>
       </div>
       <div class="video-info">
         <div class="t"><a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">${esc(v.title)}</a>
@@ -204,6 +219,7 @@
         <button class="btn small watch-toggle ${watched ? "done" : ""}" type="button">${watched ? "✓ Watched" : "Mark watched"}</button>
       </div>`;
     $(".video-play", el).onclick = () => {
+      el.classList.add("playing");
       $(".video-frame", el).innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&modestbranding=1" title="${esc(v.title)}"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
     };
@@ -217,14 +233,15 @@
   }
   function renderVideos() {
     $$("[data-videos]").forEach((box) => {
-      box.classList.add("videos");
       const list = videosFor(box.dataset.videos);
+      box.classList.add("videos", list.length > 1 ? "list" : "single");
       list.forEach((v) => box.appendChild(videoCard(v, list.length === 1)));
+      if (list.length > 1) box.insertAdjacentHTML("afterbegin", `<p class="videos-sum">${list.length} short videos · ${Math.round(list.reduce((a, v) => a + mins(v.duration), 0))} min total. Tip: 1.25–1.5× speed.</p>`);
       if (!list.length) box.innerHTML = `<p class="muted">No video for this one. Read the notes below.</p>`;
     });
     $$("[data-yt]").forEach((box) => {
       const ids = box.dataset.yt.split(",");
-      box.classList.add("videos");
+      box.classList.add("videos", ids.length > 1 ? "list" : "single");
       ids.forEach((id) => {
         const v = D.videos.find((x) => x.id === id) || { id, title: box.dataset.title || "Video", channel: box.dataset.channel || "YouTube", duration: "" };
         box.appendChild(videoCard(v, ids.length === 1 && box.dataset.wide !== undefined));
@@ -274,7 +291,7 @@
   }
 
   /* ---------------- Chapter page ---------------- */
-  const STEP_NAMES = { goal: "Goal", watch: "Watch", read: "Read", photos: "See it for real", learn: "Learn", visual: "See it", try: "Try it", traps: "Exam traps", scenario: "Scenario", check: "Quick check", sayback: "Say it back", do: "Do it" };
+  const STEP_NAMES = { goal: "Goal", watch: "Watch", read: "Read", photos: "Real photos", learn: "Key points", visual: "Diagrams", try: "Try it", traps: "Exam traps", scenario: "Scenario", check: "Quick check", sayback: "Say it back", do: "Do it" };
 
   /* ---------------- Lesson enhancements ---------------- */
   function photosStep(id) {
@@ -311,8 +328,8 @@
     const bar = document.createElement("div");
     bar.className = "read-bar";
     bar.innerHTML = `${mins ? `<span class="muted">≈ ${mins} min read</span>` : ""}
-      ${"speechSynthesis" in window ? `<button class="btn small" type="button" data-say="play">🔊 Read aloud</button><button class="btn small ghost hide" type="button" data-say="stop">■ Stop</button>` : ""}
-      <button class="btn small ghost" type="button" data-ruler>📏 Reading ruler</button>`;
+      ${"speechSynthesis" in window ? `<button class="btn small ghost" type="button" data-say="play">${icon("speaker")}Read aloud</button><button class="btn small ghost hide" type="button" data-say="stop">${icon("stop")}Stop</button>` : ""}
+      <button class="btn small ghost" type="button" data-ruler>${icon("ruler")}Reading ruler</button>`;
     st.prepend(bar);
     const play = $("[data-say=play]", bar), stop = $("[data-say=stop]", bar);
     if (play) {
@@ -333,13 +350,13 @@
       if (tb.rows.length < 3 || tb.closest(".activity")) return;
       const wrap = tb.closest(".table-wrap") || tb;
       const btn = document.createElement("button");
-      btn.type = "button"; btn.className = "btn small ghost quizme"; btn.textContent = "🧠 Quiz me on this table";
+      btn.type = "button"; btn.className = "btn small ghost quizme"; btn.innerHTML = `${icon("eyeoff")}Quiz me on this table`;
       wrap.before(btn);
       btn.onclick = () => {
         const on = !tb.classList.contains("memory");
         tb.classList.toggle("memory", on);
         $$("td", tb).forEach((td) => { if (td.cellIndex > 0) td.classList.toggle("hidden-cell", on); });
-        btn.textContent = on ? "👀 Show all answers" : "🧠 Quiz me on this table";
+        btn.innerHTML = on ? `${icon("eye")}Show all answers` : `${icon("eyeoff")}Quiz me on this table`;
         btn.classList.toggle("primary", on);
       };
       tb.addEventListener("click", (e) => { const td = e.target.closest("td.hidden-cell"); if (td) td.classList.remove("hidden-cell"); });
@@ -424,17 +441,20 @@
     const lessons = $$(".lesson");
     if (!lessons.length) return;
     const chap = CHAPTERS.find((c) => c.n === Number(document.body.dataset.chapter));
+    const hero = $(".hero");
+    if (hero && chap) hero.insertAdjacentHTML("afterbegin", `<div class="hero-num" aria-hidden="true">${String(chap.n).padStart(2, "0")}</div>`);
 
     lessons.forEach((sec) => {
       const id = sec.dataset.obj, meta = lessonById(id) || { title: sec.dataset.title };
       sec.id = anchor(id);
       const vm = videoMinutes(id);
-      const est = sec.dataset.mins || (vm ? vm + 20 : 25);
+      const rm = Number(($('.step[data-step="read"]', sec) || {}).dataset?.mins || 0);
+      const est = sec.dataset.mins || (vm ? vm + 20 : 25) + rm;
       const head = document.createElement("button");
       head.type = "button"; head.className = "lesson-head"; head.setAttribute("aria-expanded", "false");
       head.innerHTML = `<span class="obj-chip">${esc(id)}</span>
         <span class="lesson-title"><h2>${esc(sec.dataset.title || meta.title)}</h2>
-        <small>≈ ${est} min${vm ? ` · ${vm} min of video` : ""}<span class="status"></span></small></span>
+        <small>≈ ${est} min${vm ? ` · ${vm} min video` : ""}<span class="status"></span></small></span>
         <span class="chev" aria-hidden="true">›</span>`;
       sec.prepend(head);
       head.onclick = () => setOpen(sec, !sec.classList.contains("open"), true);
@@ -448,6 +468,23 @@
         lab.innerHTML = `<span class="num">${i + 1}</span>${esc(st.dataset.label || STEP_NAMES[st.dataset.step] || "")}`;
         st.prepend(lab);
       });
+
+      // sticky step bar: see every step, jump to one, and know where you are
+      const steps = $$(".lesson-body > .step", sec);
+      const nav = document.createElement("nav");
+      nav.className = "stepnav"; nav.setAttribute("aria-label", "Steps in this lesson");
+      nav.innerHTML = steps.map((st, i) => `<button type="button" data-i="${i}"><b>${i + 1}</b>${esc(st.dataset.label ? st.dataset.label.split(":")[0] : STEP_NAMES[st.dataset.step] || "")}</button>`).join("");
+      $(".lesson-body", sec).prepend(nav);
+      $$("button", nav).forEach((b) => b.onclick = () => steps[Number(b.dataset.i)].scrollIntoView({ behavior: "smooth", block: "start" }));
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver((ents) => ents.forEach((en) => {
+          if (!en.isIntersecting) return;
+          const i = steps.indexOf(en.target);
+          $$("button", nav).forEach((b, j) => { b.classList.toggle("on", j === i); b.classList.toggle("past", j < i); });
+          const cur = $$("button", nav)[i]; if (cur && nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: cur.offsetLeft - 40, behavior: "smooth" });
+        }), { rootMargin: "-140px 0px -60% 0px" });
+        steps.forEach((st) => io.observe(st));
+      }
 
       // official objective checklist
       const o = D.objectives.find((x) => x.id === id);
@@ -551,8 +588,8 @@
       ? `<div class="eyebrow">Do this next</div>
          <div class="what">${esc(nx.id)} · ${esc(nx.title)}</div>
          <p class="muted">Chapter ${nx.chapter.n}: ${esc(nx.chapter.title)}${videoMinutes(nx.id) ? ` · ${videoMinutes(nx.id)} min of video` : ""}</p>
-         <a class="btn primary big" href="${lessonUrl(nx)}">▶ Start lesson ${esc(nx.id)}</a>`
-      : `<div class="eyebrow">All lessons done</div><div class="what">Practice exams + weak spots</div><a class="btn primary big" href="practice/quiz.html?weak=1">▶ Weak-spot quiz</a>`;
+         <a class="btn primary big" href="${lessonUrl(nx)}">${icon("play")}Start lesson ${esc(nx.id)}</a>`
+      : `<div class="eyebrow">All lessons done</div><div class="what">Practice exams + weak spots</div><a class="btn primary big" href="practice/quiz.html?weak=1">${icon("play")}Weak-spot quiz</a>`;
 
     $("#countdown").innerHTML = `<div class="countdown"><span class="n">${Math.max(dl, 0)}</span><span>day${dl === 1 ? "" : "s"} until your exam<br><span class="muted">${fmtDate(examDate(), { weekday: "long", month: "long", day: "numeric" })} · <a href="plan.html#exam-date">change</a></span></span></div>
       <div class="progress"><span style="width:${Math.round((doneCount / ALL_LESSONS.length) * 100)}%"></span></div>
@@ -560,13 +597,14 @@
 
     const due = srsDue().length, dueBox = $("#due");
     if (dueBox) dueBox.innerHTML = due
-      ? `<div class="eyebrow">Due for review</div><div class="what">${due} item${due === 1 ? "" : "s"} to re-check</div><p class="muted">Questions and flashcards you missed, brought back at the right time. ~${Math.max(2, Math.round(due * 0.4))} min.</p><a class="btn primary" href="practice/review.html">▶ Review now</a>`
+      ? `<div class="eyebrow">Due for review</div><div class="what">${due} item${due === 1 ? "" : "s"} to re-check</div><p class="muted">Questions and flashcards you missed, brought back at the right time. ~${Math.max(2, Math.round(due * 0.4))} min.</p><a class="btn primary" href="practice/review.html">${icon("play")}Review now</a>`
       : `<div class="eyebrow">Due for review</div><div class="what">All caught up ✓</div><p class="muted" style="margin:0">Anything you miss in a quiz or mark "Again" in flashcards comes back here after 1, 3, 7 and 14 days.</p>`;
     const today = $("#today");
     if (tp) {
       const items = tp.lessons.map((id) => { const l = lessonById(id); return { done: isDone(id), html: `<a href="${lessonUrl(l)}">${id} ${esc(l.title)}</a>` }; })
         .concat(tp.tasks.map((t) => ({ done: !!S.tasks[tp.date + ":" + t.id], task: tp.date + ":" + t.id, html: t.href ? `<a href="${t.href}" ${t.href.startsWith("http") ? 'target="_blank" rel="noopener"' : ""}>${esc(t.text)}</a>` : esc(t.text) })));
-      today.innerHTML = `<h2>Today · ${fmtDate(tp.date)}</h2><p class="muted" style="margin-top:-.4em">${esc(tp.title)}</p>
+      const before = todayISO() < tp.date;
+      today.innerHTML = `<h2>${before ? "Day 1 starts" : "Today"} · ${fmtDate(tp.date)}</h2><p class="muted" style="margin-top:-.4em">${esc(tp.title)}</p>
         <ul class="today-list">${items.map((it) => `<li class="${it.done ? "is-done" : ""}"><span class="box" ${it.task ? `role="checkbox" tabindex="0" aria-checked="${it.done}" data-task="${it.task}" style="cursor:pointer"` : `title="Ticks itself when you finish the lesson"`}>${it.done ? "✓" : ""}</span><span class="txt">${it.html}</span></li>`).join("")}</ul>
         <p style="margin:12px 0 0"><a href="plan.html">See the full 16-day plan →</a></p>`;
       $$("[data-task]", today).forEach((b) => { const fn = () => { S.tasks[b.dataset.task] = !S.tasks[b.dataset.task]; save(); initHub(); }; b.onclick = fn; b.onkeydown = (e) => (e.key === " " || e.key === "Enter") && (e.preventDefault(), fn()); });
@@ -616,7 +654,7 @@
       const vm = p.lessons.reduce((a, id) => a + videoMinutes(id), 0);
       const cls = p.date === t ? "today" : p.date < t ? "past" : "";
       return `<div class="plan-day ${cls}" id="d${p.date}">
-        <div class="date">${fmtDate(p.date, { weekday: "short" })}<small>${fmtDate(p.date, { month: "short", day: "numeric" })} · Day ${i}</small></div>
+        <div class="date">${fmtDate(p.date, { weekday: "short" })}<small>${fmtDate(p.date, { month: "short", day: "numeric" })} · Day ${i + 1}</small></div>
         <div><strong>${esc(p.title)}</strong>${p.date === t ? ' <span class="pill" style="background:var(--accent)">TODAY</span>' : ""}
           <ul>${p.lessons.map((id) => { const l = lessonById(id); return `<li>${isDone(id) ? "✓ " : ""}<span class="pill" style="background:var(--d${l.chapter.n > 5 ? 0 : l.chapter.n})">${id}</span><a href="${lessonUrl(l)}">${esc(l.title)}</a></li>`; }).join("")}
           ${p.tasks.map((k) => `<li>${S.tasks[p.date + ":" + k.id] ? "✓ " : ""}${k.href ? `<a href="${k.href}" ${k.href.startsWith("http") ? 'target="_blank" rel="noopener"' : ""}>${esc(k.text)}</a>` : esc(k.text)}</li>`).join("")}</ul>
