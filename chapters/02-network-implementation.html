@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network Implementation</title>
+<link rel="icon" href="../assets/icon.svg">
+<link rel="stylesheet" href="../assets/css/guide.css">
+</head>
+<body data-root="../" data-chapter="2" data-domain="2" data-crumb="Chapter 2 · Network Implementation (20%)">
+<header class="topbar"></header>
+
+<div class="page with-toc">
+  <nav class="toc" aria-label="Lessons"></nav>
+  <main class="main">
+    <section class="hero">
+      <div class="eyebrow">Chapter 2 · Domain 2.0 · 20% of the exam</div>
+      <h1>Network Implementation</h1>
+      <p class="lead">How traffic gets routed, how switches are set up (VLANs, trunks, STP), how to configure wireless, and what goes in a server room. Many "Given a scenario, configure…" questions come from here.</p>
+      <ul class="meta"><li>4 lessons</li><li>Days 5–6 · Nov 19–20</li><li>High-yield: AD values · 802.1Q · STP · WPA3</li></ul>
+      <div class="progress"><span></span></div><div class="progress-label"></div>
+    </section>
+
+    <!-- ===================== 2.1 Routing ===================== -->
+    <section class="lesson" data-obj="2.1">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Explain how a router picks a route (longest prefix → AD → metric), compare OSPF/EIGRP/BGP, and know NAT vs PAT and FHRP.</p></div>
+        <div class="step" data-step="watch"><div data-videos="2.1"></div></div>
+        <div class="step" data-step="visual">
+          <ol class="flow">
+            <li><b>Longest prefix wins</b><br>A /27 route beats a /24 route that also matches. Most specific first.</li>
+            <li><b>Lowest AD wins</b><br>If the prefixes tie, use the most trusted source (administrative distance).</li>
+            <li><b>Lowest metric wins</b><br>Within the same protocol, the best cost or path.</li>
+          </ol>
+          <div class="table-wrap"><table>
+            <tr><th>Source</th><th>Admin distance</th><th>Type</th><th>Metric / note</th></tr>
+            <tr><td>Directly connected</td><td class="mono">0</td><td>—</td><td>Interface is up</td></tr>
+            <tr><td>Static route</td><td class="mono">1</td><td>Manual</td><td>Doesn't adapt. Good for small or stub networks and default routes</td></tr>
+            <tr><td>eBGP</td><td class="mono">20</td><td>Path vector</td><td>Routing between ISPs and autonomous systems (the internet). TCP 179</td></tr>
+            <tr><td>EIGRP</td><td class="mono">90</td><td>Advanced distance vector (hybrid)</td><td>Bandwidth + delay. Originally Cisco-only</td></tr>
+            <tr><td>OSPF</td><td class="mono">110</td><td>Link state</td><td>Cost based on bandwidth. Uses areas (area 0 = backbone). Open standard</td></tr>
+            <tr><td>RIP</td><td class="mono">120</td><td>Distance vector</td><td>Hop count, max 15. Legacy</td></tr>
+          </table></div>
+          <div class="callout memory"><div class="callout-title">Memory hook</div><p><strong>"0-1-20-90-110-120":</strong> Connected, Static, eBGP, EIGRP, OSPF, RIP. Lower = more trusted.</p></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>NAT</strong> translates private ↔ public IPs. <strong>PAT</strong> (NAT overload) maps many inside hosts to <em>one</em> public IP using different source ports. This is what your home router does.</li>
+            <li><strong>FHRP</strong> (HSRP, VRRP, GLBP): two routers share one <strong>virtual IP (VIP)</strong> that hosts use as their default gateway. If the active router fails, the standby takes over the VIP.</li>
+            <li><strong>Subinterfaces</strong> (for example <code>g0/0.10</code>) let one physical router port serve several VLANs over a trunk. This is "router on a stick".</li>
+            <li>Default route = <code>0.0.0.0/0</code>, the "gateway of last resort" used when nothing more specific matches.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <ul><li>Routing between companies or ISPs → <strong>BGP</strong>. Large enterprise open standard → <strong>OSPF</strong>.</li>
+            <li>"Hosts lose access when the gateway router fails" → configure an <strong>FHRP</strong> with a VIP.</li></ul></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="2.1" data-n="4"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 2.2 Switching ===================== -->
+    <section class="lesson" data-obj="2.2" data-mins="55">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Configure VLANs, trunks (802.1Q, native VLAN), voice VLANs, link aggregation, speed/duplex and jumbo frames, and explain how STP stops loops.</p></div>
+        <div class="step" data-step="watch"><div data-videos="2.2"></div></div>
+        <div class="step" data-step="visual">
+          <div class="svg-fig">
+            <svg viewBox="0 0 720 200" role="img" aria-label="Two switches connected by an 802.1Q trunk carrying VLAN 10 and VLAN 20. Access ports on each switch belong to one VLAN.">
+              <g font-size="13" text-anchor="middle">
+                <rect x="110" y="70" width="150" height="50" rx="8" class="box"/><text x="185" y="100" font-weight="700">Switch A</text>
+                <rect x="460" y="70" width="150" height="50" rx="8" class="box"/><text x="535" y="100" font-weight="700">Switch B</text>
+                <line x1="260" y1="95" x2="460" y2="95" class="wire hot" stroke-width="6"/>
+                <text x="360" y="80" font-weight="700">802.1Q trunk</text><text x="360" y="124" class="muted">tags: VLAN 10, 20 · native untagged</text>
+                <line x1="140" y1="120" x2="90" y2="165" class="wire"/><line x1="230" y1="120" x2="280" y2="165" class="wire"/>
+                <line x1="490" y1="120" x2="440" y2="165" class="wire"/><line x1="580" y1="120" x2="630" y2="165" class="wire"/>
+                <rect x="55" y="165" width="70" height="26" rx="6" fill="#2563eb"/><text x="90" y="183" style="fill:#fff">VLAN 10</text>
+                <rect x="245" y="165" width="70" height="26" rx="6" fill="#0d9488"/><text x="280" y="183" style="fill:#fff">VLAN 20</text>
+                <rect x="405" y="165" width="70" height="26" rx="6" fill="#2563eb"/><text x="440" y="183" style="fill:#fff">VLAN 10</text>
+                <rect x="595" y="165" width="70" height="26" rx="6" fill="#0d9488"/><text x="630" y="183" style="fill:#fff">VLAN 20</text>
+                <text x="360" y="30" class="muted">Access ports = one VLAN, untagged. The trunk carries many VLANs, tagged.</text>
+              </g>
+            </svg>
+            <figcaption>VLAN 10 can't talk to VLAN 20 without a router or an L3 switch SVI (interface vlan 10, interface vlan 20).</figcaption>
+          </div>
+          <div class="table-wrap"><table>
+            <tr><th>STP port state</th><th>Forwards data?</th><th>Learns MACs?</th></tr>
+            <tr><td>Blocking</td><td>No</td><td>No (listens for BPDUs only)</td></tr>
+            <tr><td>Listening</td><td>No</td><td>No</td></tr>
+            <tr><td>Learning</td><td>No</td><td><b>Yes</b></td></tr>
+            <tr><td>Forwarding</td><td><b>Yes</b></td><td>Yes</td></tr>
+            <tr><td>Disabled</td><td>No</td><td>No (admin down)</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>VLAN</strong> = a separate broadcast domain on the same switch. <strong>SVI</strong> = a virtual L3 interface for a VLAN, used for inter-VLAN routing or switch management.</li>
+            <li><strong>Native VLAN</strong> = the one VLAN sent <em>untagged</em> over a trunk. It must match on both ends. Change it from VLAN 1 to prevent VLAN hopping.</li>
+            <li><strong>Voice VLAN</strong> = the phone tags its own traffic into the voice VLAN while the PC behind it uses the data VLAN on the same port.</li>
+            <li><strong>Link aggregation</strong> (LACP / 802.3ad) bundles ports into one logical link for more bandwidth and redundancy.</li>
+            <li><strong>STP (802.1D)</strong> elects a <strong>root bridge</strong> (lowest bridge ID = priority + MAC). Root ports point toward the root. Designated ports forward on each segment. Everything else is blocked. <strong>RSTP (802.1w)</strong> converges faster.</li>
+            <li><strong>Jumbo frames</strong> = MTU above 1500 (usually 9000) for storage and data center traffic. Every device on the path must support it.</li>
+            <li><strong>Speed/duplex</strong> must match. A duplex mismatch shows up as late collisions and slow performance.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <ul><li>Broadcast storm or MAC table flapping → a loop, so <strong>STP</strong> is the answer.</li>
+            <li>The "VLAN database" is where VLANs are created. An access port assigned to the wrong VLAN gets the wrong subnet.</li></ul></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="2.2" data-n="4"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 2.3 Wireless ===================== -->
+    <section class="lesson" data-obj="2.3">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Choose bands, channels, encryption, authentication, antennas and AP types for a wireless scenario.</p></div>
+        <div class="step" data-step="watch"><div data-videos="2.3"></div></div>
+        <div class="step" data-step="visual">
+          <div class="svg-fig">
+            <svg viewBox="0 0 720 150" role="img" aria-label="2.4 GHz channels 1, 6 and 11 do not overlap; channels in between overlap">
+              <g font-size="13" text-anchor="middle">
+                <text x="360" y="18" font-weight="700">2.4 GHz: only 1, 6, 11 don't overlap (in the US)</text>
+                <path d="M60 130 Q140 20 220 130" class="wire hot" fill="none"/><text x="140" y="145" font-weight="700">1</text>
+                <path d="M280 130 Q360 20 440 130" class="wire hot" fill="none"/><text x="360" y="145" font-weight="700">6</text>
+                <path d="M500 130 Q580 20 660 130" class="wire hot" fill="none"/><text x="580" y="145" font-weight="700">11</text>
+                <path d="M170 130 Q250 50 330 130" class="wire" stroke-dasharray="5 5" fill="none"/><text x="250" y="145" class="muted">3 (overlaps)</text>
+              </g>
+            </svg>
+          </div>
+          <div class="table-wrap"><table>
+            <tr><th>Band</th><th>Range</th><th>Speed / channels</th><th>Note</th></tr>
+            <tr><td><b>2.4 GHz</b></td><td>Longest, goes through walls</td><td>Slower, 3 non-overlapping channels</td><td>Crowded: microwaves, Bluetooth</td></tr>
+            <tr><td><b>5 GHz</b></td><td>Shorter</td><td>Faster, many channels, 20/40/80/160 MHz widths</td><td>DFS / 802.11h (avoid radar)</td></tr>
+            <tr><td><b>6 GHz</b></td><td>Shortest</td><td>Fastest, lots of clean spectrum</td><td>Wi-Fi 6E / 7, WPA3 required</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Channel width:</strong> wider (80/160 MHz) = faster but fewer channels and more interference. In dense areas use 20/40 MHz.</li>
+            <li><strong>802.11h</strong> = regulatory: DFS (dynamic frequency selection) and TPC (transmit power control) in 5 GHz. <strong>Band steering</strong> pushes dual-band clients to 5/6 GHz.</li>
+            <li><strong>SSID</strong> = network name. <strong>BSSID</strong> = one AP radio's MAC. <strong>ESSID</strong> = the same SSID across many APs (roaming).</li>
+            <li><strong>Network types:</strong> infrastructure (clients ↔ AP), ad hoc (client ↔ client, no AP), mesh (APs relay to each other), point-to-point (bridge between buildings).</li>
+            <li><strong>WPA2</strong> = AES-CCMP. <strong>WPA3</strong> = SAE replaces the old pre-shared key exchange, so captured handshakes can't be cracked offline. It also adds a stronger 192-bit enterprise mode. <strong>PSK</strong> = one shared password. <strong>Enterprise</strong> = 802.1X + RADIUS, a login per user.</li>
+            <li><strong>Captive portal</strong> = a guest web login or terms page before access.</li>
+            <li><strong>Omnidirectional</strong> antenna = covers all around (office ceiling). <strong>Directional</strong> (Yagi, parabolic) = focused beam, long range (building to building).</li>
+            <li><strong>Autonomous AP</strong> = configured one at a time. <strong>Lightweight AP</strong> = managed by a wireless LAN controller (WLC).</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>A company that needs individual Wi-Fi logins and the ability to revoke them → <strong>WPA3-Enterprise / 802.1X</strong>, not PSK. Most secure choice → <strong>WPA3</strong>. Never pick WEP or TKIP.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="2.3"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 2.4 Physical ===================== -->
+    <section class="lesson" data-obj="2.4">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Plan a wiring closet: MDF vs IDF, racks and airflow, patch panels, power (UPS/PDU), and environmental controls.</p></div>
+        <div class="step" data-step="watch"><div data-videos="2.4"></div></div>
+        <div class="step" data-step="visual">
+          <div class="tiles">
+            <div class="tile"><b>MDF</b>Main distribution frame. The central room where the ISP enters and the core equipment lives</div>
+            <div class="tile"><b>IDF</b>Intermediate distribution frame. Wiring closets on each floor or wing that connect back to the MDF</div>
+            <div class="tile"><b>Rack units</b>1U = 1.75 in. A standard rack is 42U and 19 in wide. Lockable racks for physical security</div>
+            <div class="tile"><b>Airflow</b>Match port-side intake/exhaust to the hot aisle / cold aisle layout. Fronts face the cold aisle</div>
+            <div class="tile"><b>Patch panel</b>Permanent cable runs end here. Short patch cables go to the switch. Fiber uses a fiber distribution panel</div>
+            <div class="tile"><b>UPS</b>Battery backup for short outages and a clean shutdown. A generator handles long ones</div>
+            <div class="tile"><b>PDU</b>A rack power strip. Managed PDUs can be monitored and outlets switched remotely</div>
+            <div class="tile"><b>Power load</b>Add up device watts. Keep under ~80% of circuit and UPS capacity. Check the voltage (120 / 208 / 240 V)</div>
+          </div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Temperature:</strong> cool and steady (about 64–80 °F / 18–27 °C). <strong>Humidity:</strong> too low = static discharge (ESD), too high = condensation and corrosion. Aim for about 40–60%.</li>
+            <li><strong>Fire suppression:</strong> water sprinklers damage equipment. Data centers use <strong>clean agent / gas</strong> systems (FM-200, inert gas) or a <strong>pre-action</strong> dry pipe that fills with water only after the alarm.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>"Server room needs fire suppression that won't damage equipment" → a clean agent (gas) system, not a wet pipe. Frequent static shocks → humidity is too <strong>low</strong>.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="2.4"></div></div>
+      </div>
+    </section>
+
+    <nav class="pager"></nav>
+  </main>
+</div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/guide.js"></script>
+</body>
+</html>

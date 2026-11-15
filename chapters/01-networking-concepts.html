@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Networking Concepts</title>
+<link rel="icon" href="../assets/icon.svg">
+<link rel="stylesheet" href="../assets/css/guide.css">
+</head>
+<body data-root="../" data-chapter="1" data-domain="1" data-crumb="Chapter 1 · Networking Concepts (23%)">
+<header class="topbar"></header>
+
+<div class="page with-toc">
+  <nav class="toc" aria-label="Lessons"></nav>
+  <main class="main">
+    <section class="hero">
+      <div class="eyebrow">Chapter 1 · Domain 1.0 · 23% of the exam</div>
+      <h1>Networking Concepts</h1>
+      <p class="lead">This chapter is the vocabulary the rest of the exam builds on: layers, devices, cloud, ports, cables, topologies and IP addressing. Subnetting (1.7) is the skill that pays off the most.</p>
+      <ul class="meta"><li>8 lessons</li><li>Days 1–4 · Nov 15–18</li><li>High-yield: 1.4 ports · 1.5 cables · 1.7 subnetting</li></ul>
+      <div class="progress"><span></span></div><div class="progress-label"></div>
+    </section>
+
+    <!-- ===================== 1.1 OSI ===================== -->
+    <section class="lesson" data-obj="1.1">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Name the 7 OSI layers in order, and place any device, protocol or data unit on its layer.</p></div>
+        <div class="step" data-step="watch"><div data-videos="1.1"></div></div>
+        <div class="step" data-step="visual">
+          <div class="stack" role="img" aria-label="OSI model layers 7 to 1">
+            <div class="layer" style="background:#7c3aed"><b>7</b><span>Application</span><span>HTTP, DNS, SMTP, SSH: what the app speaks</span></div>
+            <div class="layer" style="background:#8b5cf6"><b>6</b><span>Presentation</span><span>Encryption, encoding, compression (TLS* / SSL)</span></div>
+            <div class="layer" style="background:#6366f1"><b>5</b><span>Session</span><span>Start, maintain and end sessions (control/data)</span></div>
+            <div class="layer" style="background:#2563eb"><b>4</b><span>Transport</span><span>TCP / UDP · ports · <b>segments / datagrams</b></span></div>
+            <div class="layer" style="background:#0891b2"><b>3</b><span>Network</span><span>IP · routers · <b>packets</b></span></div>
+            <div class="layer" style="background:#0d9488"><b>2</b><span>Data link</span><span>MAC · switches · <b>frames</b></span></div>
+            <div class="layer" style="background:#15803d"><b>1</b><span>Physical</span><span>Cables, signals, hubs · <b>bits</b></span></div>
+          </div>
+          <div class="callout memory"><div class="callout-title">Mnemonic</div>
+            <p>Top to bottom (7→1): <strong>A</strong>ll <strong>P</strong>eople <strong>S</strong>eem <strong>T</strong>o <strong>N</strong>eed <strong>D</strong>ata <strong>P</strong>rocessing.<br>Bottom to top (1→7): <strong>P</strong>lease <strong>D</strong>o <strong>N</strong>ot <strong>T</strong>hrow <strong>S</strong>ausage <strong>P</strong>izza <strong>A</strong>way.</p></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Encapsulation:</strong> going down the stack, each layer wraps the data in its own header. Data → segment (L4 + port) → packet (L3 + IP) → frame (L2 + MAC + FCS trailer) → bits.</li>
+            <li><strong>Data units by layer:</strong> L4 segment (TCP) or datagram (UDP), L3 <strong>packet</strong>, L2 <strong>frame</strong>, L1 <strong>bits</strong>.</li>
+            <li><strong>Devices by layer:</strong> hub and repeater = L1, switch and bridge = L2, router = L3. A multilayer switch and a load balancer can work at L3–L7. A next-gen firewall works up to L7.</li>
+            <li><strong>Addresses by layer:</strong> port number = L4, IP = L3, MAC = L2.</li>
+            <li>Troubleshooting questions say "start at the bottom" or "start at the top". That means OSI layers: cable first (L1), or app first (L7).</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps">
+          <div class="callout trap"><div class="callout-title">Watch for</div>
+            <ul><li>A switch is <strong>L2</strong>. If the question says "multilayer" or "L3 switch", it also routes.</li>
+              <li>TLS gets placed at different layers. CompTIA usually treats encryption as <strong>L6 Presentation</strong>.</li>
+              <li>"Which layer handles MAC addresses?" = Data link (2), not Physical (1).</li></ul></div>
+        </div>
+        <div class="step" data-step="check"><div class="check" data-obj="1.1"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 1.2 Appliances ===================== -->
+    <section class="lesson" data-obj="1.2">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Pick the right device or function for a scenario: router or switch, IDS or IPS, proxy or load balancer, NAS or SAN.</p></div>
+        <div class="step" data-step="watch"><div data-videos="1.2"></div></div>
+        <div class="step" data-step="visual">
+          <div class="table-wrap"><table>
+            <tr><th>Device</th><th>Layer</th><th>What it does</th><th>Exam clue</th></tr>
+            <tr><td><b>Router</b></td><td>3</td><td>Forwards packets between networks by IP</td><td>"different subnets", "default gateway"</td></tr>
+            <tr><td><b>Switch</b></td><td>2</td><td>Forwards frames by MAC. Each port is its own collision domain</td><td>"MAC address table", VLANs</td></tr>
+            <tr><td><b>Firewall</b></td><td>3–7</td><td>Allows or denies traffic by rules. NGFW = app-aware</td><td>"block port", "ACL", "inspect apps"</td></tr>
+            <tr><td><b>IDS</b></td><td>—</td><td>Detects and <em>alerts</em> (passive, gets a copy of traffic)</td><td>"notify", "alert only"</td></tr>
+            <tr><td><b>IPS</b></td><td>—</td><td>Detects and <em>blocks</em> (inline)</td><td>"stop", "prevent", "drop in real time"</td></tr>
+            <tr><td><b>Load balancer</b></td><td>4/7</td><td>Spreads requests across servers. Health checks, TLS offload</td><td>"distribute", "server farm", "high availability"</td></tr>
+            <tr><td><b>Proxy</b></td><td>7</td><td>Makes requests on a client's behalf. Caches, filters URLs</td><td>"filter web access", "cache"</td></tr>
+            <tr><td><b>NAS</b></td><td>—</td><td><strong>File</strong>-level storage over the LAN (SMB/NFS)</td><td>"shared folder"</td></tr>
+            <tr><td><b>SAN</b></td><td>—</td><td><strong>Block</strong>-level storage on its own fast network (FC/iSCSI)</td><td>"block storage", "looks like a local drive"</td></tr>
+            <tr><td><b>AP / WLC</b></td><td>2</td><td>AP bridges wireless clients onto the wired network. A controller manages many lightweight APs</td><td>"manage 50 APs centrally"</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>CDN</strong> (content delivery network): copies of content on servers near users, so pages load faster and the origin server carries less load.</li>
+            <li><strong>VPN</strong>: an encrypted tunnel over an untrusted network. <strong>QoS</strong>: prioritizes traffic (voice/video first) when links are congested.</li>
+            <li><strong>TTL</strong> means two things. In IP, a hop counter that drops by 1 at each router and discards the packet at 0, which prevents loops. In DNS, how long a record may be cached.</li>
+            <li>Every appliance can be <strong>physical or virtual</strong> (a VM or cloud instance). The function stays the same.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p><strong>IDS vs IPS</strong> is the classic trap. An IDS only <em>alerts</em>, while an IPS sits <em>inline</em> and can block. <strong>NAS vs SAN</strong>: file level vs block level.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="1.2"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 1.3 Cloud ===================== -->
+    <section class="lesson" data-obj="1.3">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Tell IaaS, PaaS and SaaS apart; name the deployment models; know which cloud gateway lets traffic in or out.</p></div>
+        <div class="step" data-step="watch"><div data-videos="1.3"></div></div>
+        <div class="step" data-step="visual">
+          <div class="table-wrap"><table>
+            <tr><th>Who manages…</th><th>On-prem</th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr>
+            <tr><td>Application & data</td><td>You</td><td>You</td><td>You</td><td><b>Provider</b></td></tr>
+            <tr><td>Runtime / OS</td><td>You</td><td>You</td><td><b>Provider</b></td><td><b>Provider</b></td></tr>
+            <tr><td>Servers, storage, network</td><td>You</td><td><b>Provider</b></td><td><b>Provider</b></td><td><b>Provider</b></td></tr>
+            <tr><td>Example</td><td>Your server room</td><td>AWS EC2 VMs</td><td>Heroku, App Engine</td><td>Microsoft 365, Gmail</td></tr>
+          </table></div>
+          <div class="tiles">
+            <div class="tile"><b>Internet gateway</b>Lets a VPC's public subnet reach the internet <em>and</em> be reached from it (two-way)</div>
+            <div class="tile"><b>NAT gateway</b>Lets private-subnet instances reach <em>out</em> to the internet (updates, for example) while blocking inbound connections</div>
+            <div class="tile"><b>VPN vs Direct Connect</b>VPN = encrypted tunnel over the internet. Direct Connect = a private dedicated link to the cloud provider</div>
+            <div class="tile"><b>Security groups / lists</b>Cloud firewall rules. Groups apply to instances, lists apply to subnets</div>
+          </div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Deployment models:</strong> <em>public</em> (shared provider), <em>private</em> (one org only), <em>hybrid</em> (a mix of both). Also community.</li>
+            <li><strong>VPC</strong> = your own isolated network inside a public cloud. <strong>NFV</strong> = network functions (firewall, router, load balancer) run as software instead of hardware boxes.</li>
+            <li><strong>Scalability</strong> = can grow to handle more load. <strong>Elasticity</strong> = grows <em>and shrinks</em> automatically with demand. <strong>Multitenancy</strong> = many customers share the same infrastructure, kept isolated.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>"Developers deploy code without managing servers" = <strong>PaaS</strong>. "Automatically adds and removes capacity" = <strong>elasticity</strong>, not just scalability.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="1.3"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 1.4 Ports ===================== -->
+    <section class="lesson" data-obj="1.4" data-mins="75">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Memorize the 20 official ports cold, know TCP from UDP, and know the IP protocol types (ICMP, GRE, IPSec) plus the 4 traffic types.</p></div>
+        <div class="step" data-step="watch"><div data-videos="1.4"></div></div>
+        <div class="step" data-step="visual" data-label="See it: the official port list">
+          <div data-ports-table="official"></div>
+          <p><a class="btn dom" href="../practice/ports.html">Drill these ports now →</a></p>
+        </div>
+        <div class="step" data-step="learn">
+          <div class="table-wrap"><table>
+            <tr><th></th><th>TCP</th><th>UDP</th></tr>
+            <tr><td><b>Connection</b></td><td>Connection-oriented: 3-way handshake SYN → SYN/ACK → ACK</td><td>Connectionless: "fire and forget"</td></tr>
+            <tr><td><b>Reliability</b></td><td>Acknowledges, retransmits, orders, flow control (windowing)</td><td>None built in. Faster, lower overhead</td></tr>
+            <tr><td><b>Used by</b></td><td>HTTP/S, SSH, SMTP, FTP, RDP, SMB, LDAP</td><td>DNS queries, DHCP, TFTP, NTP, SNMP, syslog, VoIP/streaming</td></tr>
+          </table></div>
+          <div class="tiles">
+            <div class="tile"><b>ICMP</b>Ping and traceroute messages. Has no ports</div>
+            <div class="tile"><b>GRE</b>Tunnels other protocols. <em>No encryption</em> on its own</div>
+            <div class="tile"><b>IPSec AH</b>Integrity and authentication only. <em>No encryption</em></div>
+            <div class="tile"><b>IPSec ESP</b>Encrypts <em>and</em> authenticates the payload</div>
+            <div class="tile"><b>IKE (UDP 500)</b>Negotiates IPSec keys and security associations</div>
+          </div>
+          <div class="svg-fig">
+            <svg viewBox="0 0 720 150" role="img" aria-label="Unicast one to one, multicast one to group, broadcast one to all, anycast one to nearest">
+              <g font-size="14" text-anchor="middle">
+                <g transform="translate(0,0)"><text x="90" y="18" font-weight="700">Unicast · 1→1</text><circle cx="40" cy="80" r="12" class="dombox"/><circle cx="140" cy="50" r="9" class="box"/><circle cx="140" cy="80" r="9" class="dombox"/><circle cx="140" cy="110" r="9" class="box"/><line x1="52" y1="80" x2="130" y2="80" class="wire hot"/></g>
+                <g transform="translate(180,0)"><text x="90" y="18" font-weight="700">Multicast · 1→group</text><circle cx="40" cy="80" r="12" class="dombox"/><circle cx="140" cy="50" r="9" class="dombox"/><circle cx="140" cy="80" r="9" class="box"/><circle cx="140" cy="110" r="9" class="dombox"/><line x1="52" y1="78" x2="131" y2="52" class="wire hot"/><line x1="52" y1="82" x2="131" y2="108" class="wire hot"/></g>
+                <g transform="translate(360,0)"><text x="90" y="18" font-weight="700">Broadcast · 1→all</text><circle cx="40" cy="80" r="12" class="dombox"/><circle cx="140" cy="50" r="9" class="dombox"/><circle cx="140" cy="80" r="9" class="dombox"/><circle cx="140" cy="110" r="9" class="dombox"/><line x1="52" y1="78" x2="131" y2="52" class="wire hot"/><line x1="52" y1="80" x2="130" y2="80" class="wire hot"/><line x1="52" y1="82" x2="131" y2="108" class="wire hot"/></g>
+                <g transform="translate(540,0)"><text x="90" y="18" font-weight="700">Anycast · 1→nearest</text><circle cx="40" cy="80" r="12" class="dombox"/><circle cx="100" cy="60" r="9" class="dombox"/><circle cx="160" cy="110" r="9" class="box"/><line x1="52" y1="76" x2="91" y2="62" class="wire hot"/><line x1="52" y1="84" x2="150" y2="108" class="wire" stroke-dasharray="4 4"/><text x="100" y="140" class="muted" font-size="12">same IP, closest wins</text></g>
+              </g>
+            </svg>
+            <figcaption>Broadcast exists only in IPv4. IPv6 replaced it with multicast.</figcaption>
+          </div>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <ul><li><strong>SFTP (22)</strong> runs over SSH. <strong>FTPS</strong> is FTP + TLS. They're different protocols.</li>
+            <li>CompTIA lists SMTPS as <strong>587</strong>. In the real world 465 also exists, but answer 587.</li>
+            <li>DNS uses <strong>UDP 53</strong> for queries and <strong>TCP 53</strong> for zone transfers.</li>
+            <li>SNMP: <strong>161</strong> = polling the agent, <strong>162</strong> = traps sent to the manager.</li></ul></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="1.4" data-n="4"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 1.5 Media ===================== -->
+    <section class="lesson" data-obj="1.5" data-mins="60">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Match Wi-Fi standards, copper categories, fiber types, transceivers and connectors to their speed, distance and use. This is prime PBQ material.</p></div>
+        <div class="step" data-step="watch"><div data-videos="1.5"></div></div>
+        <div class="step" data-step="visual" data-label="See it: Wi-Fi">
+          <div class="table-wrap"><table>
+            <tr><th>Standard</th><th>Name</th><th>Bands</th><th>Max speed (theory)</th><th>Remember</th></tr>
+            <tr><td class="mono">802.11a</td><td>—</td><td>5 GHz</td><td>54 Mbps</td><td>Old, 5 GHz only</td></tr>
+            <tr><td class="mono">802.11b</td><td>—</td><td>2.4 GHz</td><td>11 Mbps</td><td>Oldest</td></tr>
+            <tr><td class="mono">802.11g</td><td>—</td><td>2.4 GHz</td><td>54 Mbps</td><td></td></tr>
+            <tr><td class="mono">802.11n</td><td>Wi-Fi 4</td><td>2.4 + 5</td><td>600 Mbps</td><td>MIMO arrives</td></tr>
+            <tr><td class="mono">802.11ac</td><td>Wi-Fi 5</td><td>5 GHz</td><td>~6.9 Gbps</td><td>MU-MIMO (downlink)</td></tr>
+            <tr><td class="mono">802.11ax</td><td>Wi-Fi 6 / 6E</td><td>2.4 + 5 (+ <b>6</b> for 6E)</td><td>~9.6 Gbps</td><td>OFDMA, best in crowded spaces</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="visual" data-label="See it: wired">
+          <div class="table-wrap"><table>
+            <tr><th>Copper (UTP/STP)</th><th>Max speed</th><th>Distance</th></tr>
+            <tr><td>Cat 5e</td><td>1 Gbps</td><td>100 m</td></tr>
+            <tr><td>Cat 6</td><td>1 Gbps (10 Gbps up to 55 m)</td><td>100 m</td></tr>
+            <tr><td>Cat 6a</td><td>10 Gbps</td><td>100 m</td></tr>
+            <tr><td>Cat 7</td><td>10 Gbps (shielded)</td><td>100 m</td></tr>
+            <tr><td>Cat 8</td><td>25–40 Gbps</td><td><b>30 m</b> (data center)</td></tr>
+          </table></div>
+          <div class="tiles">
+            <div class="tile"><b>Single-mode fiber (SMF)</b>Thin core, laser, <strong>long distance</strong> (km). Often yellow jacket</div>
+            <div class="tile"><b>Multimode fiber (MMF)</b>Wider core, LED/VCSEL, <strong>short distance</strong> (hundreds of m). Often orange or aqua</div>
+            <div class="tile"><b>DAC / twinax</b>Copper cable with SFP ends built in. Cheap, short (a few m) switch-to-server links</div>
+            <div class="tile"><b>Coax</b>RG-6 for cable modem and TV (F-type connector)</div>
+            <div class="tile"><b>Plenum</b>Fire-rated jacket (low smoke) for air-handling spaces above ceilings. Non-plenum (PVC) elsewhere</div>
+            <div class="tile"><b>SFP / SFP+ / QSFP</b>Hot-swap transceivers. SFP = 1G, SFP+ = 10G, QSFP = 4 lanes (40/100G+)</div>
+          </div>
+          <div class="table-wrap"><table>
+            <tr><th>Connector</th><th>Media</th><th>Look / use</th></tr>
+            <tr><td><b>LC</b></td><td>Fiber</td><td>Small square, latch. The most common SFP connector</td></tr>
+            <tr><td><b>SC</b></td><td>Fiber</td><td>Square push-pull ("square connector")</td></tr>
+            <tr><td><b>ST</b></td><td>Fiber</td><td>Round bayonet twist ("stick and twist")</td></tr>
+            <tr><td><b>MPO</b></td><td>Fiber</td><td>Many fibers in one rectangular connector (QSFP, 40/100G)</td></tr>
+            <tr><td><b>RJ45</b></td><td>Copper</td><td>8-pin Ethernet</td></tr>
+            <tr><td><b>RJ11</b></td><td>Copper</td><td>Smaller, phone/DSL line</td></tr>
+            <tr><td><b>F-type</b></td><td>Coax</td><td>Screw-on, cable modem</td></tr>
+            <tr><td><b>BNC</b></td><td>Coax</td><td>Bayonet twist, legacy/video</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Ethernet naming:</strong> 1000BASE-T = 1 Gbps over copper twisted pair. "-SX/-SR" = short reach on multimode. "-LX/-LR" = long reach on single-mode.</li>
+            <li><strong>Cellular</strong> (4G/LTE, 5G) and <strong>satellite</strong> are WAN options. Satellite = high latency (except low-earth-orbit networks like Starlink, which are much lower).</li>
+            <li>Transceivers carry either <strong>Ethernet</strong> or <strong>Fibre Channel</strong> (storage networks). Both ends must match on standard, wavelength and fiber type.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <ul><li>Long distance between buildings → <strong>single-mode</strong> fiber. Inside a data center rack → DAC or multimode.</li>
+            <li>Cable runs through the ceiling air space → <strong>plenum</strong>.</li>
+            <li>Copper Ethernet max distance is <strong>100 m</strong> for every category except Cat 8 (30 m).</li></ul></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="1.5" data-n="4"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 1.6 Topologies ===================== -->
+    <section class="lesson" data-obj="1.6">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Recognize each topology and the three-tier vs spine-and-leaf designs, and know which way north-south and east-west traffic flows.</p></div>
+        <div class="step" data-step="watch"><div data-videos="1.6"></div></div>
+        <div class="step" data-step="visual">
+          <div class="svg-fig">
+            <svg viewBox="0 0 720 230" role="img" aria-label="Three-tier model with core, distribution and access layers, next to spine and leaf where every leaf connects to every spine">
+              <g font-size="13" text-anchor="middle">
+                <text x="170" y="18" font-weight="700" font-size="15">Three-tier (campus)</text>
+                <g class="wire"><line x1="130" y1="50" x2="90" y2="110"/><line x1="130" y1="50" x2="250" y2="110"/><line x1="210" y1="50" x2="90" y2="110"/><line x1="210" y1="50" x2="250" y2="110"/>
+                  <line x1="90" y1="120" x2="40" y2="180"/><line x1="90" y1="120" x2="130" y2="180"/><line x1="250" y1="120" x2="210" y2="180"/><line x1="250" y1="120" x2="300" y2="180"/></g>
+                <rect x="105" y="34" width="50" height="26" rx="6" class="dombox"/><rect x="185" y="34" width="50" height="26" rx="6" class="dombox"/>
+                <rect x="65" y="104" width="50" height="26" rx="6" class="box"/><rect x="225" y="104" width="50" height="26" rx="6" class="box"/>
+                <rect x="20" y="174" width="40" height="22" rx="5" class="box"/><rect x="110" y="174" width="40" height="22" rx="5" class="box"/><rect x="190" y="174" width="40" height="22" rx="5" class="box"/><rect x="280" y="174" width="40" height="22" rx="5" class="box"/>
+                <text x="330" y="52" text-anchor="start" class="muted">Core: fast backbone</text>
+                <text x="290" y="122" text-anchor="start" class="muted">Distribution: policy, routing</text>
+                <text x="170" y="220" class="muted">Access: where users plug in</text>
+                <text x="560" y="18" font-weight="700" font-size="15">Spine and leaf (data center)</text>
+                <g class="wire">
+                  <line x1="500" y1="70" x2="450" y2="160"/><line x1="500" y1="70" x2="530" y2="160"/><line x1="500" y1="70" x2="610" y2="160"/><line x1="500" y1="70" x2="690" y2="160"/>
+                  <line x1="620" y1="70" x2="450" y2="160"/><line x1="620" y1="70" x2="530" y2="160"/><line x1="620" y1="70" x2="610" y2="160"/><line x1="620" y1="70" x2="690" y2="160"/></g>
+                <rect x="470" y="50" width="60" height="26" rx="6" class="dombox"/><rect x="590" y="50" width="60" height="26" rx="6" class="dombox"/>
+                <text x="500" y="68" fill="#fff" style="fill:#fff">spine</text><text x="620" y="68" style="fill:#fff">spine</text>
+                <rect x="425" y="160" width="50" height="24" rx="6" class="box"/><rect x="505" y="160" width="50" height="24" rx="6" class="box"/><rect x="585" y="160" width="50" height="24" rx="6" class="box"/><rect x="665" y="160" width="50" height="24" rx="6" class="box"/>
+                <text x="450" y="177">leaf</text><text x="530" y="177">leaf</text><text x="610" y="177">leaf</text><text x="690" y="177">leaf</text>
+                <text x="565" y="215" class="muted">every leaf ↔ every spine · any server is 2 hops from any other</text>
+              </g>
+            </svg>
+            <figcaption>A collapsed core merges the core and distribution layers into one, for small or medium networks.</figcaption>
+          </div>
+          <div class="tiles">
+            <div class="tile"><b>Star / hub-and-spoke</b>Everything connects to a center. Most LANs. The center is a single point of failure</div>
+            <div class="tile"><b>Mesh</b>Many redundant links. Full mesh = every node to every node (n(n−1)/2 links)</div>
+            <div class="tile"><b>Point-to-point</b>One link between two sites</div>
+            <div class="tile"><b>Hybrid</b>A mix of topologies</div>
+            <div class="tile"><b>North-south</b>Traffic in or out of the data center (client ↔ internet)</div>
+            <div class="tile"><b>East-west</b>Traffic between servers inside the data center</div>
+          </div>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>A data center with lots of server-to-server (east-west) traffic → <strong>spine and leaf</strong>. A small office that wants fewer layers → <strong>collapsed core</strong>.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="1.6"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 1.7 Subnetting ===================== -->
+    <section class="lesson" data-obj="1.7" data-mins="120">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Given an IP/CIDR, find the network address, broadcast address, usable host range and host count in under 30 seconds. Know the private, APIPA and loopback ranges.</p></div>
+        <div class="step" data-step="watch"><div data-videos="1.7"></div>
+          <p class="alt-title">Still fuzzy? Try a second teacher (pick one):</p>
+          <div data-yt="BWZ-MHIhqjM,ljS07YTEJ2I,5-wlfAdcmFQ,SM0kdVfhxZ0"></div>
+          <div data-yt="bQ8sdpGQu8c,IGhd-0di0Qo" style="margin-top:14px"></div>
+        </div>
+        <div class="step" data-step="visual" data-label="See it: the cheat sheet (write this on your scratch paper)">
+          <div class="table-wrap"><table>
+            <tr><th>CIDR</th><th>Mask (last octet)</th><th>Block size</th><th>Usable hosts</th></tr>
+            <tr><td class="mono">/24</td><td class="mono">255.255.255.0</td><td>256</td><td>254</td></tr>
+            <tr><td class="mono">/25</td><td class="mono">.128</td><td>128</td><td>126</td></tr>
+            <tr><td class="mono">/26</td><td class="mono">.192</td><td>64</td><td>62</td></tr>
+            <tr><td class="mono">/27</td><td class="mono">.224</td><td>32</td><td>30</td></tr>
+            <tr><td class="mono">/28</td><td class="mono">.240</td><td>16</td><td>14</td></tr>
+            <tr><td class="mono">/29</td><td class="mono">.248</td><td>8</td><td>6</td></tr>
+            <tr><td class="mono">/30</td><td class="mono">.252</td><td>4</td><td>2 (point-to-point links)</td></tr>
+            <tr><td class="mono">/31, /32</td><td class="mono">.254, .255</td><td>2, 1</td><td>special: P2P link / single host</td></tr>
+          </table></div>
+          <p class="muted">For /16–/23, the same pattern happens in the <b>third</b> octet. Example: /20 = 255.255.240.0, block size 16 in octet 3.</p>
+        </div>
+        <div class="step" data-step="learn" data-label="Learn: the 4-step method">
+          <ol class="flow">
+            <li><b>Find the block size</b><br>256 − mask octet. /27 → 256−224 = <b>32</b></li>
+            <li><b>Find the network</b><br>The largest multiple of the block ≤ your IP octet. .77 → <b>.64</b></li>
+            <li><b>Find the broadcast</b><br>Next network − 1. .96 − 1 = <b>.95</b></li>
+            <li><b>Find the hosts</b><br>Network + 1 → broadcast − 1. <b>.65–.94</b>, 2<sup>h</sup>−2 = <b>30</b></li>
+          </ol>
+          <p>Worked example: <code>192.168.10.77/27</code> → network <code>192.168.10.64</code>, broadcast <code>192.168.10.95</code>, hosts <code>.65 – .94</code> (30 usable).</p>
+          <div class="table-wrap"><table>
+            <tr><th>Range</th><th>What it is</th></tr>
+            <tr><td class="mono">10.0.0.0/8</td><td>RFC 1918 private (Class A)</td></tr>
+            <tr><td class="mono">172.16.0.0/12</td><td>RFC 1918 private: 172.16.0.0 – 172.31.255.255</td></tr>
+            <tr><td class="mono">192.168.0.0/16</td><td>RFC 1918 private (Class C)</td></tr>
+            <tr><td class="mono">169.254.0.0/16</td><td><b>APIPA</b>: the host couldn't reach DHCP and assigned itself an address</td></tr>
+            <tr><td class="mono">127.0.0.0/8</td><td>Loopback (127.0.0.1 = localhost)</td></tr>
+          </table></div>
+          <div class="table-wrap"><table>
+            <tr><th>Class</th><th>First octet</th><th>Default mask</th><th>Use</th></tr>
+            <tr><td>A</td><td>1–126</td><td>/8</td><td>Unicast</td></tr>
+            <tr><td>B</td><td>128–191</td><td>/16</td><td>Unicast</td></tr>
+            <tr><td>C</td><td>192–223</td><td>/24</td><td>Unicast</td></tr>
+            <tr><td>D</td><td>224–239</td><td>—</td><td><b>Multicast</b></td></tr>
+            <tr><td>E</td><td>240–255</td><td>—</td><td>Experimental</td></tr>
+          </table></div>
+          <ul class="ideas">
+            <li><strong>CIDR</strong> = slash notation, no classes. <strong>VLSM</strong> = subnets of different sizes inside one network. Size the biggest subnet first.</li>
+            <li>Hosts needed → bits: you need 2<sup>h</sup>−2 ≥ hosts. 50 hosts → h = 6 (62) → /26.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <ul><li>An address starting with <strong>169.254</strong> is always a DHCP problem, not a subnet problem.</li>
+            <li>Remember the <strong>−2</strong> (network + broadcast) for usable hosts.</li>
+            <li>172.32.x.x is <strong>not</strong> private. The private range stops at 172.31.</li></ul></div></div>
+        <div class="step" data-step="do" data-label="Do it: drill">
+          <p><a class="btn dom big" href="../practice/subnetting.html">Open the subnet drill →</a> Do 40 today. Speed comes from repetition, not from rereading.</p>
+        </div>
+        <div class="step" data-step="check"><div class="check" data-obj="1.7" data-n="5"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 1.8 Modern ===================== -->
+    <section class="lesson" data-obj="1.8">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Explain SDN/SD-WAN, VXLAN, zero trust, SASE, infrastructure as code, and the IPv6 basics in one sentence each.</p></div>
+        <div class="step" data-step="watch"><div data-videos="1.8"></div></div>
+        <div class="step" data-step="visual">
+          <div class="tiles">
+            <div class="tile"><b>SDN</b>Splits the <em>control plane</em> (decisions, centralized controller) from the <em>data plane</em> (forwarding). A management plane sits on top</div>
+            <div class="tile"><b>SD-WAN</b>Software-managed WAN over any link (MPLS, broadband, LTE): <em>transport agnostic</em>, <em>application aware</em>, <em>zero-touch provisioning</em>, central policy</div>
+            <div class="tile"><b>VXLAN</b>Stretches Layer 2 across Layer 3 (MAC-in-UDP, port 4789). 16 million segments vs 4094 VLANs. Used for data center interconnect</div>
+            <div class="tile"><b>Zero trust</b>"Never trust, always verify." Every request is authenticated and authorized by policy, with least privilege</div>
+            <div class="tile"><b>SASE / SSE</b>Networking (SD-WAN) + security (SWG, CASB, ZTNA, FWaaS) delivered from the cloud. SSE = the security part only</div>
+            <div class="tile"><b>IaC</b>Network configuration as code (templates, playbooks) in version control. Prevents config drift, makes changes repeatable</div>
+          </div>
+          <div class="table-wrap"><table>
+            <tr><th>IPv6</th><th>Detail</th></tr>
+            <tr><td>Size</td><td>128 bits, 8 groups of hex. <code>2001:db8::1</code>. Drop leading zeros, and use <code>::</code> once for a run of zero groups</td></tr>
+            <tr><td><code>::1</code></td><td>Loopback</td></tr>
+            <tr><td><code>fe80::/10</code></td><td>Link-local. Always present, never routed (like APIPA, but normal)</td></tr>
+            <tr><td><code>fc00::/7</code> (fd…)</td><td>Unique local (like private IPv4)</td></tr>
+            <tr><td><code>2000::/3</code></td><td>Global unicast (public)</td></tr>
+            <tr><td><code>ff00::/8</code></td><td>Multicast (there is no broadcast)</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li>IPv6 solves <strong>address exhaustion</strong>. To run alongside IPv4: <strong>dual stack</strong> (run both), <strong>tunneling</strong> (6to4, carry IPv6 inside IPv4), <strong>NAT64</strong> (lets IPv6-only hosts reach IPv4).</li>
+            <li>Source control terms: <em>repository</em>, <em>branching</em>, <em>conflict identification</em>, <em>version control</em>. Automation terms: <em>dynamic inventories</em>, <em>upgrades</em>, <em>drift/compliance</em>.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>Configs slowly differ from the standard → <strong>configuration drift</strong>, fixed by IaC. "Same layer 2 network in two data centers" → <strong>VXLAN</strong>.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="1.8"></div></div>
+      </div>
+    </section>
+
+    <nav class="pager"></nav>
+  </main>
+</div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/guide.js"></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network Operations</title>
+<link rel="icon" href="../assets/icon.svg">
+<link rel="stylesheet" href="../assets/css/guide.css">
+</head>
+<body data-root="../" data-chapter="3" data-domain="3" data-crumb="Chapter 3 · Network Operations (19%)">
+<header class="topbar"></header>
+
+<div class="page with-toc">
+  <nav class="toc" aria-label="Lessons"></nav>
+  <main class="main">
+    <section class="hero">
+      <div class="eyebrow">Chapter 3 · Domain 3.0 · 19% of the exam</div>
+      <h1>Network Operations</h1>
+      <p class="lead">This chapter covers keeping a network running: documenting it, monitoring it, recovering it, and the services every device depends on (DHCP, DNS, time). DNS records and DHCP are tested heavily.</p>
+      <ul class="meta"><li>5 lessons</li><li>Days 7–8 · Nov 21–22</li><li>High-yield: SNMP · RPO/RTO · DHCP DORA · DNS records</li></ul>
+      <div class="progress"><span></span></div><div class="progress-label"></div>
+    </section>
+
+    <!-- ===================== 3.1 ===================== -->
+    <section class="lesson" data-obj="3.1">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Know which document answers which question, and how life-cycle, change and configuration management work.</p></div>
+        <div class="step" data-step="watch"><div data-videos="3.1"></div></div>
+        <div class="step" data-step="visual">
+          <div class="table-wrap"><table>
+            <tr><th>Document</th><th>Answers the question…</th></tr>
+            <tr><td><b>Physical diagram</b></td><td>Where is it, and which cable goes where? (racks, ports, rooms)</td></tr>
+            <tr><td><b>Logical diagram</b></td><td>How does traffic flow? (subnets, VLANs, routing, L3)</td></tr>
+            <tr><td><b>Rack diagram</b></td><td>What's in each U of each rack?</td></tr>
+            <tr><td><b>Cable map</b></td><td>Which patch panel port goes to which wall jack?</td></tr>
+            <tr><td><b>Asset inventory</b></td><td>What hardware and software do we own? Licenses, warranty dates</td></tr>
+            <tr><td><b>IPAM</b></td><td>Which IPs and subnets are used, free, or reserved?</td></tr>
+            <tr><td><b>SLA</b></td><td>What uptime and response time did the provider promise?</td></tr>
+            <tr><td><b>Wireless survey / heat map</b></td><td>Where is the signal strong or weak?</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Life cycle:</strong> <em>EOL</em> = no longer sold. <em>EOS</em> = no more patches or support, so it's a security risk and should be replaced. Keep OS and firmware patched. <em>Decommissioning</em> = wipe or destroy data, update the inventory.</li>
+            <li><strong>Change management:</strong> submit a request → review and approve (CAB) → schedule a maintenance window → keep a rollback plan → document.</li>
+            <li><strong>Configuration management:</strong> the <em>production</em> config (running now), the <em>backup</em> config (a saved copy), the <em>baseline / golden</em> config (the approved standard to compare against).</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>"Which VLAN and subnet is the server on?" → <strong>logical</strong> diagram. "Which switch port does office 204 connect to?" → <strong>physical</strong> diagram or cable map.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="3.1"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 3.2 ===================== -->
+    <section class="lesson" data-obj="3.2">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Pick the right monitoring tool: SNMP, flow data, packet capture, syslog/SIEM, or port mirroring.</p></div>
+        <div class="step" data-step="watch"><div data-videos="3.2"></div></div>
+        <div class="step" data-step="visual">
+          <div class="svg-fig">
+            <svg viewBox="0 0 720 150" role="img" aria-label="SNMP manager polls the agent on UDP 161; the agent sends traps to the manager on UDP 162">
+              <g font-size="14" text-anchor="middle">
+                <rect x="40" y="45" width="190" height="60" rx="10" class="dombox"/><text x="135" y="72" style="fill:#fff" font-weight="700">SNMP manager (NMS)</text><text x="135" y="92" style="fill:#fff">monitoring server</text>
+                <rect x="490" y="45" width="190" height="60" rx="10" class="box"/><text x="585" y="72" font-weight="700">Agent</text><text x="585" y="92" class="muted">switch / router · MIB</text>
+                <line x1="230" y1="60" x2="490" y2="60" class="wire hot"/><text x="360" y="50">GET / poll → UDP 161</text>
+                <line x1="490" y1="92" x2="230" y2="92" class="wire" stroke-dasharray="6 4"/><text x="360" y="118">← TRAP (alert, unrequested) UDP 162</text>
+              </g>
+            </svg>
+          </div>
+          <div class="table-wrap"><table>
+            <tr><th>Method</th><th>What you get</th><th>Use it when…</th></tr>
+            <tr><td><b>SNMP</b></td><td>Counters and status (CPU, interface errors) from the MIB</td><td>Device health and performance graphs</td></tr>
+            <tr><td><b>Flow data</b> (NetFlow, IPFIX, sFlow)</td><td>Metadata: who talked to whom, how much, which ports</td><td>"Top talkers", bandwidth by app</td></tr>
+            <tr><td><b>Packet capture</b></td><td>Full packets (Wireshark, tcpdump)</td><td>Deep troubleshooting of payloads</td></tr>
+            <tr><td><b>Port mirroring</b> (SPAN)</td><td>A copy of a port's traffic sent to another port</td><td>Feeding an IDS or analyzer</td></tr>
+            <tr><td><b>Syslog collector</b></td><td>Central log storage (UDP 514)</td><td>Gathering logs from all devices in one place</td></tr>
+            <tr><td><b>SIEM</b></td><td>Logs + correlation + alerts</td><td>Spotting security events across many sources</td></tr>
+            <tr><td><b>API integration</b></td><td>Pull or push data between tools</td><td>Automating monitoring dashboards</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>SNMPv2c</strong> uses <em>community strings</em> (sent in plaintext, like passwords). <strong>SNMPv3</strong> adds authentication and encryption. Always choose v3.</li>
+            <li><strong>Baseline</strong> = what "normal" looks like. Anomaly alerts fire when traffic strays from the baseline.</li>
+            <li>Solution types: network discovery (ad hoc or scheduled), traffic analysis, performance, availability (up/down), and configuration monitoring (detect changes).</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>"Device sends an alert when an interface goes down" → <strong>SNMP trap</strong>. "See which hosts use the most bandwidth" → <strong>NetFlow</strong>, not a packet capture.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="3.2"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 3.3 ===================== -->
+    <section class="lesson" data-obj="3.3">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Use RPO, RTO, MTTR and MTBF correctly, and match cold, warm and hot sites to budget and recovery speed.</p></div>
+        <div class="step" data-step="watch"><div data-videos="3.3"></div></div>
+        <div class="step" data-step="visual">
+          <div class="svg-fig">
+            <svg viewBox="0 0 720 140" role="img" aria-label="Timeline: last backup, then disaster, then service restored. RPO is the time from last backup back to disaster; RTO is from disaster to restore.">
+              <g font-size="14" text-anchor="middle">
+                <line x1="40" y1="70" x2="680" y2="70" class="wire"/>
+                <circle cx="160" cy="70" r="8" class="box"/><text x="160" y="105">last good backup</text>
+                <circle cx="380" cy="70" r="10" fill="#be123c"/><text x="380" y="105" font-weight="700">💥 disaster</text>
+                <circle cx="610" cy="70" r="8" class="dombox"/><text x="610" y="105">back online</text>
+                <path d="M165 45 H375" class="wire hot"/><text x="270" y="35" font-weight="700">RPO: data you can lose</text>
+                <path d="M385 45 H605" class="wire hot"/><text x="495" y="35" font-weight="700">RTO: time you can be down</text>
+              </g>
+            </svg>
+          </div>
+          <div class="table-wrap"><table>
+            <tr><th>Site</th><th>Ready?</th><th>Cost</th><th>Recovery</th></tr>
+            <tr><td><b>Cold</b></td><td>Empty room with power and network only</td><td>$</td><td>Days to weeks</td></tr>
+            <tr><td><b>Warm</b></td><td>Hardware in place, data somewhat out of date</td><td>$$</td><td>Hours to days</td></tr>
+            <tr><td><b>Hot</b></td><td>Fully running mirror with current data</td><td>$$$</td><td>Minutes</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>MTBF</strong> = mean time <em>between</em> failures (higher is better, so it measures reliability). <strong>MTTR</strong> = mean time <em>to repair</em> (lower is better).</li>
+            <li><strong>Active-active</strong> = all nodes carry load at once. <strong>Active-passive</strong> = a standby waits and takes over on failure.</li>
+            <li><strong>Tabletop exercise</strong> = talk through a scenario around a table, with no systems touched. <strong>Validation test</strong> = actually fail over or restore to prove the plan works.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>"Can't lose more than 1 hour of data" = <strong>RPO</strong> of 1 hour, so back up at least hourly. "Must be back up within 4 hours" = <strong>RTO</strong>.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="3.3"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 3.4 ===================== -->
+    <section class="lesson" data-obj="3.4" data-mins="80">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Configure DHCP (scope, reservations, relay), explain SLAAC, read DNS records, and know DNSSEC, DoH/DoT and the time protocols.</p></div>
+        <div class="step" data-step="watch"><div data-videos="3.4"></div></div>
+        <div class="step" data-step="visual" data-label="See it: DHCP DORA">
+          <ol class="flow dora">
+            <li><b>D · Discover</b><br>Client → broadcast: "Any DHCP servers?"</li>
+            <li><b>O · Offer</b><br>Server → "You can have 192.168.1.50"</li>
+            <li><b>R · Request</b><br>Client → "I'll take .50, please"</li>
+            <li><b>A · Acknowledge</b><br>Server → "It's yours for the lease time"</li>
+          </ol>
+          <p class="muted">UDP 67 (server) / 68 (client). Discover is a broadcast, and routers don't forward broadcasts. That's why remote subnets need a <b>DHCP relay / IP helper</b>.</p>
+          <div class="table-wrap"><table>
+            <tr><th>DNS record</th><th>Maps</th><th>Example</th></tr>
+            <tr><td><b>A</b></td><td>Name → IPv4</td><td><code>www → 203.0.113.10</code></td></tr>
+            <tr><td><b>AAAA</b></td><td>Name → IPv6</td><td><code>www → 2001:db8::10</code></td></tr>
+            <tr><td><b>CNAME</b></td><td>Alias → another name</td><td><code>shop → www.example.com</code></td></tr>
+            <tr><td><b>MX</b></td><td>Domain → mail server (with priority)</td><td><code>10 mail.example.com</code></td></tr>
+            <tr><td><b>TXT</b></td><td>Free text: SPF, DKIM, DMARC, domain verification</td><td><code>v=spf1 …</code></td></tr>
+            <tr><td><b>NS</b></td><td>Which servers are authoritative for the zone</td><td><code>ns1.example.com</code></td></tr>
+            <tr><td><b>PTR</b></td><td>IP → name (reverse lookup)</td><td><code>10.113.0.203.in-addr.arpa</code></td></tr>
+            <tr><td><b>SOA</b></td><td>Zone admin info and serial number</td><td>(start of authority)</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>DHCP terms:</strong> <em>scope</em> = the pool of addresses. <em>Exclusions</em> = addresses inside the pool that are never handed out. <em>Reservation</em> = always give this MAC the same IP. <em>Lease time</em> = how long the address is held. <em>Options</em> = gateway (3), DNS (6) and others.</li>
+            <li><strong>SLAAC</strong> (IPv6): the host builds its own address from the router's prefix (router advertisement) plus its interface ID. No DHCP server needed.</li>
+            <li><strong>DNS roles:</strong> <em>recursive</em> resolver = does the lookups for you. <em>Authoritative</em> = owns the answer for a zone. <em>Non-authoritative</em> = a cached answer. <em>Primary</em> = editable zone copy, <em>secondary</em> = read-only copy received by zone transfer.</li>
+            <li><strong>Forward zone</strong> = name → IP. <strong>Reverse zone</strong> = IP → name (PTR). The <strong>hosts file</strong> is checked before DNS.</li>
+            <li><strong>DNSSEC</strong> = signs records so they can't be forged (integrity, not privacy). <strong>DoH</strong> (HTTPS 443) / <strong>DoT</strong> (TLS 853) = encrypt queries (privacy).</li>
+            <li><strong>NTP</strong> (UDP 123) = clock sync, accurate to milliseconds. <strong>PTP</strong> = sub-microsecond, needs hardware support. <strong>NTS</strong> = authenticated (secure) NTP.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <ul><li>Clients on a new floor or VLAN get APIPA addresses → missing <strong>DHCP relay / ip helper</strong>.</li>
+            <li>Printer needs the same IP every time but stays on DHCP → <strong>reservation</strong>.</li>
+            <li>Email isn't arriving → check the <strong>MX</strong> record. Email marked as spoofed → <strong>TXT</strong> (SPF).</li></ul></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="3.4" data-n="5"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 3.5 ===================== -->
+    <section class="lesson" data-obj="3.5">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Choose the right VPN and remote management method: site-to-site vs client, split vs full tunnel, in-band vs out-of-band.</p></div>
+        <div class="step" data-step="watch"><div data-videos="3.5"></div></div>
+        <div class="step" data-step="visual">
+          <div class="tiles">
+            <div class="tile"><b>Site-to-site VPN</b>Router or firewall to router or firewall. Always on, connects whole offices</div>
+            <div class="tile"><b>Client-to-site VPN</b>A remote user's device to the office. Uses client software, or is <em>clientless</em> (in the browser, over TLS)</div>
+            <div class="tile"><b>Full tunnel</b><em>All</em> traffic goes through the VPN, so corporate security inspects everything</div>
+            <div class="tile"><b>Split tunnel</b>Only corporate traffic uses the VPN. Internet goes direct, which saves bandwidth but means less control</div>
+            <div class="tile"><b>Jump box / host</b>One hardened server you connect to first, then manage everything else from it</div>
+            <div class="tile"><b>Out-of-band (OOB)</b>A separate management path (console server, cellular modem) that works even when the production network is down</div>
+          </div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Connection methods:</strong> SSH (encrypted CLI, port 22), GUI (web/HTTPS), API (automation), console (a direct serial or USB cable, used for first setup or recovery).</li>
+            <li><strong>In-band</strong> management uses the same network as user traffic. <strong>Out-of-band</strong> uses a dedicated path.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>"Need to reach a router after a bad config took down the network" → <strong>out-of-band / console</strong>. "Remote users' video calls slow down the VPN" → <strong>split tunnel</strong>.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="3.5"></div></div>
+      </div>
+    </section>
+
+    <nav class="pager"></nav>
+  </main>
+</div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/guide.js"></script>
+</body>
+</html>

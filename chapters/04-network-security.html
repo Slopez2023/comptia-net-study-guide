@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network Security</title>
+<link rel="icon" href="../assets/icon.svg">
+<link rel="stylesheet" href="../assets/css/guide.css">
+</head>
+<body data-root="../" data-chapter="4" data-domain="4" data-crumb="Chapter 4 · Network Security (14%)">
+<header class="topbar"></header>
+
+<div class="page with-toc">
+  <nav class="toc" aria-label="Lessons"></nav>
+  <main class="main">
+    <section class="hero">
+      <div class="eyebrow">Chapter 4 · Domain 4.0 · 14% of the exam</div>
+      <h1>Network Security</h1>
+      <p class="lead">This is the smallest domain, but it shows up inside troubleshooting and scenario questions too. Learn the attack → symptom → defense pairs and you'll pick up easy points.</p>
+      <ul class="meta"><li>3 lessons</li><li>Day 9 · Nov 23</li><li>High-yield: RADIUS vs TACACS+ · attack → defense pairs · screened subnet</li></ul>
+      <div class="progress"><span></span></div><div class="progress-label"></div>
+    </section>
+
+    <!-- ===================== 4.1 ===================== -->
+    <section class="lesson" data-obj="4.1" data-mins="65">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Define the CIA triad and risk terms, compare AAA and authentication protocols, and know why we segment IoT, OT, guest and BYOD devices.</p></div>
+        <div class="step" data-step="watch"><div data-videos="4.1"></div></div>
+        <div class="step" data-step="visual">
+          <div class="tiles">
+            <div class="tile"><span class="big">C</span><b>Confidentiality</b>Only the right people can read it (encryption)</div>
+            <div class="tile"><span class="big">I</span><b>Integrity</b>It hasn't been changed (hashes, signatures)</div>
+            <div class="tile"><span class="big">A</span><b>Availability</b>It's up when needed (redundancy, DDoS protection)</div>
+          </div>
+          <div class="table-wrap"><table>
+            <tr><th></th><th>RADIUS</th><th>TACACS+</th></tr>
+            <tr><td>Transport</td><td>UDP 1812/1813</td><td>TCP 49</td></tr>
+            <tr><td>Encrypts</td><td>Password only</td><td><b>Entire payload</b></td></tr>
+            <tr><td>AAA</td><td>Authentication and authorization combined</td><td>All three separated</td></tr>
+            <tr><td>Typical use</td><td>Network access: Wi-Fi 802.1X, VPN</td><td><b>Device admin</b> logins (per-command authorization)</td></tr>
+          </table></div>
+          <div class="table-wrap"><table>
+            <tr><th>Term</th><th>Meaning</th></tr>
+            <tr><td><b>Vulnerability</b></td><td>A weakness (an unpatched OS, a default password)</td></tr>
+            <tr><td><b>Threat</b></td><td>Someone or something that could use the weakness</td></tr>
+            <tr><td><b>Exploit</b></td><td>The actual method or code that uses the weakness</td></tr>
+            <tr><td><b>Risk</b></td><td>Likelihood × impact of a threat exploiting a vulnerability</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Encryption</strong>: data <em>in transit</em> (TLS, IPSec, SSH) and data <em>at rest</em> (disk or database encryption).</li>
+            <li><strong>PKI</strong> = a certificate authority signs certificates that browsers trust. A <strong>self-signed</strong> certificate isn't trusted by default and triggers browser warnings.</li>
+            <li><strong>MFA</strong> = two or more <em>different</em> factor types: something you know, have, or are (plus somewhere you are). <strong>SSO</strong> = log in once and reach many apps. <strong>SAML</strong> = the SSO standard for web apps. <strong>LDAP</strong> (389/636) = directory lookups. <strong>Time-based</strong> = logins allowed only during set hours, or TOTP codes.</li>
+            <li><strong>Least privilege</strong> = only the access needed. <strong>RBAC</strong> = permissions are assigned to roles, and users get roles.</li>
+            <li><strong>Geofencing</strong> = allow or deny based on location. <strong>Honeypot / honeynet</strong> = a decoy that lures attackers so you can study them.</li>
+            <li><strong>Compliance:</strong> <em>PCI DSS</em> = card payments. <em>GDPR</em> = EU personal data. <em>Data locality</em> = data must stay in a given country.</li>
+            <li><strong>Segment</strong> IoT/IIoT, SCADA/ICS/OT, guest and BYOD devices onto their own VLANs or zones. They're hard to patch or untrusted.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <ul><li>Admins logging into switches with per-command control → <strong>TACACS+</strong>. Wi-Fi users authenticating against AD → <strong>RADIUS</strong>.</li>
+            <li>A password plus a PIN is <strong>not</strong> MFA. Both are "something you know".</li></ul></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="4.1" data-n="4"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 4.2 ===================== -->
+    <section class="lesson" data-obj="4.2" data-mins="70">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Recognize each attack from its symptom, and name the defense that stops it.</p></div>
+        <div class="step" data-step="watch"><div data-videos="4.2"></div></div>
+        <div class="step" data-step="visual" data-label="See it: attack → symptom → defense">
+          <div class="table-wrap"><table>
+            <tr><th>Attack</th><th>What happens / symptom</th><th>Defense</th></tr>
+            <tr><td><b>DoS / DDoS</b></td><td>Floods a service until it fails. DDoS = from many sources (a botnet)</td><td>DDoS scrubbing service, rate limiting, CDN</td></tr>
+            <tr><td><b>VLAN hopping</b></td><td>Switch spoofing (fakes a trunk) or double tagging to reach other VLANs</td><td>Disable DTP / auto-trunking, change the native VLAN off VLAN 1, set access ports explicitly</td></tr>
+            <tr><td><b>MAC flooding</b></td><td>Fills the CAM table, so the switch floods every frame like a hub and the attacker can sniff</td><td><b>Port security</b> (limit MACs per port)</td></tr>
+            <tr><td><b>ARP poisoning / spoofing</b></td><td>Fake ARP replies pointing the gateway IP at the attacker's MAC → on-path attack</td><td>Dynamic ARP inspection (DAI)</td></tr>
+            <tr><td><b>DNS poisoning / spoofing</b></td><td>Fake DNS answers send users to a malicious site</td><td>DNSSEC, secure resolvers</td></tr>
+            <tr><td><b>Rogue DHCP</b></td><td>Unauthorized server hands out a bad gateway or DNS</td><td><b>DHCP snooping</b> (trusted ports only)</td></tr>
+            <tr><td><b>Rogue AP</b></td><td>Unauthorized AP plugged into your network</td><td>Wireless IDS, NAC / 802.1X on ports</td></tr>
+            <tr><td><b>Evil twin</b></td><td>An attacker's AP copies your SSID to capture logins</td><td>WPA3-Enterprise, user training, WIDS</td></tr>
+            <tr><td><b>On-path</b> (MITM)</td><td>Attacker sits between two parties and reads or changes traffic</td><td>Encryption (TLS), DAI</td></tr>
+            <tr><td><b>Malware</b></td><td>Viruses, worms (self-spreading), ransomware, trojans</td><td>Endpoint protection, patching, segmentation</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Social engineering:</strong> <em>phishing</em> (fake emails), <em>dumpster diving</em> (searching trash), <em>shoulder surfing</em> (watching a screen), <em>tailgating</em> (following someone through a secure door). Defenses: training, shredding, privacy screens, access control vestibules (mantraps).</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>"Users got 10.0.0.x addresses with the wrong gateway" → <strong>rogue DHCP</strong> → DHCP snooping. "Switch is acting like a hub" → <strong>MAC flooding</strong> → port security.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="4.2" data-n="4"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 4.3 ===================== -->
+    <section class="lesson" data-obj="4.3">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Harden devices, control who can plug in (NAC), write ACLs in the right order, and place servers in the right zone.</p></div>
+        <div class="step" data-step="watch"><div data-videos="4.3"></div></div>
+        <div class="step" data-step="visual">
+          <div class="svg-fig">
+            <svg viewBox="0 0 720 160" role="img" aria-label="Internet (untrusted) to firewall; screened subnet with public servers; internal trusted network">
+              <g font-size="14" text-anchor="middle">
+                <rect x="20" y="55" width="140" height="50" rx="10" class="box"/><text x="90" y="78" font-weight="700">Internet</text><text x="90" y="96" class="muted">untrusted</text>
+                <rect x="220" y="45" width="90" height="70" rx="10" class="dombox"/><text x="265" y="85" style="fill:#fff" font-weight="700">Firewall</text>
+                <rect x="370" y="10" width="170" height="55" rx="10" class="box" stroke-dasharray="5 4"/><text x="455" y="33" font-weight="700">Screened subnet</text><text x="455" y="52" class="muted">web, mail, DNS (public)</text>
+                <rect x="370" y="95" width="170" height="55" rx="10" class="box"/><text x="455" y="118" font-weight="700">Internal LAN</text><text x="455" y="137" class="muted">trusted</text>
+                <line x1="160" y1="80" x2="220" y2="80" class="wire hot"/><line x1="310" y1="70" x2="370" y2="40" class="wire hot"/><line x1="310" y1="92" x2="370" y2="122" class="wire"/>
+                <text x="635" y="45" class="muted" font-size="12">internet → DMZ ✓</text><text x="635" y="125" class="muted" font-size="12">internet → LAN ✗</text>
+              </g>
+            </svg>
+            <figcaption>Screened subnet = the old "DMZ". Public-facing servers live here, so a breach doesn't reach the internal LAN.</figcaption>
+          </div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Hardening:</strong> disable unused ports (shut them down and put them in an unused VLAN), disable unused services (Telnet, HTTP), change default passwords, patch firmware.</li>
+            <li><strong>NAC:</strong> <em>802.1X</em> = port-based authentication (supplicant → authenticator switch/AP → RADIUS server). <em>Port security</em> = limit or learn MACs per port. <em>MAC filtering</em> = an allow list of MACs (easy to spoof, weak on its own).</li>
+            <li><strong>ACLs are read top-down, and the first match wins.</strong> Put specific rules first. Every ACL ends with an <strong>implicit deny all</strong>.</li>
+            <li><strong>URL filtering</strong> = block sites by address or category. <strong>Content filtering</strong> = block by what the content contains (malware, file types).</li>
+            <li><strong>Key management</strong> = generate, store, rotate and revoke encryption keys safely.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>A PBQ shows a firewall rule list where traffic is wrongly blocked. Look for a broad <strong>deny above</strong> the specific allow, and move the allow up.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="4.3"></div></div>
+      </div>
+    </section>
+
+    <nav class="pager"></nav>
+  </main>
+</div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/guide.js"></script>
+</body>
+</html>

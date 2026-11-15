@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network Troubleshooting</title>
+<link rel="icon" href="../assets/icon.svg">
+<link rel="stylesheet" href="../assets/css/guide.css">
+</head>
+<body data-root="../" data-chapter="5" data-domain="5" data-crumb="Chapter 5 · Network Troubleshooting (24%)">
+<header class="topbar"></header>
+
+<div class="page with-toc">
+  <nav class="toc" aria-label="Lessons"></nav>
+  <main class="main">
+    <section class="hero">
+      <div class="eyebrow">Chapter 5 · Domain 5.0 · 24% of the exam (the biggest)</div>
+      <h1>Network Troubleshooting</h1>
+      <p class="lead">Everything you've learned, used as a symptom → cause → fix chain. Memorize the 7 steps word for word, then learn to read a symptom and pick the tool.</p>
+      <ul class="meta"><li>5 lessons</li><li>Days 10–11 · Nov 24–25</li><li>High-yield: the 7 steps · interface counters · commands</li></ul>
+      <div class="progress"><span></span></div><div class="progress-label"></div>
+    </section>
+
+    <!-- ===================== 5.1 ===================== -->
+    <section class="lesson" data-obj="5.1" data-mins="30">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Recite CompTIA's 7 troubleshooting steps in order, and answer "what should the tech do NEXT?" questions.</p></div>
+        <div class="step" data-step="watch"><div data-videos="5.1"></div></div>
+        <div class="step" data-step="visual">
+          <ol class="flow">
+            <li><b>Identify the problem</b><br>Gather info, question users, identify symptoms, ask what changed, duplicate the problem, take multiple problems one at a time</li>
+            <li><b>Establish a theory</b> of probable cause<br>Question the obvious. Work the OSI model top-down or bottom-up, or divide and conquer</li>
+            <li><b>Test the theory</b><br>Confirmed → next steps. Not confirmed → new theory or escalate</li>
+            <li><b>Establish a plan</b> of action and identify potential effects</li>
+            <li><b>Implement</b> the solution or escalate</li>
+            <li><b>Verify</b> full system functionality and implement preventive measures</li>
+            <li><b>Document</b> findings, actions, outcomes and lessons learned</li>
+          </ol>
+          <div class="callout memory"><div class="callout-title">Mnemonic</div>
+            <p><strong>I</strong>dentify · <strong>E</strong>stablish · <strong>T</strong>est · <strong>E</strong>stablish plan · <strong>I</strong>mplement · <strong>V</strong>erify · <strong>D</strong>ocument<br>"<strong>I E</strong>at <strong>T</strong>acos <strong>E</strong>very <strong>I</strong>nstant, <strong>V</strong>ery <strong>D</strong>elicious."</p></div>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <ul><li>The question tells you which step you're on. Answer with the <strong>next</strong> step, not the final fix.</li>
+            <li>Documentation is <strong>last</strong>, after verifying. "Implement preventive measures" belongs to step 6.</li>
+            <li>A fix that could affect other systems → step 4 (plan and identify effects) or change management.</li></ul></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="5.1"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 5.2 ===================== -->
+    <section class="lesson" data-obj="5.2" data-mins="55">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Read interface counters and port status, and diagnose cable, PoE and transceiver problems.</p></div>
+        <div class="step" data-step="watch"><div data-videos="5.2"></div></div>
+        <div class="step" data-step="visual">
+          <div class="table-wrap"><table>
+            <tr><th>Symptom / counter</th><th>Likely cause</th></tr>
+            <tr><td><b>CRC errors</b></td><td>Corrupted frames: a bad cable or connector, interference, or a duplex mismatch</td></tr>
+            <tr><td><b>Runts</b> (&lt; 64 bytes)</td><td>Collisions or a duplex mismatch</td></tr>
+            <tr><td><b>Giants</b> (&gt; 1518 bytes)</td><td>MTU / jumbo frame mismatch</td></tr>
+            <tr><td><b>Drops</b></td><td>Congestion, buffers full</td></tr>
+            <tr><td><b>Late collisions</b></td><td>Duplex mismatch or a cable that's too long</td></tr>
+            <tr><td><b>Error disabled</b></td><td>A security feature shut the port (port security, BPDU guard). Fix the cause, then reset the port</td></tr>
+            <tr><td><b>Administratively down</b></td><td>Someone ran <code>shutdown</code>. Fix with <code>no shutdown</code></td></tr>
+            <tr><td><b>Suspended</b></td><td>A link aggregation (LACP) member didn't match its partner</td></tr>
+          </table></div>
+          <div class="tiles">
+            <div class="tile"><b>Attenuation</b>Signal gets weaker over distance (cable too long, over 100 m)</div>
+            <div class="tile"><b>Crosstalk</b>Signal bleeds between pairs (untwisted too far at the termination). NEXT/FEXT</div>
+            <div class="tile"><b>Interference (EMI)</b>Running near motors or fluorescent lights. Use STP or fiber</div>
+            <div class="tile"><b>TX/RX transposed</b>Transmit and receive swapped, so there's no link. Use a crossover cable or swap the fiber strands</div>
+            <div class="tile"><b>PoE budget exceeded</b>The switch can't power all devices, so new ones won't power on</div>
+            <div class="tile"><b>Wrong PoE standard</b>802.3af = 15.4 W · at (PoE+) = 30 W · bt (PoE++) = 60/100 W</div>
+          </div>
+        </div>
+        <div class="step" data-step="learn">
+          <ul class="ideas">
+            <li><strong>Wrong cable:</strong> single-mode optics on multimode fiber (or the reverse) → no link or errors. Cat 5e on a 10G run → slow or errors. Use STP in high-EMI areas.</li>
+            <li><strong>Transceivers:</strong> both ends must match (speed, wavelength, SMF/MMF). Low <strong>signal strength</strong> (dBm) → dirty connectors, bends, or the fiber run is too long.</li>
+            <li><strong>Improper termination</strong> = a bad crimp or the wrong pinout (T568A vs B). Test with a cable tester.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>A new PTZ camera won't power on, but other phones work → <strong>PoE budget</strong> or it needs PoE+/++. CRC errors climbing on one port → swap the <strong>cable</strong> first.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="5.2" data-n="4"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 5.3 ===================== -->
+    <section class="lesson" data-obj="5.3">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Diagnose STP, VLAN, ACL, routing and addressing problems from symptoms.</p></div>
+        <div class="step" data-step="watch"><div data-videos="5.3"></div></div>
+        <div class="step" data-step="visual">
+          <div class="table-wrap"><table>
+            <tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr>
+            <tr><td>Network crawls, broadcast storm, MAC table flapping</td><td>Switching <b>loop</b> (STP off or misconfigured)</td><td>Enable STP / BPDU guard</td></tr>
+            <tr><td>Traffic takes a strange path through an old switch</td><td>Wrong <b>root bridge</b> elected</td><td>Set a lower priority on the core switch</td></tr>
+            <tr><td>Host gets the wrong subnet, can't reach its peers</td><td><b>Wrong VLAN</b> on the access port</td><td>Assign the correct VLAN</td></tr>
+            <tr><td>Can ping by IP but one app or port fails</td><td><b>ACL</b> blocking that port</td><td>Fix the rule order or add an allow rule</td></tr>
+            <tr><td>Reaches the local subnet but not the internet</td><td>Wrong or missing <b>default gateway</b> or default route</td><td>Fix the gateway / add <code>0.0.0.0/0</code></td></tr>
+            <tr><td>New devices get 169.254.x.x</td><td><b>DHCP pool exhausted</b> (or the server is unreachable)</td><td>Enlarge the scope or shorten leases</td></tr>
+            <tr><td>Connectivity drops in and out, "address conflict" warning</td><td><b>Duplicate IP</b></td><td>Find it with <code>arp</code>, use a reservation or exclusion</td></tr>
+            <tr><td>Can reach some local hosts but not others</td><td><b>Wrong subnet mask</b></td><td>Correct the mask</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>"Can't reach anything off the subnet" → the gateway. "Can't reach anything at all, and has an APIPA address" → DHCP. Read the symptom carefully.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="5.3" data-n="4"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 5.4 ===================== -->
+    <section class="lesson" data-obj="5.4">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Tell latency, jitter, packet loss and bandwidth problems apart, and fix common Wi-Fi issues.</p></div>
+        <div class="step" data-step="watch"><div data-videos="5.4"></div></div>
+        <div class="step" data-step="visual">
+          <div class="tiles">
+            <div class="tile"><b>Latency</b>Delay. Each packet takes a long time to arrive (high ping ms)</div>
+            <div class="tile"><b>Jitter</b><em>Variation</em> in delay → choppy VoIP and video. Fix with QoS</div>
+            <div class="tile"><b>Packet loss</b>Packets never arrive → retransmits, gaps</div>
+            <div class="tile"><b>Bandwidth vs throughput</b>Bandwidth = the pipe size. Throughput = what you actually get</div>
+            <div class="tile"><b>Congestion / contention</b>Too many users on a shared link at the same time</div>
+            <div class="tile"><b>Bottleneck</b>One slow link or device limits the whole path</div>
+          </div>
+          <div class="table-wrap"><table>
+            <tr><th>Wi-Fi symptom</th><th>Cause → fix</th></tr>
+            <tr><td>Slow near other APs</td><td><b>Channel overlap</b> → use 1/6/11 on 2.4 GHz, narrower widths</td></tr>
+            <tr><td>Weak signal in some rooms</td><td><b>Insufficient coverage</b> or attenuation (walls) → site survey, add or move APs</td></tr>
+            <tr><td>Clients keep dropping off</td><td><b>Disassociation</b>: interference, low signal, or a deauth attack</td></tr>
+            <tr><td>Calls drop when walking between APs</td><td><b>Roaming</b> misconfiguration → same SSID and security everywhere, tune AP power</td></tr>
+          </table></div>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>Choppy voice but downloads are fine → <strong>jitter</strong> → QoS. Strong signal but still slow → <strong>interference / channel overlap</strong>, not coverage.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="5.4"></div></div>
+      </div>
+    </section>
+
+    <!-- ===================== 5.5 ===================== -->
+    <section class="lesson" data-obj="5.5" data-mins="70">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Pick the right command, software tool, hardware tool or device <code>show</code> command for a problem.</p></div>
+        <div class="step" data-step="watch"><div data-videos="5.5"></div></div>
+        <div class="step" data-step="visual" data-label="See it: commands">
+          <div class="table-wrap"><table>
+            <tr><th>Command</th><th>Use it to…</th></tr>
+            <tr><td><code>ping</code></td><td>Test reachability (ICMP echo)</td></tr>
+            <tr><td><code>traceroute</code> / <code>tracert</code></td><td>See every hop and where the path breaks</td></tr>
+            <tr><td><code>nslookup</code> / <code>dig</code></td><td>Test DNS resolution and query specific records</td></tr>
+            <tr><td><code>ipconfig</code> / <code>ifconfig</code> / <code>ip</code></td><td>Show IP, mask, gateway. <code>ipconfig /release /renew</code>, <code>/flushdns</code></td></tr>
+            <tr><td><code>arp -a</code></td><td>Show IP → MAC mappings (find duplicates, spoofing)</td></tr>
+            <tr><td><code>netstat</code></td><td>Show active connections and listening ports</td></tr>
+            <tr><td><code>tcpdump</code></td><td>Capture packets from the command line</td></tr>
+          </table></div>
+          <div class="table-wrap"><table>
+            <tr><th>Switch/router command</th><th>Shows</th></tr>
+            <tr><td><code>show mac-address-table</code></td><td>Which MAC is on which port and VLAN</td></tr>
+            <tr><td><code>show route</code> (<code>show ip route</code>)</td><td>The routing table</td></tr>
+            <tr><td><code>show interface</code></td><td>Status, speed/duplex, counters (CRC, runts, giants)</td></tr>
+            <tr><td><code>show config</code> (<code>show running-config</code>)</td><td>The current configuration</td></tr>
+            <tr><td><code>show arp</code></td><td>The device's ARP cache</td></tr>
+            <tr><td><code>show vlan</code></td><td>VLANs and which ports belong to them</td></tr>
+            <tr><td><code>show power</code> (<code>show power inline</code>)</td><td>PoE budget and per-port draw</td></tr>
+          </table></div>
+          <div class="tiles">
+            <div class="tile"><b>Protocol analyzer</b>Wireshark: decodes captured packets</div>
+            <div class="tile"><b>Nmap</b>Scans for hosts, open ports, OS and services</div>
+            <div class="tile"><b>LLDP / CDP</b>Discovers directly connected neighbor devices (CDP is Cisco's)</div>
+            <div class="tile"><b>Speed tester</b>Measures throughput (iPerf, speed test sites)</div>
+            <div class="tile"><b>Toner &amp; probe</b>Finds which cable in a bundle is which</div>
+            <div class="tile"><b>Cable tester</b>Checks pinout, opens, shorts. A certifier checks performance</div>
+            <div class="tile"><b>Tap</b>Inline hardware device that copies traffic for monitoring</div>
+            <div class="tile"><b>Wi-Fi analyzer</b>Shows channels, signal strength and overlap</div>
+            <div class="tile"><b>Visual fault locator</b>Red laser that shows breaks or bends in fiber</div>
+          </div>
+        </div>
+        <div class="step" data-step="do" data-label="Do it: try on your Mac">
+          <p>Open Terminal and run these. Seeing real output makes the commands stick:</p>
+          <p><code>ping -c 4 1.1.1.1</code> · <code>traceroute 8.8.8.8</code> · <code>dig comptia.org MX</code> · <code>nslookup comptia.org</code> · <code>arp -a</code> · <code>netstat -rn</code> · <code>ifconfig en0</code> · <code>sudo tcpdump -i en0 -c 20</code></p>
+        </div>
+        <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
+          <p>"Find which wall jack goes to which patch panel port" → <strong>toner and probe</strong>. "Which port is that MAC on?" → <strong>show mac-address-table</strong>. "Where does the path fail?" → <strong>traceroute</strong>.</p></div></div>
+        <div class="step" data-step="check"><div class="check" data-obj="5.5" data-n="5"></div></div>
+      </div>
+    </section>
+
+    <nav class="pager"></nav>
+  </main>
+</div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/guide.js"></script>
+</body>
+</html>

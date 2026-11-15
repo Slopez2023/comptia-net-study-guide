@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network+ Study Guide</title>
+<link rel="icon" href="assets/icon.svg">
+<link rel="stylesheet" href="assets/css/guide.css">
+</head>
+<body data-root="" data-crumb="Home">
+<header class="topbar"></header>
+
+<main class="page" id="hub">
+  <div class="notice file-notice hide">
+    <strong>Videos need the local server.</strong> YouTube blocks embedded players on pages opened straight from a file. Double-click <code>Start Study Guide.command</code> in this folder (or run <code>./serve.sh</code>), and the guide opens at <code>http://localhost:8742</code>. Everything else works as-is, and every video also has an "open on YouTube" link.
+  </div>
+
+  <div class="hub-grid">
+    <section class="panel nextup" id="nextup" aria-live="polite"></section>
+    <section class="panel" id="countdown"></section>
+  </div>
+
+  <div class="hub-grid" style="margin-top:20px">
+    <section class="panel" id="today"></section>
+    <section class="panel">
+      <h2>Where the points are</h2>
+      <p class="muted" style="margin-top:-.4em">CompTIA N10-009 domain weights. Troubleshooting and Concepts make up almost half the exam.</p>
+      <div class="weights" id="weights"></div>
+      <div class="tiles" style="margin-top:16px">
+        <div class="tile"><span class="big">≤ 90</span>questions</div>
+        <div class="tile"><span class="big">90</span>minutes</div>
+        <div class="tile"><span class="big">720</span>to pass (100–900)</div>
+      </div>
+    </section>
+  </div>
+
+  <h2 style="margin-top:32px">Chapters</h2>
+  <p class="muted" style="margin-top:-.4em">Each lesson works the same way: <b>Goal → Watch → Learn → See it → Exam traps → Quick check → Finish</b>.</p>
+  <div class="chapters" id="chapters"></div>
+
+  <h2 style="margin-top:32px">Practice tools</h2>
+  <div class="chapters">
+    <a class="chapter-card" href="practice/quiz.html" style="--c:var(--accent)"><div class="k">Questions</div><h3>Quiz</h3><p>90 scenario questions with explanations. Filter by domain or objective, or choose weak-spot mode.</p></a>
+    <a class="chapter-card" href="practice/flashcards.html" style="--c:var(--accent)"><div class="k">Memory</div><h3>Flashcards</h3><p>Over 430 cards covering concepts, ports and the official acronym list.</p></a>
+    <a class="chapter-card" href="practice/subnetting.html" style="--c:var(--accent)"><div class="k">Daily drill</div><h3>Subnetting</h3><p>Random problems with a timer. Find the network, broadcast, host range and host count.</p></a>
+    <a class="chapter-card" href="practice/ports.html" style="--c:var(--accent)"><div class="k">Memorize</div><h3>Ports</h3><p>The official port table plus a speed drill.</p></a>
+  </div>
+
+  <div class="hub-grid" style="margin-top:32px">
+    <section class="panel" id="confidence"></section>
+    <section class="panel">
+      <h2>Your progress file</h2>
+      <p>Progress is saved in this browser. Export a backup now and then, or move it to another computer.</p>
+      <p><button class="btn" id="export" type="button">⬇ Export progress</button>
+      <label class="btn" style="margin-left:6px">⬆ Import<input id="import" type="file" accept="application/json" class="hide"></label></p>
+      <h3 style="margin-top:20px">Sources this guide is built on</h3>
+      <ul style="font-size:.92rem">
+        <li><a href="https://www.comptia.org/en-us/certifications/network/" target="_blank" rel="noopener">CompTIA Network+ (N10-009)</a>: the official exam page and objectives v4.0</li>
+        <li><a href="https://www.professormesser.com/network-plus/n10-009/n10-009-video/n10-009-training-course/" target="_blank" rel="noopener">Professor Messer N10-009 course</a>: 87 free videos, embedded in each lesson</li>
+        <li><a href="https://www.practicalnetworking.net/stand-alone/subnetting-mastery/" target="_blank" rel="noopener">Practical Networking</a> and <a href="https://www.youtube.com/@JeremysITLab" target="_blank" rel="noopener">Jeremy's IT Lab</a>: a second explanation of subnetting</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/guide.js"></script>
+</body>
+</html>

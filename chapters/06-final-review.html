@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Final Review</title>
+<link rel="icon" href="../assets/icon.svg">
+<link rel="stylesheet" href="../assets/css/guide.css">
+</head>
+<body data-root="../" data-chapter="6" data-domain="0" data-crumb="Chapter 6 · Final Review & Exam Day">
+<header class="topbar"></header>
+
+<div class="page with-toc">
+  <nav class="toc" aria-label="Lessons"></nav>
+  <main class="main">
+    <section class="hero">
+      <div class="eyebrow">Chapter 6 · Final week</div>
+      <h1>Final Review &amp; Exam Day</h1>
+      <p class="lead">This chapter has no new material. It's about turning what you know into points: a sheet you can write from memory, PBQ practice, full-length practice exams, and a calm exam-day routine.</p>
+      <ul class="meta"><li>3 lessons</li><li>Nov 21 → Nov 30</li><li>Target: 85%+ on practice exams</li></ul>
+      <div class="progress"><span></span></div><div class="progress-label"></div>
+    </section>
+
+    <!-- ===================== 6.1 ===================== -->
+    <section class="lesson" data-obj="6.1" data-mins="40">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Be able to write this whole sheet from memory in under 5 minutes. On exam day, write it on your scratch paper or whiteboard as soon as you start.</p></div>
+        <div class="step" data-step="visual" data-label="The brain-dump sheet">
+          <div class="tiles">
+            <div class="tile"><b>OSI 7→1</b>All People Seem To Need Data Processing<br>L4 segment · L3 packet · L2 frame · L1 bits</div>
+            <div class="tile"><b>7 steps</b>Identify · Theory · Test · Plan · Implement · Verify · Document</div>
+            <div class="tile"><b>Admin distance</b>Connected 0 · Static 1 · eBGP 20 · EIGRP 90 · OSPF 110 · RIP 120</div>
+            <div class="tile"><b>PoE</b>af 15.4 W · at 30 W · bt 60/100 W</div>
+            <div class="tile"><b>Private IPv4</b>10/8 · 172.16/12 · 192.168/16 · APIPA 169.254/16 · loopback 127/8</div>
+            <div class="tile"><b>IPv6</b>::1 loopback · fe80 link-local · fc/fd unique local · 2000::/3 global · ff multicast</div>
+            <div class="tile"><b>2.4 GHz</b>Channels 1 · 6 · 11</div>
+            <div class="tile"><b>Copper</b>100 m max (Cat 8 = 30 m)</div>
+          </div>
+          <div class="table-wrap"><table>
+            <tr><th>/</th><th class="mono">25</th><th class="mono">26</th><th class="mono">27</th><th class="mono">28</th><th class="mono">29</th><th class="mono">30</th></tr>
+            <tr><td>Mask</td><td class="mono">128</td><td class="mono">192</td><td class="mono">224</td><td class="mono">240</td><td class="mono">248</td><td class="mono">252</td></tr>
+            <tr><td>Block</td><td class="mono">128</td><td class="mono">64</td><td class="mono">32</td><td class="mono">16</td><td class="mono">8</td><td class="mono">4</td></tr>
+            <tr><td>Hosts</td><td class="mono">126</td><td class="mono">62</td><td class="mono">30</td><td class="mono">14</td><td class="mono">6</td><td class="mono">2</td></tr>
+          </table></div>
+          <div data-ports-table="official"></div>
+        </div>
+        <div class="step" data-step="do" data-label="Do it">
+          <ol><li>Read the sheet once.</li><li>Close it and write it on blank paper from memory.</li><li>Compare, and circle what you missed.</li><li>Repeat tomorrow. Twice on Nov 29.</li></ol>
+          <p><button class="btn" type="button" onclick="window.print()">🖨 Print this chapter</button></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 6.2 ===================== -->
+    <section class="lesson" data-obj="6.2" data-mins="180">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Get comfortable with PBQ formats, and take 3 full-length practice exams (Nov 21, 27, 28) under real timing.</p></div>
+        <div class="step" data-step="learn" data-label="PBQ types to expect">
+          <div class="tiles">
+            <div class="tile"><b>Subnet a network</b>Assign subnets and hosts to sites with VLSM → <a href="../practice/subnetting.html">drill</a></div>
+            <div class="tile"><b>Match ports and protocols</b>Drag the port to the service → <a href="../practice/ports.html">drill</a></div>
+            <div class="tile"><b>Cables and connectors</b>Choose media for the distance and environment (lesson 1.5)</div>
+            <div class="tile"><b>Firewall / ACL rules</b>Order rules so the right traffic passes (lesson 4.3)</div>
+            <div class="tile"><b>Troubleshoot a topology</b>Read device configs and find the wrong gateway, VLAN or mask (lesson 5.3)</div>
+            <div class="tile"><b>Wireless setup</b>Pick band, channel, encryption and auth (lesson 2.3)</div>
+          </div>
+        </div>
+        <div class="step" data-step="learn" data-label="Practice exam sources">
+          <div class="table-wrap"><table>
+            <tr><th>Source</th><th>Cost</th><th>Why</th></tr>
+            <tr><td><a href="https://www.professormesser.com/n10-009-success-bundle/" target="_blank" rel="noopener">Professor Messer practice exams</a></td><td>$</td><td>Matches the videos you watched. Explanations link back to the lessons</td></tr>
+            <tr><td><a href="https://www.diontraining.com/courses/comptia-network-n10-009" target="_blank" rel="noopener">Jason Dion N10-009 exams + PBQ pack</a></td><td>$</td><td>Often cited in r/CompTIA pass reports. Slightly harder than the real exam</td></tr>
+            <tr><td><a href="https://www.professormesser.com/category/network-plus/n10-009/n10-009-pop-quiz/" target="_blank" rel="noopener">Messer pop quizzes</a></td><td>Free</td><td>Short daily questions</td></tr>
+            <tr><td><a href="https://crucialexams.com/exams/comptia/network/n10-009" target="_blank" rel="noopener">Crucial Exams</a></td><td>Free tier</td><td>PBQ-style exercises and unlimited subnetting (third party, unvetted)</td></tr>
+            <tr><td><a href="../practice/quiz.html?n=90">This guide's quiz (all 90)</a></td><td>Free</td><td>Original questions, tracked by objective</td></tr>
+          </table></div>
+          <div class="callout trap"><div class="callout-title">Avoid brain dumps</div><p>Sites selling "real exam questions" break CompTIA's policy and can get your certification revoked.</p></div>
+        </div>
+        <div class="step" data-step="do" data-label="How to review a practice exam">
+          <ol class="flow">
+            <li><b>Take it timed</b><br>90 min, no pausing, phone away</li>
+            <li><b>Review every miss</b><br>And every lucky guess</li>
+            <li><b>Tag the objective</b><br>Each miss gets an objective number (e.g. 3.4)</li>
+            <li><b>Fix the gap</b><br>Rewatch that lesson's video and redo its quick check</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== 6.3 ===================== -->
+    <section class="lesson" data-obj="6.3" data-mins="15">
+      <div class="lesson-body">
+        <div class="step" data-step="goal"><p class="goal">Walk in rested, with a plan for the clock.</p></div>
+        <div class="step" data-step="watch"><div data-yt="k7IOn3TiUc8"></div></div>
+        <div class="step" data-step="learn" data-label="The night before">
+          <ul class="ideas">
+            <li>Stop studying by 8 pm. Do nothing new.</li>
+            <li>Get your ID ready and confirm the time. For an online exam, run the Pearson OnVUE system test and clear your desk.</li>
+            <li>Sleep. It's worth more than one more hour of cramming.</li>
+          </ul>
+        </div>
+        <div class="step" data-step="learn" data-label="During the exam">
+          <ol class="flow">
+            <li><b>Brain dump</b><br>First 3 minutes: write the subnet table, ports and 7 steps</li>
+            <li><b>Flag PBQs</b><br>They come first. If one looks long, flag it and move on</li>
+            <li><b>MCQs at ~1 min each</b><br>Read the last sentence first. Watch for BEST, FIRST, MOST likely</li>
+            <li><b>Back to PBQs</b><br>Use the time you banked. Partial credit is possible</li>
+            <li><b>Answer everything</b><br>There's no penalty for guessing</li>
+          </ol>
+          <div class="callout tip"><div class="callout-title">When you're stuck</div><p>Eliminate the two obviously wrong answers. Of the two left, pick the one that matches the <em>symptom</em> in the question, not the one that sounds most advanced. On troubleshooting questions, pick the <em>next step</em> in the 7-step method.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="pager"></nav>
+  </main>
+</div>
+
+<script src="../assets/js/data.js"></script>
+<script src="../assets/js/guide.js"></script>
+</body>
+</html>

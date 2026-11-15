@@ -1,0 +1,755 @@
+{
+ "_note": "Video IDs verified via YouTube oEmbed on 2026-11-14. Messer = official N10-009 playlist PLG49S3nxzAnl_tQe3kvnmeMid0mjF8Le8.",
+ "videos": [
+  {
+   "id": "k7IOn3TiUc8",
+   "title": "How to Pass Your CompTIA N10-009 Network+ Exam",
+   "objective": "0.0",
+   "duration": "7:40",
+   "channel": "Professor Messer",
+   "order": 0
+  },
+  {
+   "id": "AYgXr1dynKU",
+   "title": "Understanding the OSI Model",
+   "objective": "1.1",
+   "duration": "13:51",
+   "channel": "Professor Messer",
+   "order": 1
+  },
+  {
+   "id": "iqjj4ZSPV08",
+   "title": "Networking Devices",
+   "objective": "1.2",
+   "duration": "14:31",
+   "channel": "Professor Messer",
+   "order": 2
+  },
+  {
+   "id": "9uDpWfMbAdQ",
+   "title": "Networking Functions",
+   "objective": "1.2",
+   "duration": "13:25",
+   "channel": "Professor Messer",
+   "order": 3
+  },
+  {
+   "id": "HzF7sg6Nx0c",
+   "title": "Designing the Cloud",
+   "objective": "1.3",
+   "duration": "9:49",
+   "channel": "Professor Messer",
+   "order": 4
+  },
+  {
+   "id": "wI2x6eGF1Yg",
+   "title": "Cloud Models",
+   "objective": "1.3",
+   "duration": "5:23",
+   "channel": "Professor Messer",
+   "order": 5
+  },
+  {
+   "id": "ueth6WvFVMU",
+   "title": "Introduction to IP",
+   "objective": "1.4",
+   "duration": "14:10",
+   "channel": "Professor Messer",
+   "order": 6
+  },
+  {
+   "id": "jX1pobYmZdE",
+   "title": "Common Ports",
+   "objective": "1.4",
+   "duration": "20:22",
+   "channel": "Professor Messer",
+   "order": 7
+  },
+  {
+   "id": "5BahWbszVAY",
+   "title": "Other Useful Protocols",
+   "objective": "1.4",
+   "duration": "8:26",
+   "channel": "Professor Messer",
+   "order": 8
+  },
+  {
+   "id": "9Vx-awO6qfc",
+   "title": "Network Communication",
+   "objective": "1.4",
+   "duration": "3:55",
+   "channel": "Professor Messer",
+   "order": 9
+  },
+  {
+   "id": "NeTwL-040ds",
+   "title": "Wireless Networking",
+   "objective": "1.5",
+   "duration": "6:37",
+   "channel": "Professor Messer",
+   "order": 10
+  },
+  {
+   "id": "BxpRuARS56g",
+   "title": "Ethernet Standards",
+   "objective": "1.5",
+   "duration": "4:04",
+   "channel": "Professor Messer",
+   "order": 11
+  },
+  {
+   "id": "qLsNZSaj35E",
+   "title": "Optical Fiber",
+   "objective": "1.5",
+   "duration": "3:55",
+   "channel": "Professor Messer",
+   "order": 12
+  },
+  {
+   "id": "zoefzxHIfPc",
+   "title": "Copper Cabling",
+   "objective": "1.5",
+   "duration": "7:21",
+   "channel": "Professor Messer",
+   "order": 13
+  },
+  {
+   "id": "0aMmwkiuT0o",
+   "title": "Network Transceivers",
+   "objective": "1.5",
+   "duration": "4:52",
+   "channel": "Professor Messer",
+   "order": 14
+  },
+  {
+   "id": "PNoqhs5QvFw",
+   "title": "Fiber Connectors",
+   "objective": "1.5",
+   "duration": "3:56",
+   "channel": "Professor Messer",
+   "order": 15
+  },
+  {
+   "id": "Ca6rzoQm15w",
+   "title": "Copper Connectors",
+   "objective": "1.5",
+   "duration": "3:31",
+   "channel": "Professor Messer",
+   "order": 16
+  },
+  {
+   "id": "3ARTjvpZCoQ",
+   "title": "Network Topologies",
+   "objective": "1.6",
+   "duration": "4:42",
+   "channel": "Professor Messer",
+   "order": 17
+  },
+  {
+   "id": "vVEL1LokboE",
+   "title": "Network Architectures",
+   "objective": "1.6",
+   "duration": "4:53",
+   "channel": "Professor Messer",
+   "order": 18
+  },
+  {
+   "id": "94dcHJfEAIo",
+   "title": "Binary Math",
+   "objective": "1.7",
+   "duration": "9:15",
+   "channel": "Professor Messer",
+   "order": 19
+  },
+  {
+   "id": "JNNcyZ_VE2A",
+   "title": "IPv4 Addressing",
+   "objective": "1.7",
+   "duration": "11:06",
+   "channel": "Professor Messer",
+   "order": 20
+  },
+  {
+   "id": "XVIOtj-Z9m0",
+   "title": "Classful Subnetting",
+   "objective": "1.7",
+   "duration": "10:58",
+   "channel": "Professor Messer",
+   "order": 21
+  },
+  {
+   "id": "p5NJ5Jt6oJo",
+   "title": "IPv4 Subnet Masks",
+   "objective": "1.7",
+   "duration": "9:00",
+   "channel": "Professor Messer",
+   "order": 22
+  },
+  {
+   "id": "cYQOMifDlKI",
+   "title": "Calculating IPv4 Subnets and Hosts",
+   "objective": "1.7",
+   "duration": "9:46",
+   "channel": "Professor Messer",
+   "order": 23
+  },
+  {
+   "id": "P1ROXMLjL04",
+   "title": "Magic Number Subnetting",
+   "objective": "1.7",
+   "duration": "21:09",
+   "channel": "Professor Messer",
+   "order": 24
+  },
+  {
+   "id": "I3LBYMXBhus",
+   "title": "Seven Second Subnetting",
+   "objective": "1.7",
+   "duration": "17:03",
+   "channel": "Professor Messer",
+   "order": 25
+  },
+  {
+   "id": "A6tPNGEfOzc",
+   "title": "Software Defined Networking",
+   "objective": "1.8",
+   "duration": "6:56",
+   "channel": "Professor Messer",
+   "order": 26
+  },
+  {
+   "id": "eBhqN6d6lRU",
+   "title": "Virtual Extensible LAN",
+   "objective": "1.8",
+   "duration": "5:17",
+   "channel": "Professor Messer",
+   "order": 27
+  },
+  {
+   "id": "jlMwWL4yalM",
+   "title": "Zero Trust",
+   "objective": "1.8",
+   "duration": "6:41",
+   "channel": "Professor Messer",
+   "order": 28
+  },
+  {
+   "id": "n6jIaKWixF4",
+   "title": "Infrastructure as Code",
+   "objective": "1.8",
+   "duration": "8:20",
+   "channel": "Professor Messer",
+   "order": 29
+  },
+  {
+   "id": "CpLznUxkzg8",
+   "title": "IPv6 Addressing",
+   "objective": "1.8",
+   "duration": "13:50",
+   "channel": "Professor Messer",
+   "order": 30
+  },
+  {
+   "id": "23a6_qexTvs",
+   "title": "Static Routing",
+   "objective": "2.1",
+   "duration": "7:21",
+   "channel": "Professor Messer",
+   "order": 31
+  },
+  {
+   "id": "YRZxshxI1xs",
+   "title": "Dynamic Routing",
+   "objective": "2.1",
+   "duration": "9:12",
+   "channel": "Professor Messer",
+   "order": 32
+  },
+  {
+   "id": "hU9bbmFhKxk",
+   "title": "Routing Technologies",
+   "objective": "2.1",
+   "duration": "16:10",
+   "channel": "Professor Messer",
+   "order": 33
+  },
+  {
+   "id": "UILwCNOC5EI",
+   "title": "Network Address Translation",
+   "objective": "2.1",
+   "duration": "7:02",
+   "channel": "Professor Messer",
+   "order": 34
+  },
+  {
+   "id": "ATbzbST_OIw",
+   "title": "VLANs and Trunking",
+   "objective": "2.2",
+   "duration": "12:29",
+   "channel": "Professor Messer",
+   "order": 35
+  },
+  {
+   "id": "dno_MRp57UQ",
+   "title": "Interface Configurations",
+   "objective": "2.2",
+   "duration": "6:40",
+   "channel": "Professor Messer",
+   "order": 36
+  },
+  {
+   "id": "Jm0BOz1Ur28",
+   "title": "Spanning Tree Protocol",
+   "objective": "2.2",
+   "duration": "6:06",
+   "channel": "Professor Messer",
+   "order": 37
+  },
+  {
+   "id": "_VwpcLiBkAQ",
+   "title": "Wireless Technologies",
+   "objective": "2.3",
+   "duration": "8:34",
+   "channel": "Professor Messer",
+   "order": 38
+  },
+  {
+   "id": "YEDutqG4C4U",
+   "title": "Wireless Networking",
+   "objective": "2.3",
+   "duration": "11:54",
+   "channel": "Professor Messer",
+   "order": 39
+  },
+  {
+   "id": "8ExS_LYAe-M",
+   "title": "Network Types",
+   "objective": "2.3",
+   "duration": "4:41",
+   "channel": "Professor Messer",
+   "order": 40
+  },
+  {
+   "id": "YNcobcHXnnY",
+   "title": "Wireless Encryption",
+   "objective": "2.3",
+   "duration": "3:23",
+   "channel": "Professor Messer",
+   "order": 41
+  },
+  {
+   "id": "7NLsuBIvVVA",
+   "title": "Installing Networks",
+   "objective": "2.4",
+   "duration": "11:40",
+   "channel": "Professor Messer",
+   "order": 42
+  },
+  {
+   "id": "Ok0XpAzwCVQ",
+   "title": "Power",
+   "objective": "2.4",
+   "duration": "7:19",
+   "channel": "Professor Messer",
+   "order": 43
+  },
+  {
+   "id": "v7AIXZi7pyA",
+   "title": "Environmental Factors",
+   "objective": "2.4",
+   "duration": "3:29",
+   "channel": "Professor Messer",
+   "order": 44
+  },
+  {
+   "id": "CEZyq-fBn3w",
+   "title": "Network Documentation",
+   "objective": "3.1",
+   "duration": "10:42",
+   "channel": "Professor Messer",
+   "order": 45
+  },
+  {
+   "id": "E8423-hdsHg",
+   "title": "Life Cycle Management",
+   "objective": "3.1",
+   "duration": "8:17",
+   "channel": "Professor Messer",
+   "order": 46
+  },
+  {
+   "id": "cbHcjzlLjuc",
+   "title": "Configuration Management",
+   "objective": "3.1",
+   "duration": "5:19",
+   "channel": "Professor Messer",
+   "order": 47
+  },
+  {
+   "id": "We5MkaEJOs0",
+   "title": "SNMP",
+   "objective": "3.2",
+   "duration": "8:58",
+   "channel": "Professor Messer",
+   "order": 48
+  },
+  {
+   "id": "ieqSi5Aicxc",
+   "title": "Logs and Monitoring",
+   "objective": "3.2",
+   "duration": "13:06",
+   "channel": "Professor Messer",
+   "order": 49
+  },
+  {
+   "id": "zIX_SzezCi0",
+   "title": "Network Solutions",
+   "objective": "3.2",
+   "duration": "6:57",
+   "channel": "Professor Messer",
+   "order": 50
+  },
+  {
+   "id": "NaXMohP4-vU",
+   "title": "Disaster Recovery",
+   "objective": "3.3",
+   "duration": "12:09",
+   "channel": "Professor Messer",
+   "order": 51
+  },
+  {
+   "id": "dsvNPjK0ihM",
+   "title": "Network Redundancy",
+   "objective": "3.3",
+   "duration": "4:06",
+   "channel": "Professor Messer",
+   "order": 52
+  },
+  {
+   "id": "b7fiXM3vO18",
+   "title": "DHCP",
+   "objective": "3.4",
+   "duration": "8:51",
+   "channel": "Professor Messer",
+   "order": 53
+  },
+  {
+   "id": "Zu70w3YTtpg",
+   "title": "Configuring DHCP",
+   "objective": "3.4",
+   "duration": "10:18",
+   "channel": "Professor Messer",
+   "order": 54
+  },
+  {
+   "id": "A6WVj82by3Y",
+   "title": "IPv6 and SLAAC",
+   "objective": "3.4",
+   "duration": "4:53",
+   "channel": "Professor Messer",
+   "order": 55
+  },
+  {
+   "id": "S4s3vgm4h84",
+   "title": "An Overview of DNS",
+   "objective": "3.4",
+   "duration": "16:54",
+   "channel": "Professor Messer",
+   "order": 56
+  },
+  {
+   "id": "qAyVND44jaE",
+   "title": "DNS Records",
+   "objective": "3.4",
+   "duration": "9:04",
+   "channel": "Professor Messer",
+   "order": 57
+  },
+  {
+   "id": "9MwHexC3Fkc",
+   "title": "Time Protocols",
+   "objective": "3.4",
+   "duration": "5:02",
+   "channel": "Professor Messer",
+   "order": 58
+  },
+  {
+   "id": "tm7i0zEitPQ",
+   "title": "VPNs",
+   "objective": "3.5",
+   "duration": "6:54",
+   "channel": "Professor Messer",
+   "order": 59
+  },
+  {
+   "id": "QbEDRTjcom4",
+   "title": "Remote Access",
+   "objective": "3.5",
+   "duration": "7:52",
+   "channel": "Professor Messer",
+   "order": 60
+  },
+  {
+   "id": "51W4Fhds7DQ",
+   "title": "Security Concepts",
+   "objective": "4.1",
+   "duration": "13:06",
+   "channel": "Professor Messer",
+   "order": 61
+  },
+  {
+   "id": "enyRd-8m8SI",
+   "title": "Authentication",
+   "objective": "4.1",
+   "duration": "12:46",
+   "channel": "Professor Messer",
+   "order": 62
+  },
+  {
+   "id": "qIQQKCv6P_s",
+   "title": "Security Technologies",
+   "objective": "4.1",
+   "duration": "7:15",
+   "channel": "Professor Messer",
+   "order": 63
+  },
+  {
+   "id": "5KjXu7SvU6E",
+   "title": "Regulatory Compliance",
+   "objective": "4.1",
+   "duration": "4:01",
+   "channel": "Professor Messer",
+   "order": 64
+  },
+  {
+   "id": "DsOzQLX5cg4",
+   "title": "Segmentation Enforcement",
+   "objective": "4.1",
+   "duration": "6:10",
+   "channel": "Professor Messer",
+   "order": 65
+  },
+  {
+   "id": "x8dIr6JYkjA",
+   "title": "Denial of Service",
+   "objective": "4.2",
+   "duration": "6:58",
+   "channel": "Professor Messer",
+   "order": 66
+  },
+  {
+   "id": "hcaGiWteVTM",
+   "title": "VLAN Hopping",
+   "objective": "4.2",
+   "duration": "6:35",
+   "channel": "Professor Messer",
+   "order": 67
+  },
+  {
+   "id": "ttLNYwt-aq0",
+   "title": "MAC Flooding",
+   "objective": "4.2",
+   "duration": "8:10",
+   "channel": "Professor Messer",
+   "order": 68
+  },
+  {
+   "id": "2QijB5GtNE4",
+   "title": "ARP and DNS Poisoning",
+   "objective": "4.2",
+   "duration": "7:28",
+   "channel": "Professor Messer",
+   "order": 69
+  },
+  {
+   "id": "6AcRzyPuOL8",
+   "title": "Rogue Services",
+   "objective": "4.2",
+   "duration": "6:08",
+   "channel": "Professor Messer",
+   "order": 70
+  },
+  {
+   "id": "sF0uBtavItI",
+   "title": "Social Engineering",
+   "objective": "4.2",
+   "duration": "10:56",
+   "channel": "Professor Messer",
+   "order": 71
+  },
+  {
+   "id": "rnfViZdGfmA",
+   "title": "Malware",
+   "objective": "4.2",
+   "duration": "6:41",
+   "channel": "Professor Messer",
+   "order": 72
+  },
+  {
+   "id": "TZUh1qF6ypI",
+   "title": "Device Security",
+   "objective": "4.3",
+   "duration": "9:03",
+   "channel": "Professor Messer",
+   "order": 73
+  },
+  {
+   "id": "ORRcLSS9_Ps",
+   "title": "Security Rules",
+   "objective": "4.3",
+   "duration": "10:23",
+   "channel": "Professor Messer",
+   "order": 74
+  },
+  {
+   "id": "dovuPm3dGhc",
+   "title": "Network Troubleshooting Methodology",
+   "objective": "5.1",
+   "duration": "8:04",
+   "channel": "Professor Messer",
+   "order": 75
+  },
+  {
+   "id": "L6P6ovTEPvU",
+   "title": "Cable Issues",
+   "objective": "5.2",
+   "duration": "14:40",
+   "channel": "Professor Messer",
+   "order": 76
+  },
+  {
+   "id": "7b4RkdITO4Q",
+   "title": "Interface Issues",
+   "objective": "5.2",
+   "duration": "9:29",
+   "channel": "Professor Messer",
+   "order": 77
+  },
+  {
+   "id": "_IeIUxDe1fo",
+   "title": "Hardware Issues",
+   "objective": "5.2",
+   "duration": "7:34",
+   "channel": "Professor Messer",
+   "order": 78
+  },
+  {
+   "id": "rUONzfO11m8",
+   "title": "Switching Issues",
+   "objective": "5.3",
+   "duration": "9:58",
+   "channel": "Professor Messer",
+   "order": 79
+  },
+  {
+   "id": "pbOi48USeVw",
+   "title": "Routing and IP Issues",
+   "objective": "5.3",
+   "duration": "9:37",
+   "channel": "Professor Messer",
+   "order": 80
+  },
+  {
+   "id": "FVxENIjdAJk",
+   "title": "Performance Issues",
+   "objective": "5.4",
+   "duration": "7:18",
+   "channel": "Professor Messer",
+   "order": 81
+  },
+  {
+   "id": "UO3G_OJhBS4",
+   "title": "Wireless Issues",
+   "objective": "5.4",
+   "duration": "9:21",
+   "channel": "Professor Messer",
+   "order": 82
+  },
+  {
+   "id": "b81_GeoN12I",
+   "title": "Software Tools",
+   "objective": "5.5",
+   "duration": "7:29",
+   "channel": "Professor Messer",
+   "order": 83
+  },
+  {
+   "id": "iYojIK1173k",
+   "title": "Command Line Tools",
+   "objective": "5.5",
+   "duration": "17:59",
+   "channel": "Professor Messer",
+   "order": 84
+  },
+  {
+   "id": "ytcAqNxkI9I",
+   "title": "Hardware Tools",
+   "objective": "5.5",
+   "duration": "8:40",
+   "channel": "Professor Messer",
+   "order": 85
+  },
+  {
+   "id": "3-KakmVmEpo",
+   "title": "Basic Network Device Commands",
+   "objective": "5.5",
+   "duration": "8:56",
+   "channel": "Professor Messer",
+   "order": 86
+  },
+  {
+   "id": "bQ8sdpGQu8c",
+   "title": "Subnetting (Part 1)",
+   "objective": "1.7",
+   "duration": "",
+   "channel": "Jeremy's IT Lab",
+   "order": null,
+   "alt": true
+  },
+  {
+   "id": "IGhd-0di0Qo",
+   "title": "Subnetting (Part 2)",
+   "objective": "1.7",
+   "duration": "",
+   "channel": "Jeremy's IT Lab",
+   "order": null,
+   "alt": true
+  },
+  {
+   "id": "BWZ-MHIhqjM",
+   "title": "What is Subnetting? (Part 1 of 7)",
+   "objective": "1.7",
+   "duration": "",
+   "channel": "Practical Networking",
+   "order": null,
+   "alt": true
+  },
+  {
+   "id": "ljS07YTEJ2I",
+   "title": "Drawing the Cheat Sheet (Part 2 of 7)",
+   "objective": "1.7",
+   "duration": "",
+   "channel": "Practical Networking",
+   "order": null,
+   "alt": true
+  },
+  {
+   "id": "5-wlfAdcmFQ",
+   "title": "Solve ANY Subnetting Problem in 60s (Part 3 of 7)",
+   "objective": "1.7",
+   "duration": "",
+   "channel": "Practical Networking",
+   "order": null,
+   "alt": true
+  },
+  {
+   "id": "SM0kdVfhxZ0",
+   "title": "Practice Examples (Part 4 of 7)",
+   "objective": "1.7",
+   "duration": "",
+   "channel": "Practical Networking",
+   "order": null,
+   "alt": true
+  }
+ ]
+}
