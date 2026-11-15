@@ -575,3 +575,50 @@ input[type="range"] { accent-color: var(--dom); vertical-align: middle; }
 }
 .score { white-space: nowrap; }
 .tool-bar .score { white-space: normal; }
+
+/* ---------- Custom video player (YouTube underneath, our controls on top) ---------- */
+.np-player { outline: none; overflow: hidden; user-select: none; -webkit-user-select: none; }
+.np-player:focus-visible { box-shadow: 0 0 0 3px var(--dom, var(--accent)); }
+.np-yt, .np-yt iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.np-yt { pointer-events: none; }
+/* The hit layer takes every click and hover, so YouTube's own overlays never appear. */
+.np-hit { position: absolute; inset: 0; z-index: 2; cursor: pointer; }
+.np-cover { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; background: #000; transition: opacity .2s; }
+.np-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.np-big { position: relative; border: 0; padding: 0; background: none; cursor: pointer; color: #fff; }
+.np-big span { width: 64px; height: 64px; border-radius: 50%; background: rgba(15, 14, 20, .8); display: grid; place-items: center; transition: transform .15s, background .15s; }
+.np-big .ic { width: 26px; height: 26px; margin-left: 3px; }
+.np-big:hover span, .np-big:focus-visible span { transform: scale(1.08); background: var(--dom, #dc2626); }
+.np-msg { position: absolute; left: 0; right: 0; bottom: 64px; margin: 0; text-align: center; color: #fff; font-weight: 600; font-size: .92rem; padding: 0 16px; }
+.np-msg a { color: #fff; }
+.np-player.is-playing .np-cover { opacity: 0; pointer-events: none; }
+/* Paused mid-video: keep the frame visible (slides stay readable), just dim it. */
+.np-player.is-paused.was-started .np-cover { background: rgba(0, 0, 0, .35); }
+.np-player.is-paused.was-started .np-cover img { display: none; }
+.np-player.is-loading .np-big span { animation: np-pulse 1s ease-in-out infinite; }
+@keyframes np-pulse { 50% { opacity: .45; } }
+
+.np-bar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; align-items: center; gap: 2px; padding: 22px 8px 6px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, .78)); color: #fff; transition: opacity .2s; }
+.np-player.is-playing .np-bar { opacity: 0; }
+.np-player.is-playing:hover .np-bar, .np-player.is-playing:focus-within .np-bar { opacity: 1; }
+.np-btn { flex: none; min-width: 38px; height: 38px; border: 0; border-radius: 8px; background: none; color: #fff; cursor: pointer;
+  display: grid; place-items: center; font: 700 .82rem/1 var(--font); padding: 0 6px; }
+.np-btn .ic { width: 20px; height: 20px; }
+.np-btn:hover, .np-btn:focus-visible { background: rgba(255, 255, 255, .16); outline: none; }
+.np-cc[aria-pressed="true"] { background: #fff; color: #000; }
+.np-time { flex: none; font: 600 .8rem/1 var(--mono); padding: 0 6px; white-space: nowrap; opacity: .92; }
+.np-seek { position: relative; flex: 1; min-width: 60px; height: 26px; cursor: pointer; touch-action: none; margin: 0 6px; }
+.np-seek::before, .np-buf, .np-fill { content: ""; position: absolute; left: 0; top: 50%; height: 4px; margin-top: -2px; border-radius: 2px; }
+.np-seek::before { right: 0; background: rgba(255, 255, 255, .28); }
+.np-buf { background: rgba(255, 255, 255, .45); width: 0; }
+.np-fill { background: var(--dom, #dc2626); width: 0; }
+.np-knob { position: absolute; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: #fff; left: 0; transform: scale(.0); transition: transform .12s; }
+.np-seek:hover .np-knob, .np-seek:focus-visible .np-knob, .np-player:not(.is-playing) .np-knob { transform: scale(1); }
+.np-seek:hover::before, .np-seek:hover .np-buf, .np-seek:hover .np-fill { height: 6px; margin-top: -3px; }
+.np-player:fullscreen, .np-player:-webkit-full-screen { aspect-ratio: auto; width: 100%; height: 100%; }
+@media (max-width: 760px) {
+  .np-back, .np-fwd, .np-mute { display: none; }
+  .np-time { font-size: .72rem; padding: 0 2px; }
+  .np-btn { min-width: 34px; height: 34px; }
+}

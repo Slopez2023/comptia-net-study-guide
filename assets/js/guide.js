@@ -102,6 +102,12 @@
 
   /* ---------------- Icons (simple 24px stroke icons) ---------------- */
   const ICONS = {
+    pause: '<rect x="6" y="4.5" width="4" height="15" rx="1" fill="currentColor" stroke="none"/><rect x="14" y="4.5" width="4" height="15" rx="1" fill="currentColor" stroke="none"/>',
+    back10: '<path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/><text x="12" y="15.5" font-size="7.5" text-anchor="middle" fill="currentColor" stroke="none" font-family="sans-serif" font-weight="700">10</text>',
+    fwd10: '<path d="M20 12a8 8 0 1 1-2.4-5.7M20 4v4h-4"/><text x="12" y="15.5" font-size="7.5" text-anchor="middle" fill="currentColor" stroke="none" font-family="sans-serif" font-weight="700">10</text>',
+    volume: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+    muted: '<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="m16 9.5 5 5m0-5-5 5"/>',
+    expand: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
     play: '<path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none"/>',
     timer: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9.5 2h5"/>',
     contrast: '<circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/>',
@@ -220,16 +226,141 @@
       </div>`;
     $(".video-play", el).onclick = () => {
       el.classList.add("playing");
-      $(".video-frame", el).innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&modestbranding=1" title="${esc(v.title)}"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      mountPlayer($(".video-frame", el), v, () => markWatched(true));
     };
-    $(".watch-toggle", el).onclick = (e) => {
-      S.videos[v.id] = !S.videos[v.id]; save();
-      el.classList.toggle("is-watched", S.videos[v.id]);
-      e.target.classList.toggle("done", S.videos[v.id]);
-      e.target.textContent = S.videos[v.id] ? "✓ Watched" : "Mark watched";
-    };
+    const toggleBtn = $(".watch-toggle", el);
+    function markWatched(on) {
+      S.videos[v.id] = on; save();
+      el.classList.toggle("is-watched", on);
+      toggleBtn.classList.toggle("done", on);
+      toggleBtn.textContent = on ? "✓ Watched" : "Mark watched";
+    }
+    toggleBtn.onclick = () => markWatched(!S.videos[v.id]);
     return el;
+  }
+
+  /* ---------------- Custom player (YouTube IFrame API, no YouTube controls) ---------------- */
+  let ytReady;
+  function loadYT() {
+    if (ytReady) return ytReady;
+    ytReady = new Promise((res) => {
+      if (window.YT && YT.Player) return res();
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => { prev && prev(); res(); };
+      const s = document.createElement("script");
+      s.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(s);
+    });
+    return ytReady;
+  }
+  const SPEEDS = [1, 1.25, 1.5, 1.75, 2];
+  const clock = (t) => { t = Math.max(0, Math.floor(t || 0)); const m = Math.floor(t / 60), s = t % 60; return m + ":" + String(s).padStart(2, "0"); };
+  let activePlayer = null;
+
+  function mountPlayer(frame, v, onFinish) {
+    frame.classList.add("np-player", "is-loading");
+    frame.tabIndex = 0;
+    frame.innerHTML = `<div class="np-yt"><div></div></div>
+      <div class="np-cover"><img alt="" src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg"><button type="button" class="np-big" aria-label="Play"><span>${icon("play")}</span></button><p class="np-msg"></p></div>
+      <div class="np-hit" aria-hidden="true"></div>
+      <div class="np-bar">
+        <button type="button" class="np-btn np-pp" aria-label="Play">${icon("play")}</button>
+        <button type="button" class="np-btn np-back" aria-label="Back 10 seconds">${icon("back10")}</button>
+        <button type="button" class="np-btn np-fwd" aria-label="Forward 10 seconds">${icon("fwd10")}</button>
+        <span class="np-time"><span class="np-cur">0:00</span> / <span class="np-dur">${esc(v.duration || "0:00")}</span></span>
+        <div class="np-seek" role="slider" aria-label="Seek" tabindex="0"><div class="np-buf"></div><div class="np-fill"></div><div class="np-knob"></div></div>
+        <button type="button" class="np-btn np-speed" aria-label="Playback speed">1×</button>
+        <button type="button" class="np-btn np-cc" aria-label="Captions" aria-pressed="false">CC</button>
+        <button type="button" class="np-btn np-mute" aria-label="Mute">${icon("volume")}</button>
+        <button type="button" class="np-btn np-fs" aria-label="Full screen">${icon("expand")}</button>
+      </div>`;
+    const q = (c) => frame.querySelector(c);
+    const pp = q(".np-pp"), seek = q(".np-seek"), fill = q(".np-fill"), buf = q(".np-buf"), knob = q(".np-knob");
+    const cur = q(".np-cur"), dur = q(".np-dur"), cover = q(".np-cover"), msg = q(".np-msg");
+    let p, raf, dragging = false, finished = false, cc = !!S.cc;
+    let speed = SPEEDS.includes(S.speed) ? S.speed : 1;
+    q(".np-speed").textContent = speed + "×";
+    q(".np-cc").setAttribute("aria-pressed", cc);
+    const fsEl = frame.requestFullscreen || frame.webkitRequestFullscreen;
+    if (!fsEl) q(".np-fs").hidden = true;
+
+    const playing = () => p && p.getPlayerState && p.getPlayerState() === YT.PlayerState.PLAYING;
+    const toggle = () => { if (!p || !p.playVideo) return; playing() ? p.pauseVideo() : p.playVideo(); };
+    const jump = (d) => { if (p && p.getCurrentTime) { p.seekTo(Math.max(0, p.getCurrentTime() + d), true); paint(); } };
+    function paint() {
+      if (!p || !p.getDuration) return;
+      const d = p.getDuration() || 0, t = dragging ? +seek.dataset.t : p.getCurrentTime();
+      const pct = d ? (t / d) * 100 : 0;
+      fill.style.width = pct + "%"; knob.style.left = pct + "%";
+      buf.style.width = (p.getVideoLoadedFraction() || 0) * 100 + "%";
+      cur.textContent = clock(t); if (d) dur.textContent = clock(d);
+      seek.setAttribute("aria-valuenow", Math.round(pct));
+      if (!finished && d && t / d > 0.9) { finished = true; onFinish && onFinish(); }
+    }
+    function loop() { paint(); raf = requestAnimationFrame(loop); }
+    function setCC(on) {
+      cc = on; S.cc = on; save();
+      q(".np-cc").setAttribute("aria-pressed", on);
+      try { if (on) { p.loadModule("captions"); p.setOption("captions", "track", { languageCode: "en" }); } else p.unloadModule("captions"); } catch (e) {}
+    }
+
+    loadYT().then(() => {
+      p = new YT.Player(frame.querySelector(".np-yt > div"), {
+        host: "https://www.youtube-nocookie.com",
+        videoId: v.id,
+        playerVars: { autoplay: 1, controls: 0, disablekb: 1, fs: 0, rel: 0, iv_load_policy: 3, modestbranding: 1, playsinline: 1, cc_load_policy: cc ? 1 : 0, cc_lang_pref: "en", origin: location.origin },
+        events: {
+          onReady: () => { p.setPlaybackRate(speed); if (!cc) try { p.unloadModule("captions"); } catch (e) {} p.playVideo(); loop(); },
+          onStateChange: (e) => {
+            const st = e.data, S_ = YT.PlayerState;
+            const isPlay = st === S_.PLAYING;
+            frame.classList.toggle("is-playing", isPlay);
+            frame.classList.toggle("is-loading", st === S_.BUFFERING || st === S_.UNSTARTED);
+            frame.classList.toggle("is-paused", st === S_.PAUSED || st === S_.CUED);
+            frame.classList.toggle("is-ended", st === S_.ENDED);
+            pp.innerHTML = icon(isPlay ? "pause" : "play"); pp.setAttribute("aria-label", isPlay ? "Pause" : "Play");
+            if (isPlay) { frame.classList.add("was-started"); if (activePlayer && activePlayer !== p) try { activePlayer.pauseVideo(); } catch (er) {} activePlayer = p; msg.textContent = ""; }
+            if (st === S_.ENDED) { msg.textContent = "Done. Marked as watched."; if (!finished) { finished = true; onFinish && onFinish(); } }
+          },
+          onError: () => { frame.classList.add("is-error"); msg.innerHTML = `This video won't play here. <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">Open it on YouTube ↗</a>`; },
+        },
+      });
+    });
+
+    q(".np-hit").onclick = toggle;
+    q(".np-big").onclick = () => { if (frame.classList.contains("is-ended")) p.seekTo(0, true); p && p.playVideo(); };
+    pp.onclick = toggle;
+    q(".np-back").onclick = () => jump(-10);
+    q(".np-fwd").onclick = () => jump(10);
+    q(".np-speed").onclick = (e) => {
+      speed = SPEEDS[(SPEEDS.indexOf(speed) + 1) % SPEEDS.length]; S.speed = speed; save();
+      e.currentTarget.textContent = speed + "×"; p && p.setPlaybackRate(speed);
+    };
+    q(".np-cc").onclick = () => setCC(!cc);
+    q(".np-mute").onclick = (e) => {
+      if (!p) return; const m = !p.isMuted(); m ? p.mute() : p.unMute();
+      e.currentTarget.innerHTML = icon(m ? "muted" : "volume");
+    };
+    q(".np-fs").onclick = () => {
+      if (document.fullscreenElement || document.webkitFullscreenElement) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      else fsEl.call(frame);
+    };
+    const at = (x) => { const r = seek.getBoundingClientRect(); return Math.min(1, Math.max(0, (x - r.left) / r.width)) * (p.getDuration() || 0); };
+    seek.addEventListener("pointerdown", (e) => {
+      if (!p || !p.getDuration) return;
+      dragging = true; seek.setPointerCapture(e.pointerId); seek.dataset.t = at(e.clientX); paint();
+    });
+    seek.addEventListener("pointermove", (e) => { if (dragging) { seek.dataset.t = at(e.clientX); paint(); } });
+    seek.addEventListener("pointerup", () => { if (!dragging) return; dragging = false; p.seekTo(+seek.dataset.t, true); paint(); });
+    frame.addEventListener("keydown", (e) => {
+      if (!p || e.metaKey || e.ctrlKey || e.altKey) return;
+      const k = e.key.toLowerCase(), map = {
+        " ": toggle, k: toggle, j: () => jump(-10), l: () => jump(10), arrowleft: () => jump(-5), arrowright: () => jump(5),
+        c: () => setCC(!cc), f: () => q(".np-fs").click(), m: () => q(".np-mute").click(),
+      };
+      if (map[k] && !(k === " " && e.target.tagName === "BUTTON")) { e.preventDefault(); map[k](); }
+    });
+    frame.focus({ preventScroll: true });
   }
   function renderVideos() {
     $$("[data-videos]").forEach((box) => {
