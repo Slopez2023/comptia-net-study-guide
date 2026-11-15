@@ -19,12 +19,16 @@ YouTube's embedded player won't run on pages opened straight from a `file://` pa
 ```
 index.html            Hub: "Do this next", countdown, today's checklist, chapters, weak spots
 plan.html             16-day plan, Nov 14 → Nov 30 (exam date is editable)
-chapters/00–06        One page per chapter. Each lesson follows the same 7 steps:
-                      Goal → Watch → Learn → See it → Exam traps → Quick check → Finish
-practice/             quiz · flashcards · subnetting · ports
+chapters/00–06        One page per chapter. Each lesson follows the same numbered steps:
+                      Goal → Watch → Read → See it for real → Learn/See it → Try it
+                      → Exam traps → Scenario → Quick check → Say it back → Finish
+practice/             quiz · flashcards · subnetting · ports · review (spaced, due today)
 assets/css/guide.css  The one stylesheet (Atkinson Hyperlegible fonts, light/dark themes)
 assets/js/guide.js    Course map, plan, progress tracking, videos, quick checks
 assets/js/practice.js Practice tools
+assets/js/activities.js Try-it activities (protocol step-throughs, PBQs, subnet bits, terminal)
+assets/img/           Openly licensed photos (credits in data/images.json, shown in the lightbox)
+research/             Research reports and the build plan behind v2
 assets/js/data.js     Generated bundle of questions, cards, ports and videos
 data/videos.json      YouTube video map (IDs verified via oEmbed, 2026-11-14)
 scripts/build_data.py Rebuilds data.js

@@ -26,6 +26,32 @@
       <div class="lesson-body">
         <div class="step" data-step="goal"><p class="goal">Define the CIA triad and risk terms, compare AAA and authentication protocols, and know why we segment IoT, OT, guest and BYOD devices.</p></div>
         <div class="step" data-step="watch"><div data-videos="4.1"></div></div>
+        <div class="step" data-step="read" data-mins="7">
+          <p class="read-job"><strong>The job:</strong> Security is about making useful network access hard for the wrong person and manageable for the right one. You will connect protection choices to the business risk they reduce.</p>
+
+          <h3>Protect data and prove who is at the other end</h3>
+          <p><strong>Encryption in transit</strong> protects traffic while it crosses a network: TLS, SSH, and IPsec are common examples. <strong>Encryption at rest</strong> protects a disk, database, backup, or lost laptop; use both because a secure connection does not protect a stolen drive.</p>
+          <div class="key-topic"><p><strong>PKI</strong> gives certificates a chain of trust. A certificate authority signs a public certificate so clients can verify the server identity; a <strong>self-signed</strong> certificate has no trusted outside signer, so clients normally warn about it.</p></div>
+
+          <h3>Authenticate first, then limit the access</h3>
+          <p>Authentication answers “Who are you?” and authorization answers “What may you do?” <strong>MFA</strong> needs factors from different categories, such as a password plus a phone prompt; two passwords are still one factor. <strong>SSO</strong> lets a user authenticate once and use several applications, often by passing a <strong>SAML</strong> assertion between a trusted identity provider and web application. Time-based authentication can mean a rotating code or a policy that permits login only at approved times.</p>
+          <p>Directories store and look up identity information. <strong>LDAP</strong> is the directory-query protocol, commonly secured as LDAPS. <strong>RADIUS</strong> is the usual AAA choice for user network access such as 802.1X Wi-Fi or VPN. <strong>TACACS+</strong> is commonly used for administrators logging in to routers and switches because it separates AAA functions and can authorize individual commands.</p>
+          <div class="key-topic"><p><strong>Least privilege</strong> grants only the access needed for the task. <strong>RBAC</strong> makes that scalable: assign permissions to a job role, then assign people to the role instead of building each person’s permissions one by one.</p></div>
+
+          <h3>Put controls where they help</h3>
+          <p><strong>Geofencing</strong> is a logical location rule: for example, deny an account login outside countries where staff work. Physical controls still matter: cameras provide evidence and deterrence, while locks limit entry to rooms, racks, and equipment. Neither replaces the other.</p>
+          <p>A <strong>honeypot</strong> is a tempting decoy system; a <strong>honeynet</strong> is a group of decoys that can reveal attacker methods. They are for detection and study, not a substitute for protecting real systems.</p>
+          <div class="key-topic"><p>Keep the risk chain straight: a <strong>vulnerability</strong> is a weakness, a <strong>threat</strong> is a possible cause of harm, and an <strong>exploit</strong> uses the weakness. <strong>Risk</strong> weighs how likely that chain is against its impact. The <strong>CIA triad</strong> asks whether a choice preserves confidentiality, integrity, and availability.</p></div>
+
+          <h3>Meet obligations and contain device risk</h3>
+          <p>Audits check whether controls meet a rule, policy, or contract. <strong>Data locality</strong> requires data to remain in a particular geographic jurisdiction. <strong>PCI DSS</strong> governs systems that handle payment-card data, and <strong>GDPR</strong> sets obligations around personal data connected to people in the EU.</p>
+          <p>Segmentation limits a compromise to a smaller area. Put IoT and industrial IoT, plus SCADA, ICS, and other OT equipment, in tightly controlled zones because they can be difficult to patch and may operate physical processes. Separate guest and BYOD devices too: they are not automatically as trusted as managed corporate endpoints.</p>
+          <aside class="callout analogy"><div class="callout-title">Analogy</div><p>Think of a hospital: an ID badge gets you through the front door, but your role opens only the rooms you need; cameras and locked drug cabinets add other layers. A network has no single physical hallway, so its rules must be enforced at many connections and services.</p></aside>
+
+          <h3>A story: Maya joins the finance team</h3>
+          <ol class="story"><li>Maya signs in with her password and phone approval, satisfying MFA.</li><li>SSO passes her identity to the expense site, while RBAC grants the Finance role instead of broad admin rights.</li><li>Her managed laptop connects to the internal network; a guest phone is placed in a separate segment with no route to finance systems.</li><li>When a login comes from an unapproved country, geofencing blocks it and the security team reviews the event.</li></ol>
+          <aside class="callout separate"><div class="callout-title">Keep these separate</div><ul><li><strong>Authentication</strong>: proves an identity.</li><li><strong>Authorization</strong>: grants that identity specific actions.</li><li><strong>RADIUS</strong>: user network access AAA.</li><li><strong>TACACS+</strong>: administrator access to network devices.</li></ul></aside>
+        </div>
         <div class="step" data-step="visual">
           <div class="tiles">
             <div class="tile"><span class="big">C</span><b>Confidentiality</b>Only the right people can read it (encryption)</div>
@@ -61,7 +87,12 @@
         <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
           <ul><li>Admins logging into switches with per-command control → <strong>TACACS+</strong>. Wi-Fi users authenticating against AD → <strong>RADIUS</strong>.</li>
             <li>A password plus a PIN is <strong>not</strong> MFA. Both are "something you know".</li></ul></div></div>
+        <div class="step" data-step="scenario">
+          <div class="scenario"><p class="story">A hospital adds networked infusion pumps. The pumps cannot be patched as often as workstations, but they must exchange data with one clinical application.</p><p class="ask">Which approach BEST reduces the chance that a compromised pump reaches the rest of the hospital network?</p><ul class="options"><li data-why="Encryption protects a connection but does not limit which internal systems the pump can reach.">Require TLS on the pumps</li><li data-correct data-why="A dedicated, tightly permitted zone limits the pump to its required communication path.">Place the pumps in a separate OT/IoT segment with restrictive rules</li><li data-why="A stronger password helps one control but does not contain lateral movement.">Change each pump’s default password only</li><li data-why="A honeypot observes attackers but does not isolate the real pumps.">Deploy a honeypot beside the pumps</li></ul></div>
+          <div class="scenario"><p class="story">A network team wants central authentication for employee Wi-Fi and separate, auditable command permissions for switch administrators.</p><p class="ask">Which pairing is MOST appropriate?</p><ul class="options"><li data-why="LDAP supplies directory lookups but is not the requested pair of access-control services.">LDAP for Wi-Fi and SAML for switch commands</li><li data-correct data-why="RADIUS fits 802.1X network access, while TACACS+ supports detailed device-administration authorization.">RADIUS for Wi-Fi and TACACS+ for switch administration</li><li data-why="TACACS+ is not the typical choice for user Wi-Fi access, and RADIUS does not provide the same per-command device control.">TACACS+ for Wi-Fi and RADIUS for switch administration</li><li data-why="PKI and MFA are useful controls, but they do not provide the requested centralized AAA services by themselves.">PKI for Wi-Fi and MFA for switch administration</li></ul></div>
+        </div>
         <div class="step" data-step="check"><div class="check" data-obj="4.1" data-n="4"></div></div>
+        <div class="step" data-step="sayback"><p class="prompt">Explain how identity controls and segmentation work together to reduce risk without blocking legitimate work.</p><ul class="checklist"><li>Separates authentication from authorization.</li><li>Explains MFA, least privilege, and RBAC.</li><li>Matches RADIUS and TACACS+ to their normal uses.</li><li>Connects segmentation to IoT/OT, guest, and BYOD risk.</li></ul><p class="terms">encryption in transit; encryption at rest; PKI; self-signed certificate; MFA; SSO; RADIUS; LDAP; SAML; TACACS+; least privilege; RBAC; geofencing; honeypot; risk; vulnerability; exploit; threat; CIA triad; data locality</p><ul class="deeper"><li><a href="https://csrc.nist.gov/glossary/term/access_management">Access Management glossary</a> (NIST) · 12 min</li><li><a href="https://www.nccoe.nist.gov/publication/1800-2/VolB/">Identity and Access Management</a> (NIST) · 20 min</li></ul></div>
       </div>
     </section>
 
@@ -70,6 +101,30 @@
       <div class="lesson-body">
         <div class="step" data-step="goal"><p class="goal">Recognize each attack from its symptom, and name the defense that stops it.</p></div>
         <div class="step" data-step="watch"><div data-videos="4.2"></div></div>
+        <div class="step" data-step="read" data-mins="6">
+          <p class="read-job"><strong>The job:</strong> Attack questions give you a symptom, not a vocabulary word. Learn the pattern, then choose the defense that interrupts that specific attack.</p>
+
+          <h3>Overwhelm, escape, or confuse the network</h3>
+          <p>A <strong>DoS</strong> attack overwhelms a service or link so legitimate users cannot use it. A <strong>DDoS</strong> does the same from many distributed systems, often a botnet, so filtering one source is not enough; rate limits, a CDN, or a scrubbing provider can help.</p>
+          <p>The impact is primarily an availability failure: a site may be reachable but too slow to serve its real users. Start by identifying whether the pressure is on the link, firewall, server, or application, then use controls appropriate to that location. Do not confuse a busy service with a DDoS just because the symptom is slowness; monitoring and baseline traffic data provide the evidence.</p>
+          <p>For the exam, choose the answer that protects the affected resource rather than a control that merely records the event. Logging is useful after detection, but a rate limit or upstream mitigation is the direct availability defense.</p>
+          <p><strong>VLAN hopping</strong> tries to cross VLAN boundaries by negotiating an unauthorized trunk or abusing double-tagged frames. Disable automatic trunk negotiation, explicitly make user ports access ports, and use an unused native VLAN. <strong>MAC flooding</strong> fills a switch CAM table so the switch floods traffic; port security limits acceptable MAC addresses on a port.</p>
+          <div class="key-topic"><p><strong>ARP poisoning</strong> or <strong>ARP spoofing</strong> sends false IP-to-MAC mappings, often making the attacker appear to be the default gateway. Dynamic ARP inspection checks ARP messages against trusted address bindings and helps stop that on-path position.</p></div>
+
+          <h3>Redirect the victim</h3>
+          <p><strong>DNS poisoning</strong> or <strong>DNS spoofing</strong> provides a false name-to-address answer, steering a user to a malicious destination. DNSSEC helps resolvers detect altered signed records; a secure, well-managed resolver also matters.</p>
+          <p>An <strong>evil twin</strong> is a fake wireless access point using a familiar network name to trick users into connecting. An <strong>on-path attack</strong> places an attacker between endpoints to observe or alter traffic; an evil twin can enable one, but they are not the same term. Strong enterprise Wi-Fi authentication, wireless detection, and end-to-end TLS reduce exposure.</p>
+          <div class="key-topic"><p><strong>Malware</strong> is hostile software. A virus needs a host action, a worm can spread itself, a trojan pretends to be legitimate, and ransomware denies access to data. Patching, endpoint protection, tested backups, and segmentation reduce both entry and spread.</p></div>
+
+          <h3>Watch for unauthorized services</h3>
+          <p>A <strong>rogue DHCP</strong> server can hand out the wrong gateway or DNS server, silently redirecting clients. DHCP snooping permits server replies only from trusted ports. A <strong>rogue AP</strong> is any unauthorized access point on the network; NAC/802.1X, port controls, and wireless monitoring help find or prevent it.</p>
+          <div class="key-topic"><p>Social engineering attacks target people: <strong>phishing</strong> uses a deceptive message, <strong>dumpster diving</strong> searches discarded material, <strong>shoulder surfing</strong> watches a screen or keyboard, and <strong>tailgating</strong> follows an authorized person through a controlled entrance.</p></div>
+          <aside class="callout analogy"><div class="callout-title">Analogy</div><p>A poisoned address book is dangerous because it sends you to the wrong house even when you read it correctly; that is DNS poisoning. It stops matching when you remember that DNS answers are exchanged automatically by systems, not copied into a paper book.</p></aside>
+
+          <h3>A story: Omar investigates strange traffic</h3>
+          <ol class="story"><li>Omar sees several users receiving the same strange gateway and DNS settings.</li><li>He traces DHCP offers to an untrusted switch port, identifying a rogue DHCP service.</li><li>He enables DHCP snooping so only the real server-facing port is trusted.</li><li>Later, ARP inspection uses those validated bindings to reject forged gateway mappings.</li></ol>
+          <aside class="callout separate"><div class="callout-title">Keep these separate</div><ul><li><strong>Rogue AP</strong>: an unauthorized AP connected to the network.</li><li><strong>Evil twin</strong>: a deceptive AP impersonating a trusted wireless network.</li><li><strong>DNS spoofing</strong>: false name resolution.</li><li><strong>ARP spoofing</strong>: false local IP-to-MAC resolution.</li></ul></aside>
+        </div>
         <div class="step" data-step="visual" data-label="See it: attack → symptom → defense">
           <div class="table-wrap"><table>
             <tr><th>Attack</th><th>What happens / symptom</th><th>Defense</th></tr>
@@ -92,7 +147,12 @@
         </div>
         <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
           <p>"Users got 10.0.0.x addresses with the wrong gateway" → <strong>rogue DHCP</strong> → DHCP snooping. "Switch is acting like a hub" → <strong>MAC flooding</strong> → port security.</p></div></div>
+        <div class="step" data-step="scenario">
+          <div class="scenario"><p class="story">During a wireless survey, staff find an AP advertising the company SSID from a nearby parking lot. It asks employees to sign in on a lookalike portal.</p><p class="ask">What type of attack is MOST likely occurring?</p><ul class="options"><li data-why="A rogue AP may be unauthorized, but the deliberate imitation of the company SSID is the stronger clue.">Rogue DHCP</li><li data-correct data-why="An evil twin impersonates a familiar wireless network to lure users and capture credentials.">Evil twin</li><li data-why="VLAN hopping occurs through switch VLAN handling, not a fake wireless SSID.">VLAN hopping</li><li data-why="MAC flooding targets a switch forwarding table, not user Wi-Fi association.">MAC flooding</li></ul></div>
+          <div class="scenario"><p class="story">A switch port suddenly learns thousands of different source MAC addresses. Soon it floods traffic out many ports, and a connected attacker captures frames not intended for it.</p><p class="ask">Which control should the administrator implement FIRST on that access port?</p><ul class="options"><li data-why="DNSSEC verifies DNS records and does not control MAC learning on a switch.">DNSSEC</li><li data-why="DHCP snooping governs DHCP messages, not the number of learned MAC addresses.">DHCP snooping</li><li data-correct data-why="Port security limits the MAC addresses allowed or learned on a switch port, blocking the flooding technique.">Port security</li><li data-why="A web filter cannot stop frames from filling the CAM table.">URL filtering</li></ul></div>
+        </div>
         <div class="step" data-step="check"><div class="check" data-obj="4.2" data-n="4"></div></div>
+        <div class="step" data-step="sayback"><p class="prompt">Explain how you would identify an attack from a symptom and choose the defense that fits it.</p><ul class="checklist"><li>Distinguishes a DoS from a distributed DoS.</li><li>Matches ARP, DNS, DHCP, and MAC-table attacks to their controls.</li><li>Separates an evil twin from a rogue AP.</li><li>Includes both technical and social-engineering attacks.</li></ul><p class="terms">DoS; DDoS; VLAN hopping; MAC flooding; CAM table; port security; ARP poisoning; Dynamic ARP Inspection; DNS poisoning; DNSSEC; evil twin; on-path attack; malware; rogue DHCP; DHCP snooping; rogue AP; phishing; dumpster diving; shoulder surfing; tailgating</p><ul class="deeper"><li><a href="https://www.nist.gov/itl/smallbusinesscyber/training/glossary">NIST cybersecurity glossary</a> (NIST) · 10 min</li><li><a href="https://nvlpubs.nist.gov/nistpubs/ir/2013/NIST.IR.7298r2.pdf">NIST glossary of key security terms</a> (NIST) · 20 min</li></ul></div>
       </div>
     </section>
 
@@ -101,6 +161,29 @@
       <div class="lesson-body">
         <div class="step" data-step="goal"><p class="goal">Harden devices, control who can plug in (NAC), write ACLs in the right order, and place servers in the right zone.</p></div>
         <div class="step" data-step="watch"><div data-videos="4.3"></div></div>
+        <div class="step" data-step="read" data-mins="6">
+          <p class="read-job"><strong>The job:</strong> Defenses are strongest when they prevent unnecessary access before an attacker can use it. In scenario questions, choose the feature that enforces the requested boundary.</p>
+
+          <h3>Start with a smaller attack surface</h3>
+          <p><strong>Hardening</strong> removes avoidable opportunities: disable unused switch ports and services, change default passwords, and apply supported updates. An unused port should be shut down and placed in an unused VLAN; leaving it active is an invitation for an unknown device.</p>
+          <p>Review a device after installation instead of assuming its defaults are safe. Remove or disable management methods that are not needed, prefer protected management paths, and give administrators individual accounts so actions can be traced. Hardening is a continuing baseline: a secure configuration today needs review after firmware changes, staff changes, and new services.</p>
+          <p>Keep a documented baseline so an unexpected setting can be found and corrected rather than accepted as normal.</p>
+          <div class="key-topic"><p><strong>NAC</strong> decides whether and how a device may join. <strong>802.1X</strong> uses a client supplicant, a switch or AP authenticator, and a RADIUS server before network access is granted. Port security limits MAC addresses on a port, while MAC filtering compares a MAC to an allow list; MAC addresses can be spoofed, so filtering alone is weak.</p></div>
+
+          <h3>Protect the cryptographic keys and write precise rules</h3>
+          <p><strong>Key management</strong> covers the full key life cycle: generate keys securely, store them safely, distribute them only to authorized systems, rotate them, and revoke or destroy them when necessary. Strong encryption is not useful if an attacker can copy its key.</p>
+          <p>An <strong>ACL</strong> is an ordered allow/deny rule list. Rules are tested from top to bottom, the first matching rule wins, and an implicit deny catches traffic that no rule allowed. Put a narrow, necessary allow before a broad deny that would otherwise catch it.</p>
+          <p>Read an ACL as a packet would: check the source, destination, protocol, and port against each rule until one matches. A broad allow placed too early can quietly expose too much, just as a broad deny placed too early can block a needed application. Document the business reason for each exception so obsolete access can be removed later.</p>
+          <div class="key-topic"><p><strong>URL filtering</strong> blocks destinations by URL, domain, or category. <strong>Content filtering</strong> examines the material itself, such as blocking malware, file types, or unacceptable content. A web category block is not the same as inspecting a downloaded file.</p></div>
+
+          <h3>Use zones to control trust</h3>
+          <p>A <strong>trusted</strong> zone contains systems under stronger organizational control; an <strong>untrusted</strong> zone includes the internet and unknown networks. A screened subnet, often called a DMZ, is a separate zone for public-facing services such as web, mail, or public DNS. Firewall policy allows the required internet-to-DMZ traffic without exposing the internal network directly.</p>
+          <aside class="callout analogy"><div class="callout-title">Analogy</div><p>A screened subnet is a building lobby: visitors can reach the reception desk without walking into staff offices. The analogy stops matching because a firewall can apply detailed rules to each kind of network conversation, not just decide who enters the building.</p></aside>
+
+          <h3>A story: Priya publishes a customer portal</h3>
+          <ol class="story"><li>Priya places the public web server in a screened subnet, not on the internal LAN.</li><li>She allows HTTPS from the internet to that server, then permits only the exact backend connection the server needs.</li><li>She places the specific allow above broader deny rules in the firewall ACL.</li><li>She disables unused services and rotates the server’s keys as part of its hardening plan.</li></ol>
+          <aside class="callout separate"><div class="callout-title">Keep these separate</div><ul><li><strong>802.1X</strong>: authenticates access to a port or wireless network.</li><li><strong>Port security</strong>: restricts MAC addresses at a switch port.</li><li><strong>URL filtering</strong>: restricts where web traffic goes.</li><li><strong>Content filtering</strong>: restricts what the traffic contains.</li></ul></aside>
+        </div>
         <div class="step" data-step="visual">
           <div class="svg-fig">
             <svg viewBox="0 0 720 160" role="img" aria-label="Internet (untrusted) to firewall; screened subnet with public servers; internal trusted network">
@@ -125,9 +208,15 @@
             <li><strong>Key management</strong> = generate, store, rotate and revoke encryption keys safely.</li>
           </ul>
         </div>
+        <div class="step" data-step="try"><div data-activity="acl-order"></div></div>
         <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
           <p>A PBQ shows a firewall rule list where traffic is wrongly blocked. Look for a broad <strong>deny above</strong> the specific allow, and move the allow up.</p></div></div>
+        <div class="step" data-step="scenario">
+          <div class="scenario"><p class="story">A company hosts a public customer portal. It must accept HTTPS from the internet but should never expose employee file shares to internet users.</p><p class="ask">Where should the portal server be placed?</p><ul class="options"><li data-why="The internal LAN would place a public-facing workload beside employee systems.">On the trusted internal LAN</li><li data-correct data-why="A screened subnet isolates the public server and lets the firewall tightly control traffic to both it and the internal network.">In a screened subnet (DMZ)</li><li data-why="An untrusted internet zone is not a protected location for the company’s server.">Directly on the untrusted internet segment</li><li data-why="A guest VLAN is for guest devices, not a controlled public-service zone.">On the guest VLAN</li></ul></div>
+          <div class="scenario"><p class="story">A firewall ACL contains these rules in order: deny all traffic from 10.10.0.0/16; allow HTTPS from 10.10.20.15 to 192.0.2.10; deny all. The application server at 10.10.20.15 cannot reach the partner site.</p><p class="ask">What change is MOST likely to restore only the intended access?</p><ul class="options"><li data-why="The implicit deny is not the rule blocking the traffic; the first broad deny already matches it.">Remove the final implicit deny</li><li data-correct data-why="ACLs use first-match processing, so the specific HTTPS allow must appear before the broad source-network deny.">Move the specific HTTPS allow above the broad deny</li><li data-why="Placing the server in a DMZ does not change the matching order of these ACL rules.">Move the application server to a screened subnet</li><li data-why="MAC filtering does not govern an IP firewall ACL’s ordering problem.">Add MAC filtering for the application server</li></ul></div>
+        </div>
         <div class="step" data-step="check"><div class="check" data-obj="4.3"></div></div>
+        <div class="step" data-step="sayback"><p class="prompt">Explain how you would harden access to a public-facing service while preserving the traffic it truly needs.</p><ul class="checklist"><li>Starts with disabling unused ports and services and changing default passwords.</li><li>Distinguishes 802.1X, port security, and MAC filtering.</li><li>Explains first-match ACL order and implicit deny.</li><li>Places the public service in a screened subnet and limits traffic by zone.</li></ul><p class="terms">hardening; unused port; NAC; 802.1X; supplicant; authenticator; port security; MAC filtering; key management; ACL; implicit deny; URL filtering; content filtering; trusted zone; untrusted zone; screened subnet; DMZ</p><ul class="deeper"><li><a href="https://www.cisa.gov/sites/default/files/2024-12/joint-guidance-enhanced-visibility-hardening-guide-for-comms-infrastructure-508c.pdf">Enhanced Visibility and Hardening Guidance</a> (CISA) · 20 min</li><li><a href="https://www.cisa.gov/sites/default/files/2023-01/layering-network-security-segmentation_infographic_508_0.pdf">Layering Network Security Through Segmentation</a> (CISA) · 12 min</li></ul></div>
       </div>
     </section>
 

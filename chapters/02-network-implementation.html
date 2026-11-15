@@ -26,6 +26,51 @@
       <div class="lesson-body">
         <div class="step" data-step="goal"><p class="goal">Explain how a router picks a route (longest prefix → AD → metric), compare OSPF/EIGRP/BGP, and know NAT vs PAT and FHRP.</p></div>
         <div class="step" data-step="watch"><div data-videos="2.1"></div></div>
+        <div class="step" data-step="read" data-mins="6">
+          <p class="read-job"><strong>The job:</strong> A router moves packets between IP networks. It must select one usable path, translate addresses when a private network reaches the internet, and keep a default gateway available when a router fails.</p>
+
+          <h3>Static routes and learned routes</h3>
+          <p>A <strong>static route</strong> is an entry an administrator adds by hand. It is a good fit for a small branch, a path to a single server network, or a default route toward an ISP. Static routes do not discover failures or new paths on their own, so the administrator must maintain them.</p>
+          <p><strong>Dynamic routing</strong> lets routers exchange reachability information. BGP carries routes between autonomous systems, such as an organization and an ISP. OSPF is an open link-state protocol that builds paths within an organization. EIGRP is an advanced distance-vector protocol, most often seen in Cisco-heavy networks.</p>
+
+          <div class="key-topic">
+            <p>Use BGP when the question crosses organizational or provider boundaries. Use OSPF for a large internal network that needs an open standard. A static route is often the simplest answer for one predictable exit path.</p>
+          </div>
+
+          <h3>How a router chooses one route</h3>
+          <p>First, the router compares the destination address with every matching route and chooses the <strong>longest prefix</strong>. A route for <code>10.20.30.0/24</code> beats a default route because it describes a smaller, more specific destination range. This rule comes before every other comparison.</p>
+          <p>If two sources advertise the same prefix, the router uses <strong>administrative distance</strong>, or AD, to choose the source it trusts more. Lower AD wins. A connected route has AD 0, a static route normally has AD 1, and OSPF normally has AD 110. AD compares different route sources, not two paths learned by the same protocol.</p>
+          <p>Finally, if the competing routes came from the same protocol and have the same prefix length, the router uses that protocol's <strong>metric</strong>. OSPF calls its metric cost. EIGRP considers bandwidth and delay by default. A metric tells a protocol which of its own paths it prefers.</p>
+
+          <div class="key-topic">
+            <p>Route choice order is prefix length, then administrative distance, then metric. Do not pick the lowest metric until the first two tests have tied.</p>
+          </div>
+
+          <aside class="callout analogy"><div class="callout-title">Analogy</div>
+            <p>Think of a delivery driver reading directions. A street address is better than a city name, so it matches the longest prefix. If two trusted map services give the same street, the driver uses the service they trust more, like AD. If one service gives two routes, the shorter route is its metric choice. Routers compare numeric route data, not maps or travel time.</p></aside>
+
+          <h3>Address translation and gateway backup</h3>
+          <p><strong>NAT</strong> changes an address as traffic crosses a boundary, commonly between private IPv4 space and a public address. <strong>PAT</strong> is a form of NAT that also uses port numbers. Many inside hosts can share one public IPv4 address because each connection has a different translated source port.</p>
+          <p>Hosts need one default gateway address. A First Hop Redundancy Protocol, or <strong>FHRP</strong>, lets two or more routers present a shared <strong>virtual IP</strong>, or VIP, as that gateway. One router forwards traffic. If it fails, another router takes the VIP and hosts keep using the same gateway address.</p>
+
+          <div class="key-topic">
+            <p>NAT changes IP addressing. PAT lets many inside sessions share one public address by tracking ports. FHRP does neither. It protects the first router a host uses to leave its local subnet.</p>
+          </div>
+
+          <h3>Subinterfaces carry VLAN traffic</h3>
+          <p>A physical router port can use <strong>subinterfaces</strong> to route for several VLANs. Each logical subinterface has a VLAN tag and an IP address for that VLAN, while the physical link connects to a switch trunk. This design is called router on a stick. A layer 3 switch can do the same job with switch virtual interfaces instead.</p>
+
+          <h3>A story: Priya sends a packet to the internet</h3>
+          <ol class="story">
+            <li>Priya's laptop sends web traffic to its default gateway, the FHRP virtual IP for its VLAN.</li>
+            <li>The active router looks up the public destination. No internal prefix matches, so it selects <code>0.0.0.0/0</code>, the default route to the ISP.</li>
+            <li>The router translates Priya's private source address and source port through PAT before sending the packet outward.</li>
+            <li>When the active router fails, the standby router takes the VIP. Priya keeps the same gateway setting and new traffic continues through the backup.</li>
+          </ol>
+
+          <aside class="callout separate"><div class="callout-title">Keep these separate</div>
+            <ul><li><strong>Administrative distance</strong>: chooses between route sources that know the same prefix.</li><li><strong>Metric</strong>: chooses between paths learned by one routing protocol.</li><li><strong>NAT</strong>: translates addresses. <strong>FHRP</strong>: makes a default gateway resilient.</li><li><strong>Static route</strong>: manually configured. <strong>Dynamic route</strong>: learned from routing peers.</li></ul></aside>
+        </div>
         <div class="step" data-step="visual">
           <ol class="flow">
             <li><b>Longest prefix wins</b><br>A /27 route beats a /24 route that also matches. Most specific first.</li>
@@ -51,10 +96,29 @@
             <li>Default route = <code>0.0.0.0/0</code>, the "gateway of last resort" used when nothing more specific matches.</li>
           </ul>
         </div>
+        <div class="step" data-step="try"><div data-activity="arp-gateway"></div></div>
         <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
           <ul><li>Routing between companies or ISPs → <strong>BGP</strong>. Large enterprise open standard → <strong>OSPF</strong>.</li>
             <li>"Hosts lose access when the gateway router fails" → configure an <strong>FHRP</strong> with a VIP.</li></ul></div></div>
+        <div class="step" data-step="scenario">
+          <div class="scenario">
+            <p class="story">A branch router has routes for <code>10.40.0.0/16</code> through OSPF and <code>10.40.22.0/24</code> through a static route. A packet is headed to <code>10.40.22.57</code>.</p>
+            <p class="ask">Which route will the router use?</p>
+            <ul class="options">
+              <li data-why="Administrative distance is considered only after the router selects the most-specific prefix.">The OSPF route because OSPF has a lower metric</li>
+              <li data-correct data-why="The static /24 is the longest matching prefix, so it wins before AD or metric are compared.">The static route for <code>10.40.22.0/24</code></li>
+              <li data-why="A default route is less specific than either matching route.">The default route to the ISP</li>
+              <li data-why="PAT translates addresses but does not select a route.">The PAT translation entry</li>
+            </ul>
+          </div>
+        </div>
         <div class="step" data-step="check"><div class="check" data-obj="2.1" data-n="4"></div></div>
+        <div class="step" data-step="sayback">
+          <p class="prompt">Explain how a router chooses a route, then explain why an FHRP virtual IP helps a user whose default gateway router fails.</p>
+          <ul class="checklist"><li>States prefix length, administrative distance, then metric in order.</li><li>Separates NAT from PAT.</li><li>Explains that hosts use the shared VIP as their gateway.</li><li>Identifies a subinterface as a logical VLAN interface on a trunked router link.</li></ul>
+          <p class="terms">static route; BGP; EIGRP; OSPF; prefix length; administrative distance; metric; NAT; PAT; FHRP; virtual IP; subinterface</p>
+          <ul class="deeper"><li><a href="https://www.practicalnetworking.net/stand-alone/route-precedence-how-does-a-router-choose-its-preferred-path/">Route Precedence</a> (Practical Networking) · 12 min</li><li><a href="https://www.cloudflare.com/en-gb/learning/network-layer/internet-protocol/">What is the Internet Protocol?</a> (Cloudflare) · 8 min</li></ul>
+        </div>
       </div>
     </section>
 
@@ -63,6 +127,42 @@
       <div class="lesson-body">
         <div class="step" data-step="goal"><p class="goal">Configure VLANs, trunks (802.1Q, native VLAN), voice VLANs, link aggregation, speed/duplex and jumbo frames, and explain how STP stops loops.</p></div>
         <div class="step" data-step="watch"><div data-videos="2.2"></div></div>
+        <div class="step" data-step="read" data-mins="6">
+          <p class="read-job"><strong>The job:</strong> Switching separates devices into the right local networks, carries those networks between switches, and prevents redundant cabling from becoming a traffic loop.</p>
+
+          <h3>VLANs and their layer 3 doorways</h3>
+          <p>A <strong>VLAN</strong> splits one physical switch into separate broadcast domains. A device in VLAN 10 does not receive broadcasts from VLAN 20, even when both plug into the same switch. Administrators create VLANs in the VLAN database, then assign access ports to the right VLAN.</p>
+          <p>A VLAN needs layer 3 routing to reach another VLAN. A <strong>switch virtual interface</strong>, or SVI, is a logical interface such as <code>interface vlan 10</code> with an IP address. On a multilayer switch, SVIs can route between VLANs. An SVI can also give a layer 2 switch a management address.</p>
+
+          <div class="key-topic"><p>A VLAN is a layer 2 broadcast domain. An SVI is a layer 3 interface associated with a VLAN. Creating a VLAN alone does not provide inter-VLAN routing.</p></div>
+
+          <h3>Access links, trunks, and phones</h3>
+          <p>An access port normally carries one VLAN and sends ordinary Ethernet frames without VLAN tags to its endpoint. A trunk carries traffic for multiple VLANs between network devices. <strong>802.1Q</strong> adds a VLAN tag so the receiving switch can keep each frame in the correct VLAN.</p>
+          <p>One VLAN on a trunk is the <strong>native VLAN</strong>. Its frames are untagged, so the native VLAN setting must match on both ends. Use an unused VLAN rather than VLAN 1 where the design permits, and disable unused switch ports to reduce trunking and VLAN-hopping mistakes.</p>
+          <p>A phone port can carry two VLANs. The phone tags its voice traffic for the voice VLAN, while the attached computer uses the data VLAN through the phone. This keeps voice traffic separate while using one wall jack.</p>
+
+          <div class="key-topic"><p>Access port means one untagged VLAN for an endpoint. A trunk uses 802.1Q tags for many VLANs, except for the native VLAN. A voice VLAN and data VLAN can share a phone port.</p></div>
+
+          <aside class="callout analogy"><div class="callout-title">Analogy</div><p>Picture a mailroom. An access port is a mailbox for one department. A trunk is a delivery cart that carries labeled envelopes for many departments. The native VLAN is the one department whose envelopes have no label. Real switches use frame headers and forwarding tables, not people reading envelopes.</p></aside>
+
+          <h3>Links must agree at both ends</h3>
+          <p><strong>Link aggregation</strong> bundles physical switch links into one logical connection. LACP negotiates the bundle and provides more capacity plus a backup link. Both ends must agree on the aggregation settings, and traffic is distributed across member links rather than splitting one conversation across every cable.</p>
+          <p>Speed and duplex must also match. Modern Ethernet normally uses auto-negotiation and full duplex. A mismatch can cause errors, late collisions, and slow transfers. Check both ends before replacing hardware.</p>
+
+          <h3>Spanning Tree Protocol protects redundancy</h3>
+          <p>Two switch paths provide resilience, but layer 2 frames have no hop limit. Without protection, a broadcast can circle the loop repeatedly and consume the network. <strong>Spanning Tree Protocol</strong>, or STP, elects a root bridge and blocks selected redundant ports to leave one loop-free path.</p>
+          <p>The root bridge has the lowest bridge ID. Each non-root switch selects a root port toward that bridge. Each segment gets a designated forwarding port. STP blocks the remaining redundant ports. Rapid STP converges faster after a change, but the basic purpose remains loop prevention.</p>
+
+          <div class="key-topic"><p>MAC-table flapping, many broadcasts, and high switch CPU point to a switching loop. STP keeps redundant links available while blocking the links that would form the loop.</p></div>
+
+          <h3>Frame size must fit the whole path</h3>
+          <p><strong>Jumbo frames</strong> use an MTU larger than the usual 1500 bytes, often about 9000 bytes. Storage or data center traffic may use them to reduce overhead. Every device and link in the path must support the chosen MTU. One smaller link can drop or fragment traffic, depending on the protocol and settings.</p>
+
+          <h3>A story: Leon connects a new floor</h3>
+          <ol class="story"><li>Leon creates VLAN 30 in the switch database and assigns staff access ports to it.</li><li>He permits VLAN 30 across the 802.1Q trunk to the distribution switch.</li><li>He creates the VLAN 30 SVI on the layer 3 switch so staff can reach other networks.</li><li>He leaves redundant uplinks in place, and STP blocks one until a forwarding link fails.</li></ol>
+
+          <aside class="callout separate"><div class="callout-title">Keep these separate</div><ul><li><strong>VLAN</strong>: a layer 2 broadcast domain. <strong>SVI</strong>: an IP interface for a VLAN.</li><li><strong>Access port</strong>: carries one endpoint VLAN. <strong>Trunk</strong>: carries multiple VLANs between network devices.</li><li><strong>Link aggregation</strong>: combines links. <strong>STP</strong>: blocks redundant layer 2 paths to prevent loops.</li><li><strong>Jumbo frame</strong>: a larger MTU. <strong>Duplex</strong>: how a link sends and receives.</li></ul></aside>
+        </div>
         <div class="step" data-step="visual">
           <div class="svg-fig">
             <svg viewBox="0 0 720 200" role="img" aria-label="Two switches connected by an 802.1Q trunk carrying VLAN 10 and VLAN 20. Access ports on each switch belong to one VLAN.">
@@ -105,7 +205,20 @@
         <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
           <ul><li>Broadcast storm or MAC table flapping → a loop, so <strong>STP</strong> is the answer.</li>
             <li>The "VLAN database" is where VLANs are created. An access port assigned to the wrong VLAN gets the wrong subnet.</li></ul></div></div>
+        <div class="step" data-step="scenario">
+          <div class="scenario">
+            <p class="story">After a second uplink is installed between two access switches, users report intermittent connectivity. The switches show MAC addresses moving back and forth between the two uplink ports, and broadcast traffic rises sharply.</p>
+            <p class="ask">What is the MOST likely cause?</p>
+            <ul class="options">
+              <li data-why="An SVI supplies layer 3 connectivity but does not cause MAC addresses to flap between physical ports.">A missing SVI</li>
+              <li data-correct data-why="The new redundant link has created a layer 2 loop because STP is disabled or misconfigured.">STP is not blocking the redundant path</li>
+              <li data-why="A jumbo-frame mismatch causes size-related loss, not a broadcast storm and MAC-table flapping.">A jumbo-frame MTU mismatch</li>
+              <li data-why="A voice VLAN affects endpoint separation, not switch-to-switch loops.">The phones use the wrong voice VLAN</li>
+            </ul>
+          </div>
+        </div>
         <div class="step" data-step="check"><div class="check" data-obj="2.2" data-n="4"></div></div>
+        <div class="step" data-step="sayback"><p class="prompt">Explain how a frame from VLAN 20 crosses a trunk and why STP may block one of two physical uplinks.</p><ul class="checklist"><li>Identifies VLANs as separate broadcast domains.</li><li>Explains 802.1Q tagging and the native VLAN.</li><li>Separates an SVI from a VLAN.</li><li>Explains that STP prevents layer 2 loops.</li><li>Notes that both ends must agree on speed, duplex, and aggregation settings.</li></ul><p class="terms">VLAN; VLAN database; SVI; access port; trunk; 802.1Q; native VLAN; voice VLAN; LACP; speed; duplex; STP; root bridge; jumbo frames; MTU</p><ul class="deeper"><li><a href="https://www.practicalnetworking.net/stand-alone/routing-between-vlans/">Routing Between VLANs &amp; Layer 3 Switches</a> (Practical Networking) · 15 min</li><li><a href="https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/wlan/configuration/15-mt/wl-15-mt-book/wl-vlan-name.html">VLANs overview</a> (Cisco) · 8 min</li></ul></div>
       </div>
     </section>
 
@@ -114,6 +227,40 @@
       <div class="lesson-body">
         <div class="step" data-step="goal"><p class="goal">Choose bands, channels, encryption, authentication, antennas and AP types for a wireless scenario.</p></div>
         <div class="step" data-step="watch"><div data-videos="2.3"></div></div>
+        <div class="step" data-step="read" data-mins="6">
+          <p class="read-job"><strong>The job:</strong> Wireless design gives users a usable signal without letting neighboring radios interfere, then protects access with the right authentication, encryption, and access-point design.</p>
+
+          <h3>Channels need room to breathe</h3>
+          <p>A Wi-Fi channel uses a slice of radio spectrum. A wider <strong>channel width</strong> can carry more data, but it consumes more spectrum and leaves fewer channels for nearby access points. In a crowded office, 20 MHz or 40 MHz channels often work better than 80 MHz channels because nearby radios have more room to avoid each other.</p>
+          <p>On 2.4 GHz in the United States, channels 1, 6, and 11 do not overlap at the common 20 MHz width. Nearby access points should use a plan that repeats those non-overlapping channels instead of choosing adjacent channel numbers such as 1 and 3. Local regulations set which channels and power levels are legal.</p>
+          <p><strong>802.11h</strong> covers 5 GHz features that respond to regulatory requirements. Dynamic Frequency Selection checks for radar and moves a Wi-Fi channel if necessary. Transmit Power Control limits radio power when rules require it.</p>
+
+          <div class="key-topic"><p>More channel width is not always better. It trades available channels for peak throughput. Non-overlapping channels reduce adjacent access-point interference.</p></div>
+
+          <h3>Choose the band for the space</h3>
+          <p>2.4 GHz reaches farther and passes through walls better, but it has little non-overlapping spectrum and shares space with many consumer devices. 5 GHz usually provides more channels and higher capacity, with less range. 6 GHz adds clean spectrum for Wi-Fi 6E and Wi-Fi 7 clients, but its range is shorter and it requires WPA3 for Wi-Fi certification.</p>
+          <p><strong>Band steering</strong> encourages dual-band or tri-band clients to use 5 GHz or 6 GHz when they support it. This can preserve 2.4 GHz for older or distant devices. It does not give an incompatible device a new radio.</p>
+
+          <div class="key-topic"><p>Pick 2.4 GHz for reach and compatibility, 5 GHz for common higher-capacity office use, and 6 GHz for supported clients where clean spectrum matters. Confirm coverage with a site survey rather than guessing from a floor plan.</p></div>
+
+          <aside class="callout analogy"><div class="callout-title">Analogy</div><p>Imagine several conversations in nearby rooms. Wider channels are larger rooms, but fewer rooms fit on the floor. Non-overlapping channels put conversations in separate rooms. Band steering asks a person who can use a quieter upstairs room to move there. Radio signals fade and collide in ways the room analogy cannot show.</p></aside>
+
+          <h3>Names, network shapes, and security</h3>
+          <p>An <strong>SSID</strong> is the network name a user sees. A <strong>BSSID</strong> identifies one radio, usually by its MAC address. An <strong>ESSID</strong> lets several access points advertise the same SSID so a client can roam through one wireless network.</p>
+          <p>In infrastructure mode, clients connect through an access point. An ad hoc network links clients directly without an AP. A mesh uses APs that relay traffic to each other. A point-to-point wireless link bridges two fixed locations, such as separate buildings.</p>
+          <p>WPA2 uses AES-CCMP. <strong>WPA3</strong> uses SAE for personal networks and offers a stronger enterprise mode. A <strong>PSK</strong> is one shared password, which is simple but difficult to revoke for one departed user. Enterprise authentication uses 802.1X and RADIUS so each person has an individual identity. A captive portal is a guest web page for terms, payment, or sign-in before general access.</p>
+
+          <div class="key-topic"><p>Use WPA3-Enterprise with 802.1X when an organization needs individual wireless credentials. A captive portal manages guest access, but it does not replace strong Wi-Fi encryption or authentication.</p></div>
+
+          <h3>Antennas and access-point management</h3>
+          <p>An omnidirectional antenna spreads coverage around an access point, which suits a central office location. A directional antenna concentrates energy in one direction for a hallway, warehouse aisle, or building-to-building link. The right antenna follows the coverage shape, not the desire for maximum power.</p>
+          <p>An autonomous AP stores its own configuration. A lightweight AP receives centralized control from a wireless LAN controller, which simplifies consistent SSIDs, security, and channel plans across many APs.</p>
+
+          <h3>A story: Noor plans conference Wi-Fi</h3>
+          <ol class="story"><li>Noor finds that 2.4 GHz is crowded, so she assigns nearby 2.4 GHz APs to channels 1, 6, and 11.</li><li>She uses 5 GHz with narrower channels in the busy conference area and band steering for compatible clients.</li><li>Employees join WPA3-Enterprise with their own 802.1X credentials, while visitors see a separate guest SSID and captive portal.</li><li>Lightweight APs report to the controller, which applies the same channel and security policy across the floor.</li></ol>
+
+          <aside class="callout separate"><div class="callout-title">Keep these separate</div><ul><li><strong>SSID</strong>: the network name. <strong>BSSID</strong>: one AP radio identifier. <strong>ESSID</strong>: one SSID shared across APs.</li><li><strong>PSK</strong>: one shared secret. <strong>Enterprise</strong>: per-user 802.1X authentication.</li><li><strong>Mesh</strong>: APs relay traffic. <strong>Point-to-point</strong>: a focused link between two sites.</li><li><strong>Omnidirectional</strong>: broad coverage. <strong>Directional</strong>: focused coverage.</li></ul></aside>
+        </div>
         <div class="step" data-step="visual">
           <div class="svg-fig">
             <svg viewBox="0 0 720 150" role="img" aria-label="2.4 GHz channels 1, 6 and 11 do not overlap; channels in between overlap">
@@ -147,7 +294,9 @@
         </div>
         <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
           <p>A company that needs individual Wi-Fi logins and the ability to revoke them → <strong>WPA3-Enterprise / 802.1X</strong>, not PSK. Most secure choice → <strong>WPA3</strong>. Never pick WEP or TKIP.</p></div></div>
+        <div class="step" data-step="scenario"><div class="scenario"><p class="story">A training center has 20 nearby APs. Clients report slow service even with a strong signal. The controller shows many 5 GHz radios using 80 MHz channels that overlap with their neighbors.</p><p class="ask">What is the BEST first configuration change?</p><ul class="options"><li data-correct data-why="Narrower channels create more usable channel choices and reduce co-channel interference in this dense deployment.">Use narrower 20 MHz or 40 MHz channels with a coordinated channel plan</li><li data-why="Increasing power usually makes contention spread farther and does not create more spectrum.">Raise transmit power on every AP</li><li data-why="A PSK changes authentication, not radio-channel contention.">Replace Enterprise authentication with a PSK</li><li data-why="2.4 GHz has less clean spectrum and is usually a worse choice for a dense client area.">Move all clients to 2.4 GHz</li></ul></div></div>
         <div class="step" data-step="check"><div class="check" data-obj="2.3"></div></div>
+        <div class="step" data-step="sayback"><p class="prompt">Explain how you would design secure Wi-Fi for a dense office with employees, guests, and many nearby APs.</p><ul class="checklist"><li>Uses non-overlapping channels and sensible channel widths.</li><li>Contrasts the coverage and capacity of 2.4, 5, and 6 GHz.</li><li>Uses WPA3-Enterprise and 802.1X for individual employee access.</li><li>Separates guest access with an SSID and captive portal.</li><li>Matches antenna and AP management choices to the site.</li></ul><p class="terms">channel width; non-overlapping channels; 802.11h; DFS; 2.4 GHz; 5 GHz; 6 GHz; band steering; SSID; BSSID; ESSID; mesh; WPA2; WPA3; PSK; 802.1X; captive portal; directional antenna; lightweight AP</p><ul class="deeper"><li><a href="https://intronetworks.cs.luc.edu/current/uhtml/wireless.html">Wireless LANs</a> (Peter Dordal) · 15 min</li><li><a href="https://www.cisco.com/c/en/us/support/docs/wireless/wireless-lan-controller-software/118833-wlc-design-ftrs-faq.html">Wireless LAN controller FAQ</a> (Cisco) · 8 min</li></ul></div>
       </div>
     </section>
 
@@ -156,6 +305,42 @@
       <div class="lesson-body">
         <div class="step" data-step="goal"><p class="goal">Plan a wiring closet: MDF vs IDF, racks and airflow, patch panels, power (UPS/PDU), and environmental controls.</p></div>
         <div class="step" data-step="watch"><div data-videos="2.4"></div></div>
+        <div class="step" data-step="read" data-mins="6">
+          <p class="read-job"><strong>The job:</strong> A physical installation keeps network equipment organized, powered, cool, secure, and reachable for repair. A sound room design prevents small facility problems from turning into an outage.</p>
+
+          <h3>Put equipment in the right room</h3>
+          <p>The <strong>main distribution frame</strong>, or MDF, is the central network room. It commonly holds the provider handoff, core switching, and the links that join a building or campus. An <strong>intermediate distribution frame</strong>, or IDF, is a smaller wiring closet that serves a floor, wing, or nearby area and connects back to the MDF.</p>
+          <p>Putting access switches in nearby IDFs keeps horizontal cable runs practical. The MDF remains the main aggregation point. The names describe network roles, not the size of a room.</p>
+
+          <div class="key-topic"><p>An MDF is the central distribution location. An IDF is a local distribution point that uplinks to the MDF. A new floor commonly needs an IDF, not another MDF.</p></div>
+
+          <h3>Rack equipment for service and airflow</h3>
+          <p>Most network gear mounts in a 19-inch rack. Height is measured in rack units, where 1U is 1.75 inches. Leave enough room to route cables, label ports, and remove a failed device without disturbing neighboring equipment. Lockable racks restrict physical access to switches and servers.</p>
+          <p>Equipment has a designed airflow direction. Match port-side intake or exhaust to the room's hot-aisle and cold-aisle arrangement. Typically, equipment fronts face the cold aisle so they take in cool air, while warm exhaust goes to the hot aisle. Mixing airflow directions can recirculate hot air into an intake.</p>
+
+          <div class="key-topic"><p>A rack is more than a place to stack devices. It must provide the right width and height, controlled access, cable management, and an airflow direction that matches the room.</p></div>
+
+          <aside class="callout analogy"><div class="callout-title">Analogy</div><p>Think of a network room like a library's shelving and climate system. The catalog tells you where each item belongs, shelves keep it reachable, locks protect it, and ventilation keeps the room safe for the collection. Network equipment consumes power and produces heat, so it needs electrical and environmental planning that books do not.</p></aside>
+
+          <h3>Terminate permanent cable runs cleanly</h3>
+          <p>Permanent copper cable runs end on a <strong>patch panel</strong>. Short patch cables then connect the matching panel ports to switch ports. This protects fixed cabling from repeated moves and makes tracing a wall jack back to a switch easier.</p>
+          <p>Fiber runs terminate on a <strong>fiber distribution panel</strong>. The panel protects, organizes, and presents the fiber for patching to optics. Label both ends of every copper and fiber run so a technician can follow the documentation during an outage.</p>
+
+          <div class="key-topic"><p>Use patch panels for permanent copper runs and fiber distribution panels for permanent fiber. Patch cords are the short, replaceable links between a panel and active equipment.</p></div>
+
+          <h3>Plan power before plugging in equipment</h3>
+          <p>A <strong>UPS</strong> supplies battery power for a short outage and allows equipment to shut down cleanly. It does not replace a generator for a long utility failure. A <strong>PDU</strong> distributes power within a rack. A managed PDU can report load and switch outlets remotely.</p>
+          <p>Add each device's expected wattage, then compare the total with the circuit, PDU, and UPS ratings. Keep a margin rather than planning for full capacity. Verify voltage too: equipment and circuits may use 120 V, 208 V, or 240 V depending on the site. A plug that fits is not proof that the circuit has enough capacity.</p>
+
+          <h3>Control the room environment</h3>
+          <p>Equipment needs stable temperature and humidity. Too much heat shortens component life or causes shutdowns. Very low humidity raises the risk of electrostatic discharge. Excessive humidity can lead to condensation and corrosion. A common practical target is roughly 64 to 80 °F and 40 to 60 percent relative humidity, while vendor requirements set the final limits.</p>
+          <p>Water can damage energized equipment. A clean-agent gas system can suppress a fire without soaking racks. A pre-action sprinkler system keeps water out of the pipes until detection conditions are met, reducing the chance of an accidental discharge. The correct choice follows the site's fire code and equipment risk.</p>
+
+          <h3>A story: Mateo opens an IDF</h3>
+          <ol class="story"><li>Mateo places access switches in a lockable rack in the third-floor IDF and documents its fiber uplink to the MDF.</li><li>He lands the building cables on labeled patch panels and uses short patch cords to the switches.</li><li>He checks that the switches take cool air from the cold aisle and exhaust into the hot aisle.</li><li>He totals the switch and PoE load before selecting the PDU and UPS, then confirms the room has environmental monitoring and suitable fire suppression.</li></ol>
+
+          <aside class="callout separate"><div class="callout-title">Keep these separate</div><ul><li><strong>MDF</strong>: central distribution room. <strong>IDF</strong>: local closet that uplinks to it.</li><li><strong>UPS</strong>: short-term backup power. <strong>PDU</strong>: rack power distribution.</li><li><strong>Patch panel</strong>: terminates permanent copper. <strong>Fiber distribution panel</strong>: terminates and organizes fiber.</li><li><strong>Low humidity</strong>: ESD risk. <strong>High humidity</strong>: condensation and corrosion risk.</li></ul></aside>
+        </div>
         <div class="step" data-step="visual">
           <div class="tiles">
             <div class="tile"><b>MDF</b>Main distribution frame. The central room where the ISP enters and the core equipment lives</div>
@@ -176,7 +361,9 @@
         </div>
         <div class="step" data-step="traps"><div class="callout trap"><div class="callout-title">Watch for</div>
           <p>"Server room needs fire suppression that won't damage equipment" → a clean agent (gas) system, not a wet pipe. Frequent static shocks → humidity is too <strong>low</strong>.</p></div></div>
+        <div class="step" data-step="scenario"><div class="scenario"><p class="story">During a short utility outage, an IDF's switches lose power at once and reboot when electricity returns. The room has a rack power strip, but no batteries. The organization needs enough time to keep the switches running briefly or shut them down cleanly.</p><p class="ask">Which addition BEST meets this requirement?</p><ul class="options"><li data-correct data-why="A UPS supplies short-term battery power and can support an orderly shutdown.">A UPS sized for the IDF's expected power load</li><li data-why="A PDU distributes rack power but does not provide battery backup by itself.">A second PDU</li><li data-why="A patch panel organizes cabling and does not affect electrical outages.">An additional patch panel</li><li data-why="A fiber distribution panel organizes fiber cabling and does not provide backup power.">A fiber distribution panel</li></ul></div></div>
         <div class="step" data-step="check"><div class="check" data-obj="2.4"></div></div>
+        <div class="step" data-step="sayback"><p class="prompt">Explain how you would set up a secure, serviceable, and resilient IDF for a new office floor.</p><ul class="checklist"><li>Places the IDF in relation to the MDF.</li><li>Uses a lockable rack with correct airflow.</li><li>Separates permanent cabling panels from replaceable patch cords.</li><li>Explains the distinct jobs of a UPS and PDU.</li><li>Addresses temperature, humidity, and equipment-safe fire suppression.</li></ul><p class="terms">MDF; IDF; rack unit; lockable rack; port-side intake; port-side exhaust; patch panel; fiber distribution panel; UPS; PDU; power load; voltage; humidity; temperature; clean-agent fire suppression; pre-action system</p><ul class="deeper"><li><a href="https://www.professormesser.com/network-plus/n10-009/n10-009-video/network-documentation-n10-009/">Network Documentation</a> (Professor Messer) · 10 min</li><li><a href="https://intronetworks.cs.luc.edu/current/uhtml/wireless.html">Wireless LANs</a> (Peter Dordal) · 6 min</li></ul></div>
       </div>
     </section>
 
