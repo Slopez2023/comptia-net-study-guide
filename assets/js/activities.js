@@ -96,8 +96,8 @@
     let i = 0, score = 0, asked = 0;
     const W = 720, colW = W / cfg.actors.length, rowH = 46, top = 44;
     const x = (a) => colW * a + colW / 2;
-    body.innerHTML = `<div class="seq-actors" style="grid-template-columns:repeat(${cfg.actors.length},1fr)">${cfg.actors.map((a) => `<div>${a}</div>`).join("")}</div>
-      <div class="svg-fig seq-fig"><svg viewBox="0 0 ${W} ${top + rowH * cfg.steps.length + 10}" role="img" aria-label="${esc(cfg.title)}"></svg></div>
+    body.innerHTML = `<div class="seq-scroll"><div><div class="seq-actors" style="grid-template-columns:repeat(${cfg.actors.length},1fr)">${cfg.actors.map((a) => `<div>${a}</div>`).join("")}</div>
+      <div class="svg-fig seq-fig"><svg viewBox="0 0 ${W} ${top + rowH}" role="img" aria-label="${esc(cfg.title)}"></svg></div></div></div>
       <div class="seq-panel"></div>`;
     const svg = $("svg", body), panel = $(".seq-panel", body);
     function draw() {

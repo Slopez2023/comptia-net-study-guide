@@ -457,6 +457,7 @@
         <small>≈ ${est} min${vm ? ` · ${vm} min video` : ""}<span class="status"></span></small></span>
         <span class="chev" aria-hidden="true">›</span>`;
       sec.prepend(head);
+      sec._cur = 0;
       head.onclick = () => setOpen(sec, !sec.classList.contains("open"), true);
 
       enhanceLesson(sec);
@@ -480,6 +481,7 @@
         const io = new IntersectionObserver((ents) => ents.forEach((en) => {
           if (!en.isIntersecting) return;
           const i = steps.indexOf(en.target);
+          sec._cur = i; updateMobileBar();
           $$("button", nav).forEach((b, j) => { b.classList.toggle("on", j === i); b.classList.toggle("past", j < i); });
           const cur = $$("button", nav)[i]; if (cur && nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: cur.offsetLeft - 40, behavior: "smooth" });
         }), { rootMargin: "-140px 0px -60% 0px" });
@@ -530,9 +532,33 @@
       $("#showall", toc).onclick = () => lessons.forEach((s) => setOpen(s, true, false));
     }
 
+    // phone bottom bar: current step + one big "next" button
+    const mbar = document.createElement("div");
+    mbar.className = "mobilebar"; mbar.setAttribute("aria-label", "Lesson progress");
+    mbar.innerHTML = `<div class="mb-where"><span></span><b></b></div><button class="btn primary" type="button">Next step ↓</button>`;
+    document.body.appendChild(mbar);
+    function openLesson() { return lessons.find((s) => s.classList.contains("open")); }
+    function updateMobileBar() {
+      const sec = openLesson();
+      mbar.classList.toggle("show", !!sec);
+      if (!sec) return;
+      const steps = $$(".lesson-body > .step", sec).filter((st) => !st.querySelector(".donebar"));
+      const i = Math.min(sec._cur || 0, steps.length - 1), st = steps[i];
+      $(".mb-where span", mbar).textContent = `${sec.dataset.obj} · step ${i + 1} of ${steps.length}`;
+      $(".mb-where b", mbar).textContent = st ? (st.dataset.label ? st.dataset.label.split(":")[0] : STEP_NAMES[st.dataset.step] || "") : "";
+      const btn = $("button", mbar), last = i >= steps.length - 1;
+      btn.textContent = isDone(sec.dataset.obj) ? "Next lesson →" : last ? "Finish ✓" : "Next step ↓";
+      btn.onclick = () => {
+        if (isDone(sec.dataset.obj)) { const nx = nextLesson(sec.dataset.obj); if (nx) location.href = lessonUrl(nx); return; }
+        const target = last ? $(".donebar", sec) : steps[i + 1];
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+    }
+
     function setOpen(sec, open, single) {
       if (open && single) lessons.forEach((s) => s !== sec && s.classList.remove("open"));
       sec.classList.toggle("open", open);
+      setTimeout(updateMobileBar, 0);
       $(".lesson-head", sec).setAttribute("aria-expanded", open);
       $$(".toc a").forEach((a) => a.classList.toggle("current", a.dataset.for === sec.id && open));
     }
@@ -556,6 +582,7 @@
       const bar = $(".hero .progress > span"); if (bar) bar.style.width = p.pct + "%";
       const lab = $(".hero .progress-label"); if (lab) lab.textContent = `${p.done} of ${p.total} lessons done`;
       renderTopbar();
+      updateMobileBar();
     }
     paintAll();
 
