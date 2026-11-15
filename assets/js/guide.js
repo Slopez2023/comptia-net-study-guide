@@ -132,6 +132,19 @@
     const t = todayISO();
     return PLAN.find((p) => p.date === t) || (t < PLAN[0].date ? PLAN[0] : null);
   }
+  /* Spaced review: anything you miss comes back after 1, 3, 7, then 14 days. */
+  const SRS_DAYS = [1, 3, 7, 14];
+  function srs(key, ok) {
+    S.srs = S.srs || {};
+    const it = S.srs[key];
+    if (!ok) S.srs[key] = { box: 0, due: Date.now() + 864e5 * SRS_DAYS[0] - 36e5 };
+    else if (it) {
+      if (it.box + 1 >= SRS_DAYS.length) delete S.srs[key];
+      else S.srs[key] = { box: it.box + 1, due: Date.now() + 864e5 * SRS_DAYS[it.box + 1] - 36e5 };
+    }
+    save();
+  }
+  const srsDue = () => Object.entries(S.srs || {}).filter(([, v]) => v.due <= Date.now()).map(([k]) => k);
   function objStats(obj) {
     const a = Object.values(S.answers).filter((x) => x.obj === obj);
     return { n: a.length, ok: a.filter((x) => x.ok).length };
@@ -244,6 +257,7 @@
       el.classList.add("answered", ok ? "ok" : "no");
       $(".explain", el).innerHTML = `<strong>${ok ? "✓ Correct." : "✗ Not quite."}</strong> ${esc(q.explanation)}`;
       S.answers[q.id] = { obj: q.objective, ok, t: Date.now() }; save();
+      srs("q:" + q.id, ok);
       onAnswer && onAnswer(ok, q);
     });
     return el;
@@ -260,7 +274,151 @@
   }
 
   /* ---------------- Chapter page ---------------- */
-  const STEP_NAMES = { goal: "Goal", watch: "Watch", learn: "Learn", visual: "See it", traps: "Exam traps", check: "Quick check", do: "Do it" };
+  const STEP_NAMES = { goal: "Goal", watch: "Watch", read: "Read", photos: "See it for real", learn: "Learn", visual: "See it", try: "Try it", traps: "Exam traps", scenario: "Scenario", check: "Quick check", sayback: "Say it back", do: "Do it" };
+
+  /* ---------------- Lesson enhancements ---------------- */
+  function photosStep(id) {
+    const imgs = (D.images || []).filter((im) => im.obj === id);
+    if (!imgs.length) return null;
+    const st = document.createElement("div");
+    st.className = "step"; st.dataset.step = "photos";
+    st.innerHTML = `<div class="gallery">${imgs.map((im, k) => `<figure class="photo">
+        <button type="button" class="photo-btn" data-k="${k}" aria-label="Enlarge: ${esc(im.topic)}"><img loading="lazy" src="${ROOT}${im.src}" alt="${esc(im.topic)}"></button>
+        <figcaption><b>${esc(im.topic)}</b>${esc(im.caption)}</figcaption></figure>`).join("")}</div>`;
+    $$(".photo-btn", st).forEach((b) => b.onclick = () => lightbox(imgs, Number(b.dataset.k)));
+    return st;
+  }
+  function lightbox(imgs, k) {
+    const ov = document.createElement("div");
+    ov.className = "lightbox"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true");
+    const show = () => {
+      const im = imgs[k];
+      ov.innerHTML = `<figure><img src="${ROOT}${im.src}" alt="${esc(im.topic)}"><figcaption><b>${esc(im.topic)}</b> · ${esc(im.caption)}
+        <small>Photo: ${esc(im.author || "unknown")} · <a href="${esc(im.license_url || im.page)}" target="_blank" rel="noopener">${esc(im.license || "see source")}</a> · <a href="${esc(im.page)}" target="_blank" rel="noopener">source ↗</a></small></figcaption></figure>
+        <div class="lb-nav">${imgs.length > 1 ? `<button class="btn small" type="button" data-d="-1">← Prev</button><button class="btn small" type="button" data-d="1">Next →</button>` : ""}<button class="btn small primary" type="button" data-close>Close (Esc)</button></div>`;
+      $$("[data-d]", ov).forEach((b) => b.onclick = (e) => { e.stopPropagation(); k = (k + Number(b.dataset.d) + imgs.length) % imgs.length; show(); });
+      $("[data-close]", ov).onclick = close;
+    };
+    const key = (e) => { if (e.key === "Escape") close(); if (e.key === "ArrowRight" && imgs.length > 1) { k = (k + 1) % imgs.length; show(); } if (e.key === "ArrowLeft" && imgs.length > 1) { k = (k - 1 + imgs.length) % imgs.length; show(); } };
+    function close() { ov.remove(); document.removeEventListener("keydown", key); }
+    ov.onclick = (e) => { if (e.target === ov) close(); };
+    document.addEventListener("keydown", key);
+    show(); document.body.appendChild(ov); $("[data-close]", ov).focus();
+  }
+
+  function enhanceRead(st) {
+    const mins = st.dataset.mins;
+    const bar = document.createElement("div");
+    bar.className = "read-bar";
+    bar.innerHTML = `${mins ? `<span class="muted">≈ ${mins} min read</span>` : ""}
+      ${"speechSynthesis" in window ? `<button class="btn small" type="button" data-say="play">🔊 Read aloud</button><button class="btn small ghost hide" type="button" data-say="stop">■ Stop</button>` : ""}
+      <button class="btn small ghost" type="button" data-ruler>📏 Reading ruler</button>`;
+    st.prepend(bar);
+    const play = $("[data-say=play]", bar), stop = $("[data-say=stop]", bar);
+    if (play) {
+      play.onclick = () => {
+        speechSynthesis.cancel();
+        const text = Array.from(st.querySelectorAll("p, li, h3, td, th")).filter((n) => !n.closest(".read-bar")).map((n) => n.innerText).join(". ");
+        const u = new SpeechSynthesisUtterance(text); u.rate = 1.05;
+        u.onend = u.onerror = () => { stop.classList.add("hide"); play.classList.remove("hide"); };
+        speechSynthesis.speak(u); play.classList.add("hide"); stop.classList.remove("hide");
+      };
+      stop.onclick = () => { speechSynthesis.cancel(); };
+    }
+    $("[data-ruler]", bar).onclick = (e) => { st.classList.toggle("ruler"); e.target.classList.toggle("primary"); };
+  }
+
+  function enhanceTables(sec) {
+    $$('.step[data-step="visual"] table, .step[data-step="learn"] table, .step[data-step="read"] table', sec).forEach((tb) => {
+      if (tb.rows.length < 3 || tb.closest(".activity")) return;
+      const wrap = tb.closest(".table-wrap") || tb;
+      const btn = document.createElement("button");
+      btn.type = "button"; btn.className = "btn small ghost quizme"; btn.textContent = "🧠 Quiz me on this table";
+      wrap.before(btn);
+      btn.onclick = () => {
+        const on = !tb.classList.contains("memory");
+        tb.classList.toggle("memory", on);
+        $$("td", tb).forEach((td) => { if (td.cellIndex > 0) td.classList.toggle("hidden-cell", on); });
+        btn.textContent = on ? "👀 Show all answers" : "🧠 Quiz me on this table";
+        btn.classList.toggle("primary", on);
+      };
+      tb.addEventListener("click", (e) => { const td = e.target.closest("td.hidden-cell"); if (td) td.classList.remove("hidden-cell"); });
+    });
+  }
+
+  function enhanceScenarios(sec) {
+    $$(".scenario", sec).forEach((sc, n) => {
+      const opts = $$(".options > li", sc);
+      if (!opts.length) return;
+      const list = document.createElement("div");
+      list.className = "choices";
+      opts.forEach((li, k) => {
+        const b = document.createElement("button");
+        b.type = "button"; b.className = "choice";
+        b.innerHTML = `<span class="k">${"ABCDEF"[k]}</span><span>${li.innerHTML}</span>`;
+        b.onclick = () => {
+          $$(".choice", list).forEach((x, j) => {
+            x.disabled = true;
+            if (opts[j].hasAttribute("data-correct")) x.classList.add("right");
+            const why = document.createElement("small"); why.className = "why"; why.textContent = opts[j].dataset.why || "";
+            x.querySelector("span:last-child").appendChild(why);
+          });
+          const ok = li.hasAttribute("data-correct");
+          if (!ok) b.classList.add("wrong");
+          sc.classList.add("answered");
+          S.scen = S.scen || {}; S.scen[sec.dataset.obj + "#" + n] = ok; save();
+        };
+        list.appendChild(b);
+      });
+      $(".options", sc).replaceWith(list);
+    });
+  }
+
+  function enhanceSayback(sec) {
+    const st = $('.step[data-step="sayback"]', sec); if (!st) return;
+    const id = sec.dataset.obj, key = "say:" + id;
+    const prompt = $(".prompt", st);
+    if (prompt) {
+      const ta = document.createElement("textarea");
+      ta.className = "sayback-box"; ta.rows = 4; ta.placeholder = "Type it in your own words (or say it out loud), then tick what you covered…";
+      ta.value = (S.notes || {})[key] || "";
+      ta.oninput = () => { S.notes = S.notes || {}; S.notes[key] = ta.value; save(); };
+      prompt.after(ta);
+    }
+    const cl = $(".checklist", st);
+    if (cl) {
+      $$("li", cl).forEach((li, k) => {
+        const idk = `${key}:${k}`;
+        li.innerHTML = `<label><input type="checkbox" ${S.tasks[idk] ? "checked" : ""}> <span>${li.innerHTML}</span></label>`;
+        $("input", li).onchange = (e) => { S.tasks[idk] = e.target.checked; save(); };
+      });
+      cl.insertAdjacentHTML("beforebegin", `<p class="mini-h">A good answer…</p>`);
+    }
+    const terms = $(".terms", st);
+    if (terms) {
+      const list = terms.textContent.split(";").map((t) => t.trim()).filter(Boolean);
+      terms.innerHTML = `<span class="mini-h">Key terms</span> ` + list.map((t) => `<span class="chip">${esc(t)}</span>`).join("") +
+        ` <a class="chip link" href="${ROOT}practice/flashcards.html?obj=${id}">Drill ${id} flashcards →</a>`;
+    }
+    const deep = $(".deeper", st);
+    if (deep) {
+      deep.insertAdjacentHTML("beforebegin", `<p class="mini-h">Want to go deeper? (optional)</p>`);
+      $$("a", deep).forEach((a) => { a.target = "_blank"; a.rel = "noopener"; });
+    }
+  }
+
+  function enhanceLesson(sec) {
+    const body = $(".lesson-body", sec);
+    const ph = photosStep(sec.dataset.obj);
+    if (ph) {
+      const anchorStep = $('.step[data-step="read"]', body) || $('.step[data-step="watch"]', body) || $('.step[data-step="goal"]', body);
+      anchorStep ? anchorStep.after(ph) : body.prepend(ph);
+    }
+    $$('.step[data-step="read"]', body).forEach(enhanceRead);
+    enhanceTables(sec);
+    enhanceScenarios(sec);
+    enhanceSayback(sec);
+  }
 
   function initChapter() {
     const lessons = $$(".lesson");
@@ -281,8 +439,10 @@
       sec.prepend(head);
       head.onclick = () => setOpen(sec, !sec.classList.contains("open"), true);
 
+      enhanceLesson(sec);
+
       // number the steps so every lesson reads the same way
-      $$(".step", sec).forEach((st, i) => {
+      $$(".lesson-body > .step", sec).forEach((st, i) => {
         const lab = document.createElement("div");
         lab.className = "step-label";
         lab.innerHTML = `<span class="num">${i + 1}</span>${esc(st.dataset.label || STEP_NAMES[st.dataset.step] || "")}`;
@@ -398,6 +558,10 @@
       <div class="progress"><span style="width:${Math.round((doneCount / ALL_LESSONS.length) * 100)}%"></span></div>
       <div class="progress-label">${doneCount} of ${ALL_LESSONS.length} lessons done</div>`;
 
+    const due = srsDue().length, dueBox = $("#due");
+    if (dueBox) dueBox.innerHTML = due
+      ? `<div class="eyebrow">Due for review</div><div class="what">${due} item${due === 1 ? "" : "s"} to re-check</div><p class="muted">Questions and flashcards you missed, brought back at the right time. ~${Math.max(2, Math.round(due * 0.4))} min.</p><a class="btn primary" href="practice/review.html">▶ Review now</a>`
+      : `<div class="eyebrow">Due for review</div><div class="what">All caught up ✓</div><p class="muted" style="margin:0">Anything you miss in a quiz or mark "Again" in flashcards comes back here after 1, 3, 7 and 14 days.</p>`;
     const today = $("#today");
     if (tp) {
       const items = tp.lessons.map((id) => { const l = lessonById(id); return { done: isDone(id), html: `<a href="${lessonUrl(l)}">${id} ${esc(l.title)}</a>` }; })
@@ -464,7 +628,7 @@
   }
 
   /* ---------------- Boot ---------------- */
-  window.NP = { D, S: () => S, save, CHAPTERS, ALL_LESSONS, PLAN, questionEl, shuffle, esc, toast, lessonUrl, lessonById, videoCard, objStats, $, $$ };
+  window.NP = { D, S: () => S, save, srs, srsDue, CHAPTERS, ALL_LESSONS, PLAN, questionEl, shuffle, esc, toast, lessonUrl, lessonById, videoCard, objStats, $, $$ };
   renderTopbar();
   renderVideos();
   renderPortTables();
@@ -472,6 +636,9 @@
   initChapter();
   initHub();
   initPlan();
+  if (document.querySelector("[data-activity]") && !document.querySelector('script[src$="activities.js"]')) {
+    const sc = document.createElement("script"); sc.src = ROOT + "assets/js/activities.js"; document.body.appendChild(sc);
+  }
   if (location.protocol === "file:") {
     const n = $(".file-notice");
     if (n) n.classList.remove("hide");

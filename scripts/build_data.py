@@ -4,6 +4,7 @@
 Sources:
   ~/Study/Comptia Network+/data/*   objectives, flashcards, questions, ports, acronyms
   data/videos.json                  curated YouTube video map (this repo)
+  data/images.json                  openly licensed photos in assets/img (this repo)
 
 Re-run after editing any of those files:
   python3 scripts/build_data.py [--study PATH]
@@ -58,6 +59,7 @@ def main():
 
     questions = json.loads((data_dir / "practice_questions.json").read_text(encoding="utf-8"))
     videos = json.loads((ROOT / "data" / "videos.json").read_text(encoding="utf-8"))["videos"]
+    images = json.loads((ROOT / "data" / "images.json").read_text(encoding="utf-8"))
 
     bundle = {
         "objectives": list(objectives.values()),
@@ -66,6 +68,7 @@ def main():
         "ports": ports,
         "acronyms": acronyms,
         "videos": videos,
+        "images": images,
     }
     out = ROOT / "assets" / "js" / "data.js"
     out.write_text(
@@ -74,7 +77,7 @@ def main():
         encoding="utf-8",
     )
     print(f"wrote {out.relative_to(ROOT)}: {len(objectives)} objectives, {len(cards)} cards, "
-          f"{len(questions)} questions, {len(videos)} videos")
+          f"{len(questions)} questions, {len(videos)} videos, {len(images)} images")
 
 
 if __name__ == "__main__":

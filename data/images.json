@@ -1,0 +1,512 @@
+[
+ {
+  "obj": "1.1",
+  "topic": "OSI and encapsulation",
+  "caption": "Read the nested headers as data moves down the OSI stack and is unpacked on arrival.",
+  "src": "assets/img/1-1-osi-and-encapsulation.gif",
+  "page": "https://commons.wikimedia.org/wiki/File:Osi-encapsulation.gif",
+  "author": "Moeenrahi",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "1.1",
+  "topic": "OSI communication",
+  "caption": "The matching horizontal layers show how peer protocols communicate across a network.",
+  "src": "assets/img/1-1-osi-communication.png",
+  "page": "https://commons.wikimedia.org/wiki/File:OSI-model-Communication.svg",
+  "author": "Runtux",
+  "license": "Public domain",
+  "license_url": "https://commons.wikimedia.org/wiki/Commons:Copyright_tags#Public_domain"
+ },
+ {
+  "obj": "1.2",
+  "topic": "Router",
+  "caption": "Notice the WAN and LAN ports on a consumer router, which separate the local network from its uplink.",
+  "src": "assets/img/1-2-router.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:TP-Link_AX1500_Wi-Fi_6_Router_Front.jpg",
+  "author": "Abhi25t",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "1.2",
+  "topic": "Ethernet switch",
+  "caption": "This compact switch groups multiple Ethernet access ports into one LAN segment.",
+  "src": "assets/img/1-2-ethernet-switch.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Netgear_Gigabit_Switch_5-port.jpg",
+  "author": "Simon A. Eugster",
+  "license": "GFDL",
+  "license_url": "http://www.gnu.org/copyleft/fdl.html"
+ },
+ {
+  "obj": "1.2",
+  "topic": "Firewall appliance",
+  "caption": "A firewall appliance looks like a small rack or desktop network box with distinct interface ports.",
+  "src": "assets/img/1-2-firewall-appliance.jpeg",
+  "page": "https://commons.wikimedia.org/wiki/File:Netgear_ProSafe_Dual_WAN_VPN_Gigabit_Firewall_FVS336G_front.jpeg",
+  "author": "Zuzu",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "1.2",
+  "topic": "Wireless access point",
+  "caption": "An outdoor AP uses a weatherproof enclosure and an external antenna to provide wireless coverage.",
+  "src": "assets/img/1-2-wireless-access-point.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Outdoors_Wireless_Access_Point.jpg",
+  "author": "Mbrickn",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0"
+ },
+ {
+  "obj": "1.2",
+  "topic": "Rack-mount NAS",
+  "caption": "This short-depth rack appliance is a useful visual for network-attached storage or similar rack-mounted appliances.",
+  "src": "assets/img/1-2-rack-mount-nas.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Front_side_of_NUCserver_Lite_installed_short_depth_rack_-cover_close.jpg",
+  "author": "Truenetworks",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "1.5",
+  "topic": "RJ45 connector",
+  "caption": "The eight colored conductors and clear 8P8C plug make the Ethernet pin order visible.",
+  "src": "assets/img/1-5-rj45-connector.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Stecker_RJ45_568B.jpg",
+  "author": "Markus B\u00e4rlocher",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+ },
+ {
+  "obj": "1.5",
+  "topic": "RJ11 connector",
+  "caption": "Compare this narrow telephone plug with the wider eight-position Ethernet connector.",
+  "src": "assets/img/1-5-rj11-connector.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:6P2C_RJ-11.jpg",
+  "author": "Aeroid",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "1.5",
+  "topic": "LC fiber connector",
+  "caption": "LC connectors use a small latch and duplex clip for high-density fiber patching.",
+  "src": "assets/img/1-5-lc-fiber-connector.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:LC-optical-fiber-connector-hdr-0a.jpg",
+  "author": "Adamantios",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "1.5",
+  "topic": "SC and ST fiber connectors",
+  "caption": "The square SC and bayonet-style ST ends are easy to distinguish side by side.",
+  "src": "assets/img/1-5-sc-and-st-fiber-connectors.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:St-sc-fiber-connectors.jpg",
+  "author": "Poil",
+  "license": "GFDL",
+  "license_url": "http://www.gnu.org/copyleft/fdl.html"
+ },
+ {
+  "obj": "1.5",
+  "topic": "MPO/MTP connector",
+  "caption": "The wide multi-fiber ferrule and alignment pins show why MPO/MTP carries many fibers at once.",
+  "src": "assets/img/1-5-mpo-mtp-connector.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Mpo-connector_QSFP.jpg",
+  "author": "Jesseschulman",
+  "license": "GFDL",
+  "license_url": "http://www.gnu.org/copyleft/fdl.html"
+ },
+ {
+  "obj": "1.5",
+  "topic": "F-type connector",
+  "caption": "The threaded F connector terminates a coaxial cable for cable TV and cable Internet equipment.",
+  "src": "assets/img/1-5-f-type-connector.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:F_Connector_Side.jpg",
+  "author": "Colin",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "1.5",
+  "topic": "BNC connector",
+  "caption": "The BNC locking lugs twist into place instead of threading like an F connector.",
+  "src": "assets/img/1-5-bnc-connector.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:BNC_connector_20050720_001.jpg",
+  "author": "Jonas Bergsten",
+  "license": "Public domain",
+  "license_url": "https://commons.wikimedia.org/wiki/Commons:Copyright_tags#Public_domain"
+ },
+ {
+  "obj": "1.5",
+  "topic": "SFP/SFP+ transceiver",
+  "caption": "The small hot-swappable optical module has an LC duplex port and a metal pull tab.",
+  "src": "assets/img/1-5-sfp-sfp-transceiver.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:LR-Link_10GBASE-SR_SFP%2B_transceiver.jpg",
+  "author": "Dmitry Nosachev",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "1.5",
+  "topic": "QSFP transceiver",
+  "caption": "QSFP modules are wider than SFP modules because they provide four electrical or optical lanes.",
+  "src": "assets/img/1-5-qsfp-transceiver.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:QSFP-40G-SR4_Transceiver.jpg",
+  "author": "Jesseschulman",
+  "license": "GFDL",
+  "license_url": "http://www.gnu.org/copyleft/fdl.html"
+ },
+ {
+  "obj": "1.5",
+  "topic": "DAC/twinax cable",
+  "caption": "A direct-attach copper cable has transceiver-shaped ends permanently attached to the twinax cable.",
+  "src": "assets/img/1-5-dac-twinax-cable.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Twinax-CAB-10GSFP-P8M.jpg",
+  "author": "Labsy",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "1.5",
+  "topic": "Single-mode and multimode fiber",
+  "caption": "The labeled yellow and orange/aqua jackets help distinguish common single-mode and multimode patch cords.",
+  "src": "assets/img/1-5-single-mode-and-multimode-fiber.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Cordons_monomode-multimode_LC.JPG",
+  "author": "Christophe Finot",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "1.5",
+  "topic": "Coaxial cable cross-section",
+  "caption": "Identify the center conductor, dielectric, braided shield, and outer jacket in this cut cable.",
+  "src": "assets/img/1-5-coaxial-cable-cross-section.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Cross_section_of_an_LMR-195_coaxial_cable.jpg",
+  "author": "TubeTimeUS",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "1.5",
+  "topic": "STP cable construction",
+  "caption": "The foil and braid layers surrounding the twisted pairs show how shielded cable rejects interference.",
+  "src": "assets/img/1-5-stp-cable-construction.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Twisted_pair_sfutp.svg",
+  "author": "cmglee",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "1.5",
+  "topic": "UTP cable",
+  "caption": "The unshielded cable exposes four color-coded twisted pairs without foil or braid.",
+  "src": "assets/img/1-5-utp-cable.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Network_utp_unshielded_twisted_pair_cable.jpg",
+  "author": "Leon Brooks",
+  "license": "Public domain",
+  "license_url": "https://commons.wikimedia.org/wiki/Commons:Copyright_tags#Public_domain"
+ },
+ {
+  "obj": "1.6",
+  "topic": "Star topology",
+  "caption": "Every endpoint has a separate link back to the central switch or hub.",
+  "src": "assets/img/1-6-star-topology.png",
+  "page": "https://commons.wikimedia.org/wiki/File:StarNetwork.svg",
+  "author": "WDGraham",
+  "license": "Public domain",
+  "license_url": "https://commons.wikimedia.org/wiki/Commons:Copyright_tags#Public_domain"
+ },
+ {
+  "obj": "1.6",
+  "topic": "Mesh topology",
+  "caption": "The many interconnections provide alternate paths when a node or link fails.",
+  "src": "assets/img/1-6-mesh-topology.png",
+  "page": "https://commons.wikimedia.org/wiki/File:NetworkTopology-Mesh.svg",
+  "author": "Foobaz and Rehua",
+  "license": "Public domain",
+  "license_url": "https://commons.wikimedia.org/wiki/Commons:Copyright_tags#Public_domain"
+ },
+ {
+  "obj": "1.6",
+  "topic": "Spine-leaf topology",
+  "caption": "Each leaf connects to every spine, creating predictable equal-cost paths through the fabric.",
+  "src": "assets/img/1-6-spine-leaf-topology.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Spine-Leaf-Architektur.png",
+  "author": "Jorge28",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "1.7",
+  "topic": "IPv4 addressing and subnetting",
+  "caption": "The block layout shows how one prefix divides into smaller variable-length subnets.",
+  "src": "assets/img/1-7-ipv4-addressing-and-subnetting.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Address_space_in_Variable_Length_Subnet_Masking_(VLSM).svg",
+  "author": "And1mu",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "2.2",
+  "topic": "802.1Q VLAN frame",
+  "caption": "The inserted four-byte tag carries the VLAN identifier between the Ethernet source address and EtherType.",
+  "src": "assets/img/2-2-802-1q-vlan-frame.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Ethernet_802.1Q_Insert_simplified.svg",
+  "author": "Luca Ghio",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "2.2",
+  "topic": "Spanning Tree Protocol",
+  "caption": "The topology illustrates how STP prevents loops by placing redundant paths into a blocking state.",
+  "src": "assets/img/2-2-spanning-tree-protocol.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Spanning_tree_protocol_at_work_1.svg",
+  "author": "GhosT",
+  "license": "GFDL",
+  "license_url": "http://www.gnu.org/copyleft/fdl.html"
+ },
+ {
+  "obj": "2.3",
+  "topic": "Omnidirectional antenna pattern",
+  "caption": "A vertical omni antenna spreads energy around its horizon instead of focusing it in one direction.",
+  "src": "assets/img/2-3-omnidirectional-antenna-pattern.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Omnidirectional_antenna_-_horizontal_and_vertical_radiation_patterns.png",
+  "author": "Department of the US Army",
+  "license": "Public domain",
+  "license_url": "https://commons.wikimedia.org/wiki/Commons:Copyright_tags#United_States_government"
+ },
+ {
+  "obj": "2.3",
+  "topic": "Yagi directional antenna",
+  "caption": "The long boom and multiple elements focus radio energy into a directional beam.",
+  "src": "assets/img/2-3-yagi-directional-antenna.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Yagi_antenna_BIRA.jpg",
+  "author": "OliCol11",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "2.3",
+  "topic": "Parabolic directional antenna",
+  "caption": "The reflector gathers and focuses radio waves at the feed point for a narrow beam.",
+  "src": "assets/img/2-3-parabolic-directional-antenna.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Parabolic_antenna_types2.svg",
+  "author": "Chetvorno",
+  "license": "Public domain",
+  "license_url": "https://commons.wikimedia.org/wiki/Commons:Copyright_tags#Public_domain"
+ },
+ {
+  "obj": "2.3",
+  "topic": "2.4 GHz Wi-Fi channel overlap",
+  "caption": "The channel curves show why overlapping 2.4 GHz channels create adjacent-channel interference.",
+  "src": "assets/img/2-3-2-4-ghz-wi-fi-channel-overlap.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Wifi-channels.svg",
+  "author": "Gauthierm",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "2.4",
+  "topic": "Server rack",
+  "caption": "A populated rack shows the front faces, rails, and cable space used by rack-mounted equipment.",
+  "src": "assets/img/2-4-server-rack.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Servers_in_a_Rack.jpg",
+  "author": "Abigor",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "2.4",
+  "topic": "Patch panel",
+  "caption": "A patch panel terminates permanent building cabling so short patch leads can be rearranged at the rack.",
+  "src": "assets/img/2-4-patch-panel.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Patch_Panel.jpg",
+  "author": "Agott at English Wikipedia",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "2.4",
+  "topic": "Fiber distribution panel",
+  "caption": "The rack panel organizes and protects fiber terminations and slack cable.",
+  "src": "assets/img/2-4-fiber-distribution-panel.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Fiber-Panel-Rack.jpg",
+  "author": "Lijorijo",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "2.4",
+  "topic": "Rack UPS and PDU",
+  "caption": "The UPS provides backup power while the PDU distributes it to the rack equipment.",
+  "src": "assets/img/2-4-rack-ups-and-pdu.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:UPS_PDU_Open.jpg",
+  "author": "Robert.Harker",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "2.4",
+  "topic": "Hot aisle",
+  "caption": "The rear of server racks expels warm air into the hot aisle.",
+  "src": "assets/img/2-4-hot-aisle.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Energy_Efficient_Processors.jpg",
+  "author": "Intel Free Press",
+  "license": "CC BY 2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0"
+ },
+ {
+  "obj": "2.4",
+  "topic": "Data-center fire suppression",
+  "caption": "This discharge scene makes the room-flooding response of clean-agent fire suppression concrete.",
+  "src": "assets/img/2-4-data-center-fire-suppression.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:COMPUTER_ROOM_DISCHARGE.JPG",
+  "author": "Keith4048",
+  "license": "Public domain",
+  "license_url": "https://commons.wikimedia.org/wiki/Commons:Copyright_tags#Public_domain"
+ },
+ {
+  "obj": "3.4",
+  "topic": "DHCP DORA",
+  "caption": "Follow Discover, Offer, Request, and Acknowledge across the client and DHCP server.",
+  "src": "assets/img/3-4-dhcp-dora.png",
+  "page": "https://commons.wikimedia.org/wiki/File:DHCPDORA.png",
+  "author": "Endaargaanweweer",
+  "license": "CC0",
+  "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+ },
+ {
+  "obj": "3.4",
+  "topic": "DNS resolution",
+  "caption": "The diagram separates the recursive resolver from the root, TLD, and authoritative DNS hierarchy.",
+  "src": "assets/img/3-4-dns-resolution.png",
+  "page": "https://commons.wikimedia.org/wiki/File:DNS_Architecture.svg",
+  "author": "Aaron Filbert",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "4.2",
+  "topic": "Man-in-the-middle attack",
+  "caption": "The attacker sits between two endpoints and can read or alter traffic unless protections stop it.",
+  "src": "assets/img/4-2-man-in-the-middle-attack.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Man_in_the_middle_attack.svg",
+  "author": "Miraceti",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "4.2",
+  "topic": "Evil twin or rogue access point",
+  "caption": "The fake AP in the middle lures a client away from the legitimate wireless network.",
+  "src": "assets/img/4-2-evil-twin-or-rogue-access-point.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Example-scenarios-in-which-the-attacker-can-easily-launch-an-Evil-Twin-attack-to-steal-information-using-a-fake-AP.jpg",
+  "author": "Zhanyong Tang, Yujie Zhao, Lei Yang, Shengde Qi, Dingyi Fang, Xiaojiang Chen, Xiaoqing Gong, Zheng Wang",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0"
+ },
+ {
+  "obj": "4.3",
+  "topic": "DMZ or screened subnet",
+  "caption": "Public-facing systems sit in a separate DMZ behind firewall boundaries rather than on the internal LAN.",
+  "src": "assets/img/4-3-dmz-or-screened-subnet.png",
+  "page": "https://commons.wikimedia.org/wiki/File:DMZ_network_diagram_2_firewall.svg",
+  "author": "Pbroks13",
+  "license": "Public domain",
+  "license_url": "https://commons.wikimedia.org/wiki/Commons:Copyright_tags#Public_domain"
+ },
+ {
+  "obj": "5.2",
+  "topic": "Punch-down tool",
+  "caption": "The tool seats a conductor into an IDC slot and trims its excess in one motion.",
+  "src": "assets/img/5-2-punch-down-tool.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Punch-down-tool-Krone-and-110-0a.jpg",
+  "author": "Adamantios",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "5.2",
+  "topic": "Crimper and cabling tools",
+  "caption": "The crimper, stripper, tester, and LSA tool are the main hand tools for terminating and checking copper runs.",
+  "src": "assets/img/5-2-crimper-and-cabling-tools.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Cable_stripper,_cable_tester_(RJ45,_RJ11),_LSA-Tool_and_crimping_tool.jpg",
+  "author": "www.heimnetzwerke.net",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0"
+ },
+ {
+  "obj": "5.5",
+  "topic": "Tone generator and probe",
+  "caption": "The probe detects the tone from the connected generator so a technician can identify the correct cable.",
+  "src": "assets/img/5-5-tone-generator-and-probe.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Tone-generator-and-wire-tracker-0a.jpg",
+  "author": "Adamantios",
+  "license": "CC BY-SA 3.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/3.0"
+ },
+ {
+  "obj": "5.5",
+  "topic": "Cable tester",
+  "caption": "The separate main and remote units verify wire-map continuity across a long copper run.",
+  "src": "assets/img/5-5-cable-tester.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Network_cable_tester_IMGP1639_smial_wp.jpg",
+  "author": "Smial",
+  "license": "Free Art License",
+  "license_url": "http://artlibre.org/licence/lal/en"
+ },
+ {
+  "obj": "5.5",
+  "topic": "Wi-Fi analyzer screenshot",
+  "caption": "The analyzer lists nearby SSIDs with channel and signal information used to troubleshoot wireless overlap.",
+  "src": "assets/img/5-5-wi-fi-analyzer-screenshot.png",
+  "page": "https://commons.wikimedia.org/wiki/File:InSSIDer_2.1_screenshot.png",
+  "author": "Metageek, LLC",
+  "license": "Apache License 2.0",
+  "license_url": "http://www.apache.org/licenses/LICENSE-2.0"
+ },
+ {
+  "obj": "5.5",
+  "topic": "OTDR",
+  "caption": "An OTDR sends pulses down fiber and displays reflections to locate loss and breaks.",
+  "src": "assets/img/5-5-otdr.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:OTDR_-_Yokogawa_AQ7270_-_1.jpg",
+  "author": "Electron",
+  "license": "GFDL",
+  "license_url": "http://www.gnu.org/copyleft/fdl.html"
+ },
+ {
+  "obj": "5.5",
+  "topic": "Network tap",
+  "caption": "The diagram shows a tap copying traffic to a monitoring port without placing the analyzer inline.",
+  "src": "assets/img/5-5-network-tap.gif",
+  "page": "https://commons.wikimedia.org/wiki/File:Gbit-Tap-schema.gif",
+  "author": "Cubro",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ },
+ {
+  "obj": "5.5",
+  "topic": "Wireshark screenshot",
+  "caption": "The packet list, details, and bytes panes connect a capture summary to protocol fields.",
+  "src": "assets/img/5-5-wireshark-screenshot.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Wireshark_screenshot.png",
+  "author": "SF007",
+  "license": "GPL",
+  "license_url": "http://www.gnu.org/licenses/gpl.html"
+ },
+ {
+  "obj": "5.5",
+  "topic": "T568A and T568B termination markings",
+  "caption": "The color labels on this RJ45 jack let learners compare the A and B termination schemes.",
+  "src": "assets/img/5-5-t568a-and-t568b-termination-markings.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Commercial_RJ45_wall_socket_internals.jpg",
+  "author": "2pem",
+  "license": "CC BY-SA 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0"
+ }
+]

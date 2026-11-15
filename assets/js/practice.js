@@ -2,7 +2,7 @@
    Uses the helpers guide.js exposes on window.NP. */
 (function () {
   "use strict";
-  const { D, save, questionEl, shuffle, esc, toast, CHAPTERS, ALL_LESSONS, lessonUrl, objStats, $, $$ } = window.NP;
+  const { D, save, srs, srsDue, questionEl, shuffle, esc, toast, CHAPTERS, ALL_LESSONS, lessonUrl, objStats, $, $$ } = window.NP;
   const S = () => window.NP.S();
   const params = new URLSearchParams(location.search);
   const page = document.body.dataset.page;
@@ -118,8 +118,8 @@
       $("#count").textContent = `${gotN} / ${total} got it`;
     }
     const flip = () => cur && $("#card").classList.toggle("flipped");
-    const again = () => { if (!cur) return; deck.splice(Math.min(4, deck.length), 0, cur); next(); };
-    const got = () => { if (!cur) return; gotN++; const st = S(); st.cards[cur.front] = Date.now(); save(); next(); };
+    const again = () => { if (!cur) return; srs("c:" + cur.front, false); deck.splice(Math.min(4, deck.length), 0, cur); next(); };
+    const got = () => { if (!cur) return; gotN++; const st = S(); st.cards[cur.front] = Date.now(); save(); if ((st.srs || {})["c:" + cur.front]) srs("c:" + cur.front, true); next(); };
     $("#go").onclick = start; $("#card").onclick = flip; $("#flip").onclick = flip; $("#again").onclick = again; $("#got").onclick = got;
     document.addEventListener("keydown", (e) => {
       if (e.target.matches("select,input")) return;
@@ -243,5 +243,35 @@
     t.className = "table-wrap";
   }
 
-  ({ quiz, flashcards, subnetting, ports })[page]();
+  /* ---------------- Due-today review ---------------- */
+  function review() {
+    const box = $("#tool");
+    const queue = shuffle(srsDue());
+    let i = 0, right = 0;
+    if (!queue.length) { box.innerHTML = `<div class="panel"><div class="what" style="font-size:1.4rem;font-weight:800">All caught up ✓</div><p>Nothing is due. Missed quiz questions and "Again" flashcards show up here on a 1 → 3 → 7 → 14 day schedule.</p><a class="btn primary" href="../index.html">Back home</a></div>`; return; }
+    function show() {
+      if (i >= queue.length) { box.innerHTML = `<div class="panel"><div class="eyebrow">Review done</div><div style="font-size:2rem;font-weight:800">${right}/${queue.length} remembered</div><p>Items you got right move to a longer gap. Misses come back tomorrow.</p><a class="btn primary" href="../index.html">Back home</a></div>`; return; }
+      const key = queue[i], head = `<p class="score">Item ${i + 1} of ${queue.length} · ${right} remembered</p>`;
+      const nextBtn = (el) => { const p = document.createElement("p"); p.innerHTML = `<button class="btn primary" type="button">${i + 1 < queue.length ? "Next →" : "Finish"}</button>`; el.appendChild(p); $("button", p).onclick = () => { i++; show(); }; $("button", p).focus(); };
+      if (key.startsWith("q:")) {
+        const q = D.questions.find((x) => String(x.id) === key.slice(2));
+        if (!q) { i++; return show(); }
+        box.innerHTML = head;
+        const el = questionEl(q, (ok) => { if (ok) right++; nextBtn(el); });
+        box.appendChild(el);
+      } else {
+        const c = D.cards.find((x) => x.front === key.slice(2));
+        if (!c) { i++; return show(); }
+        box.innerHTML = head + `<div class="flashcard" tabindex="0"><div><small>${esc(c.set)}${c.obj ? " · " + esc(c.obj) : ""}</small>${esc(c.front)}<div class="back">${esc(c.back)}</div></div></div>
+          <div class="tool-bar" style="justify-content:center;margin-top:16px"><button class="btn primary" data-a="flip" type="button">Show answer</button></div>`;
+        const card = $(".flashcard", box), bar = $(".tool-bar", box);
+        const flip = () => { card.classList.add("flipped"); bar.innerHTML = `<button class="btn" type="button" data-a="no">↺ Didn't know it</button><button class="btn done" type="button" data-a="yes">✓ Knew it</button>`;
+          $$("[data-a]", bar).forEach((b) => b.onclick = () => { const ok = b.dataset.a === "yes"; srs(key, ok); if (ok) right++; i++; show(); }); };
+        card.onclick = flip; $("[data-a=flip]", bar).onclick = flip;
+      }
+    }
+    show();
+  }
+
+  ({ quiz, flashcards, subnetting, ports, review })[page]();
 })();
