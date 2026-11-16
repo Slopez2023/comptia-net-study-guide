@@ -1,0 +1,797 @@
+# Network+ N10-009 dictionary source. Built into assets/js/data.js by scripts/build_data.py.
+# One term per line:  term | spelled out (blank if not an acronym) | objective | plain-English meaning | exam tip (optional)
+# Keep text free of the pipe character. Lines starting with # are ignored.
+
+# ===== 1.1 OSI model =====
+OSI model||1.1|A seven-layer reference model that splits network communication into jobs: Physical, Data link, Network, Transport, Session, Presentation, Application. It is a way to talk about and troubleshoot networks, not a real protocol stack.|Bottom to top: Please Do Not Throw Sausage Pizza Away. Top to bottom: All People Seem To Need Data Processing.
+OSI|Open Systems Interconnection|1.1|The seven-layer reference model for describing how data moves between applications over a network.|Questions give you a device, protocol or symptom and ask for the layer.
+Encapsulation||1.1|Wrapping data in a new header (and sometimes trailer) at each layer as it moves down the stack toward the wire.|Down the stack = encapsulation. Up the stack = decapsulation.
+Decapsulation||1.1|Stripping each layer's header off as data moves up the stack at the receiver.
+PDU|Protocol data unit|1.1|The name for a chunk of data at a given layer: bits (L1), frames (L2), packets (L3), segments or datagrams (L4).|Segment = TCP. Datagram = UDP.
+Bit||1.1|A single 1 or 0. The Layer 1 data unit sent as an electrical, light or radio signal.
+Frame||1.1|The Layer 2 data unit. Carries source and destination MAC addresses and ends with a CRC check.
+Packet||1.1|The Layer 3 data unit. Carries source and destination IP addresses and is what routers forward.
+Segment||1.1|The Layer 4 data unit for TCP, with sequence numbers and ports.
+Datagram||1.1|The Layer 4 data unit for UDP (also used for a connectionless IP packet). No sequencing and no delivery guarantee.
+Physical layer||1.1|Layer 1. Moves raw bits as signals over copper, fiber or radio. Cables, hubs, repeaters and connectors live here.
+Data link layer||1.1|Layer 2. Delivers frames between devices on the same network using MAC addresses. Switches and bridges live here.
+Network layer||1.1|Layer 3. Logical addressing and routing between networks using IP addresses. Routers live here.
+Transport layer||1.1|Layer 4. End-to-end delivery between applications using ports. TCP and UDP live here.
+Session layer||1.1|Layer 5. Opens, manages and closes conversations between two applications.
+Presentation layer||1.1|Layer 6. Formats, encrypts and compresses data so the receiver can read it (for example TLS and character encoding).
+Application layer||1.1|Layer 7. The network services applications use directly, such as HTTP, DNS and SMTP. It is not the app itself.
+Layer 2 switch||1.1|A switch that forwards frames by MAC address. Cannot route between subnets on its own.
+Layer 3 switch||1.2|A switch that can also route between VLANs and subnets using IP addresses, at hardware speed.|Think router and switch in one box.
+Multilayer switch||1.2|A switch that works at Layer 3 and above, such as routing and content-aware features.
+
+# ===== 1.2 appliances, applications, functions =====
+Switch||1.2|Forwards frames to only the port that holds the destination MAC address. Each port is its own collision domain.
+Router||1.2|Connects different networks and forwards packets by IP address. Each interface is its own broadcast domain.
+Hub||1.2|An old Layer 1 device that repeats every signal out every port. One collision domain, half duplex, no intelligence.|Almost never the right answer except for what is wrong with a network.
+Bridge||1.2|Connects two network segments at Layer 2 and filters by MAC address. A switch is a multiport bridge.
+Repeater||1.2|Regenerates a signal to extend a cable run past its distance limit. Layer 1.
+Modem||1.2|Converts between digital data and the signal used on a cable, phone or fiber line.
+Media converter||1.2|Converts one cable type to another, for example copper Ethernet to fiber.
+Firewall||1.2|Allows or blocks traffic based on rules. Can filter by address, port, session state or application.
+NGFW|Next-generation firewall|1.2|A firewall that adds application awareness, intrusion prevention and user identity on top of stateful filtering.
+Load balancer||1.2|Spreads incoming requests across several servers so no one server is overloaded and one failure does not take the service down.
+Proxy server||1.2|Makes requests on behalf of clients. Used to filter content, cache pages and hide client addresses.
+Reverse proxy||1.2|Sits in front of servers and receives client requests for them. Used for load balancing, TLS offload and protection.
+Wireless controller||1.2|Manages many lightweight access points from one place: channels, power, roaming and policy.
+Voice gateway||1.2|Connects a VoIP network to the traditional phone network (PSTN) or analog lines.
+VPN headend||1.2|The device at the central site that terminates remote VPN connections.
+Hypervisor||1.2|Software that runs virtual machines on one physical host. Includes a virtual switch for VM networking.
+Virtual switch||1.2|A software switch inside a hypervisor that connects virtual machines to each other and to the physical network.
+Virtual firewall||1.2|A firewall that runs as software in a virtual or cloud environment instead of as a hardware box.
+Virtual router||1.2|A router that runs as a virtual machine or cloud service.
+Physical appliance||1.2|Dedicated hardware that does one network job, such as a firewall box.
+Content filtering||1.2|Blocking or allowing web traffic by category, URL or content type.
+Traffic shaping||1.2|Controlling the rate or priority of traffic so important applications get bandwidth first.
+CDN|Content Delivery Network|1.2|A network of distributed servers that stores copies of content close to users so pages and files load faster.
+AP|Access Point|1.2|A device that lets wireless clients join the wired network. Bridges Wi-Fi to Ethernet.
+Wireless access point||1.2|See AP. Provides Wi-Fi coverage and connects wireless clients to the LAN.
+UTM|Unified Threat Management|1.2|One appliance that bundles firewall, intrusion prevention, antivirus, content filtering and VPN.
+CAM|Content-addressable Memory|1.2|Fast memory in a switch that holds the MAC address table, mapping MAC addresses to ports.|A full or flooded CAM table is how MAC flooding attacks turn a switch into a hub.
+MAC address table||1.2|The switch's list of which MAC address was learned on which port. Also called the CAM table.
+Forwarding table||1.2|The table a device uses to decide where to send a frame or packet. Switches use MAC tables, routers use routing tables.
+VIP|Virtual IP|1.2|A single address shared by several devices, such as a load-balanced service or a first hop redundancy pair.
+NFV|Network Functions Virtualization|1.2|Running network functions such as firewalls and routers as software on standard servers instead of dedicated boxes.
+IPAM|Internet Protocol Address Management|1.2|A tool for planning, tracking and documenting IP addresses, subnets and DHCP/DNS in one place.
+FHRP|First Hop Redundancy Protocol|1.2|A family of protocols (such as HSRP and VRRP) that lets two routers share one virtual gateway address so hosts keep working if one router fails.
+HSRP|Hot Standby Router Protocol|2.1|Cisco's first hop redundancy protocol. One active router, one standby, sharing a virtual IP.
+VRRP|Virtual Router Redundancy Protocol|2.1|The open-standard first hop redundancy protocol. One master router and backups share a virtual IP.
+NAS|Network-attached Storage|1.2|A storage device on the LAN that serves files to other devices.
+SAN|Storage Area Network|1.2|A dedicated high-speed network that gives servers block-level access to storage.
+DAS|Direct-attached Storage|1.2|Storage connected straight to one server, not shared over a network.
+FC|Fibre Channel|1.2|A high-speed network technology used mostly for SANs.
+CPU|Central Processing Unit|1.2|The processor in a device. High CPU on a router or switch can slow forwarding or the control plane.
+OS|Operating System|1.2|The software that runs a computer or network device and manages its hardware.
+GUI|Graphical User Interface|1.2|A point-and-click management screen, as opposed to the CLI.
+CLI|Command-line Interface|1.2|A text interface for configuring a device by typing commands.
+API|Application Programming Interface|1.2|A defined way for software to talk to other software, used to automate network changes and pull data.
+SQL|Structured Query Language|1.2|The language used to query and change data in databases.
+URL|Uniform Resource Locator|1.2|The full address of a web resource: protocol, host name, and path, for example https://example.com/page.
+USB|Universal Serial Bus|1.2|A common wired connection for peripherals, including USB-to-serial console cables.
+DCI|Data Center Interconnect|1.6|A link that joins two or more data centers so they work as one environment.
+PDU|Power Distribution Unit|2.4|A rack-mounted power strip that distributes power to devices, sometimes with monitoring and remote outlet control.|Don't confuse it with the other PDU (protocol data unit).
+EOL|End-of-life|3.1|The date a vendor stops selling a product.
+EOS|End-of-support|3.1|The date a vendor stops supplying patches and support for a product.
+EULA|End User License Agreement|3.1|A license contract that sets the terms for using software.
+SLA|Service-level Agreement|3.3|A contract that states the level of service a provider promises, such as uptime.
+
+# ===== 1.3 cloud =====
+Cloud computing||1.3|Renting computing, storage and network resources from a provider over the internet instead of owning the hardware.
+Public cloud||1.3|Resources shared among many customers and run by a provider such as AWS, Azure or Google Cloud.
+Private cloud||1.3|Cloud resources used by a single organization, on its own or hosted hardware.
+Hybrid cloud||1.3|A mix of private and public cloud (or on-premises and cloud) that work together.
+Community cloud||1.3|Cloud infrastructure shared by several organizations with common needs, such as the same compliance rules.
+IaaS|Infrastructure as a Service|1.3|The provider supplies virtual servers, storage and networks. You manage the OS and everything above.|You manage the most in IaaS and the least in SaaS.
+PaaS|Platform as a Service|1.3|The provider supplies the OS and runtime platform. You supply the application and data.
+SaaS|Software as a Service|1.3|The provider supplies a finished application you use over the internet, such as web email.
+Multitenancy||1.3|Many customers sharing the same underlying infrastructure while keeping their data separate.
+Elasticity||1.3|Adding and removing resources automatically as demand rises and falls.
+Scalability||1.3|The ability to grow capacity to handle more load.
+VPC|Virtual Private Cloud|1.3|An isolated, private network you define inside a public cloud, with your own subnets, routing and rules.
+Internet gateway||1.3|A cloud component that gives a VPC's resources a path to and from the internet.
+NAT gateway||1.3|A cloud component that lets private-subnet resources reach the internet without being reachable from it.
+Cloud gateway||1.3|A cloud component that connects a VPC to the internet, to other VPCs or to your on-premises network.
+Direct Connect||1.3|A private, dedicated link from your site to a cloud provider that does not cross the public internet.|Private link = more consistent speed and security than a VPN over the internet.
+Site-to-site VPN||1.3|An encrypted tunnel between two networks (for example your office and your VPC) over the internet.
+Security group||1.3|A cloud firewall rule set attached to a resource that allows or blocks traffic to it.
+Network security group||1.3|An Azure-style rule set that filters traffic to subnets or network interfaces.
+Cloud connectivity||1.3|The ways to link your network to a cloud: internet, VPN, or a private dedicated connection.
+
+# ===== 1.4 ports, protocols, traffic types =====
+Port||1.4|A number (0 to 65535) that identifies a service on a host, so many conversations can share one IP address.|Know the well-known ports below 1024 cold.
+Well-known ports||1.4|Ports 0 to 1023, assigned to standard services such as 80 for HTTP and 22 for SSH.
+Ephemeral port||1.4|A temporary high port a client picks as its source port for one conversation.
+Socket||1.4|The combination of an IP address and a port number that identifies one end of a connection.
+TCP|Transmission Control Protocol|1.4|Connection-oriented Layer 4 protocol. Uses a three-way handshake, sequencing, acknowledgements and retransmission for reliable delivery.|Used when accuracy matters: web, email, file transfer.
+UDP|User Datagram Protocol|1.4|Connectionless Layer 4 protocol. No handshake and no guarantee, but low overhead and fast.|Used for DNS queries, voice, video, streaming, DHCP, TFTP and SNMP.
+Three-way handshake||1.4|How TCP opens a connection: SYN, then SYN-ACK, then ACK.
+IP|Internet Protocol|1.4|The Layer 3 protocol that addresses and routes packets between networks. Connectionless and best-effort.
+ICMP|Internet Control Message Protocol|1.4|Sends error and diagnostic messages. Ping and traceroute use it.|ICMP has no ports. It is IP protocol 1.
+GRE|Generic Routing Encapsulation|1.4|A protocol that wraps one type of packet inside another to build a tunnel. It does not encrypt on its own.|IP protocol 47.
+ESP|Encapsulating Security Payload|1.4|The IPsec protocol that encrypts (and can authenticate) the payload.|IP protocol 50.
+AH|Authentication Header|1.4|The IPsec protocol that authenticates packets and proves they were not changed, but does not encrypt.|IP protocol 51.
+FTP|File Transfer Protocol|1.4|Transfers files over TCP 20 and 21. Sends credentials in plain text.|Insecure. SFTP or FTPS replace it.
+SFTP|Secure File Transfer Protocol|1.4|File transfer over an SSH connection on TCP 22. Encrypted.
+TFTP|Trivial File Transfer Protocol|1.4|A simple, unauthenticated file transfer over UDP 69, used for booting devices and moving configs.
+SSH|Secure Shell|1.4|Encrypted remote command-line access on TCP 22. Replaces Telnet.
+Telnet||1.4|Unencrypted remote command-line access on TCP 23.|Insecure. If you see it, replace it with SSH.
+SMTP|Simple Mail Transfer Protocol|1.4|Sends email between servers on TCP 25.
+SMTPS|Simple Mail Transfer Protocol Secure|1.4|SMTP protected with TLS. Commonly TCP 587 (submission) or 465.
+DNS|Domain Name System|1.4|Translates names such as example.com into IP addresses. Uses UDP and TCP 53.|UDP 53 for normal queries, TCP 53 for zone transfers and large replies.
+DHCP|Dynamic Host Configuration Protocol|1.4|Automatically gives hosts an IP address, mask, gateway and DNS server. Uses UDP 67 (server) and 68 (client).
+HTTP|Hypertext Transfer Protocol|1.4|The protocol of the web, in plain text on TCP 80.
+HTTPS|Hypertext Transfer Protocol Secure|1.4|HTTP over TLS on TCP 443.
+NTP|Network Time Protocol|1.4|Keeps device clocks in sync using UDP 123.
+SNMP|Simple Network Management Protocol|1.4|Monitors and manages devices. Polling uses UDP 161 and traps use UDP 162.
+LDAP|Lightweight Directory Access Protocol|1.4|Reads and searches a directory of users and resources on TCP 389.
+LDAPS|Lightweight Directory Access Protocol over SSL|1.4|LDAP encrypted with TLS on TCP 636.
+SMB|Server Message Block|1.4|File and printer sharing protocol used by Windows on TCP 445.
+RDP|Remote Desktop Protocol|1.4|Remote graphical desktop access on TCP 3389.
+SIP|Session Initiation Protocol|1.4|Sets up, manages and ends voice and video calls. TCP or UDP 5060, and 5061 when encrypted.
+RADIUS|Remote Authentication Dial-in User Service|1.4|Central AAA service used for network access such as 802.1X and VPN. UDP 1812 and 1813.|Combines authentication and authorization. Encrypts only the password.
+TACACS+|Terminal Access Controller Access Control System Plus|1.4|Cisco-developed AAA protocol for device administration on TCP 49. Separates AAA functions and encrypts the whole packet.|RADIUS = users getting on the network. TACACS+ = admins logging in to devices.
+Syslog||1.4|Standard for sending device log messages to a central server over UDP 514.
+Unicast||1.4|One sender to one receiver.
+Multicast||1.4|One sender to a group of interested receivers.
+Broadcast||1.4|One sender to every device on the local network.
+Anycast||1.4|One address shared by several servers. Traffic goes to the nearest one.
+Private IP address||1.4|An address reserved for internal use and not routed on the internet: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16.|RFC 1918. Memorize the three ranges.
+Public IP address||1.4|An address that is routable on the internet and unique worldwide.
+APIPA|Automatic Private Internet Protocol Addressing|1.4|A 169.254.x.x address a host gives itself when it cannot reach a DHCP server.|Seeing 169.254.x.x means DHCP failed.
+Loopback address||1.4|127.0.0.1 in IPv4 and ::1 in IPv6. Points back at the local machine, used to test the TCP/IP stack.
+Link-local address||1.4|An address valid only on the local link. IPv4 uses 169.254.0.0/16 and IPv6 uses fe80::/10.
+Multicast address||1.4|An address that identifies a group. IPv4 uses 224.0.0.0 to 239.255.255.255.
+Broadcast address||1.4|The last address in a subnet. Traffic sent there reaches every host in the subnet.
+
+# ===== 1.5 media and transceivers =====
+Twisted pair||1.5|Copper cable with pairs of wires twisted together to cancel interference. The standard Ethernet cabling.
+UTP|Unshielded Twisted Pair|1.5|Twisted pair cable with no metal shield. The most common and cheapest Ethernet cable.
+STP|Shielded Twisted Pair|1.5|Twisted pair with a foil or braid shield around the pairs. Better protection from interference.
+Cat 5e||1.5|Twisted pair rated for 1 Gbps to 100 m.
+Cat 6||1.5|Twisted pair rated for 1 Gbps to 100 m, or 10 Gbps to about 55 m.
+Cat 6a||1.5|Twisted pair rated for 10 Gbps to 100 m.
+Cat 8||1.5|Shielded twisted pair rated for 25 or 40 Gbps over short runs of about 30 m. Used in data centers.
+Coaxial||1.5|Cable with a center conductor, insulation and a metal shield. Used for cable internet and TV.
+Single-mode fiber||1.5|Fiber with a very thin core that carries one light path with a laser. Long distances, many kilometers.
+Multimode fiber||1.5|Fiber with a wider core that carries many light paths. Shorter distances, up to a few hundred meters.|SMF = long, MMF = short.
+Plenum cable||1.5|Cable with a fire-resistant jacket that gives off little smoke, required in air-handling spaces.|Plenum = air spaces. Riser = between floors.
+Riser cable||1.5|Cable rated for vertical runs between floors.
+T568A||1.5|A wiring standard for the order of the eight wires in an RJ45 connector.
+T568B||1.5|The other common wiring standard for RJ45 connectors. Most common in the US.|Same standard on both ends = straight-through. A on one end and B on the other = crossover.
+Straight-through cable||1.5|A cable wired the same on both ends. Connects unlike devices, such as a PC to a switch.
+Crossover cable||1.5|A cable with transmit and receive pairs swapped. Connects like devices, such as a switch to a switch.|Modern ports use Auto-MDIX so you rarely need one.
+Rollover cable||1.5|A flat cable (console cable) used to connect to a device's console port.
+MDIX|Medium Dependent Interface Crossover|1.5|A port feature (Auto-MDI/MDIX) that detects the cable and swaps the transmit and receive pairs automatically.
+RJ|Registered Jack|1.5|A standard modular connector. RJ45 is the 8-pin Ethernet connector and RJ11 is the 6-pin phone connector.
+RJ45||1.5|The 8-pin modular connector used for Ethernet over twisted pair.
+RJ11||1.5|The 6-pin modular connector used for phone lines.
+F-type connector||1.5|A threaded connector for coaxial cable, used with cable TV and cable internet.
+BNC|Bayonet Neill-Concelman|1.5|A twist-lock coax connector used in older networks and video equipment.
+LC|Local Connector|1.5|A small fiber connector with a push-pull latch. Often used in pairs.
+SC|Subscriber Connector|1.5|A square fiber connector that snaps in and out.
+ST|Straight Tip|1.5|A round fiber connector with a twist-and-lock bayonet. Older.
+MPO|Multifiber Push On|1.5|A single connector that holds many fibers (such as 12 or 24) for high-density, high-speed links.
+SFP|Small Form-factor Pluggable|1.5|A small hot-swappable transceiver module, typically up to 1 Gbps.
+SFP+||1.5|An SFP module for 10 Gbps.
+QSFP|Quad Small Form-factor Pluggable|1.5|A transceiver with four lanes, typically 40 Gbps (QSFP+) or 100 Gbps (QSFP28).
+DAC|Direct Attach Copper|1.5|A short twinax copper cable with transceivers built into both ends. Cheap, short links inside a rack or row.
+Transceiver||1.5|A module that sends and receives signals and plugs into a switch or router port.
+TX|Transmitter|1.5|The side of a link that sends the signal.
+RX|Receiver|1.5|The side of a link that receives the signal.|On fiber, TX on one end connects to RX on the other.
+Bidirectional transceiver||1.5|A transceiver that sends and receives on one fiber using two different wavelengths (BiDi).
+WDM|Wavelength Division Multiplexing|1.5|Sending several signals at once over one fiber using different wavelengths of light.
+Duplex||1.5|Whether a link can send and receive at the same time (full duplex) or only one direction at a time (half duplex).
+Bandwidth||1.5|The maximum amount of data a link can carry, measured in bits per second.
+Throughput||1.5|The amount of data that actually gets through, usually less than bandwidth.
+Wi-Fi 6||1.5|The 802.11ax standard. Works in 2.4 and 5 GHz and, as Wi-Fi 6E, 6 GHz.
+802.11||1.5|The IEEE family of wireless LAN standards. Letters name the amendment: a, b, g, n, ac, ax.
+2.4 GHz||1.5|Wi-Fi band with longer range and better wall penetration but more interference and only three non-overlapping channels (1, 6, 11).
+5 GHz||1.5|Wi-Fi band with more channels and higher speed but shorter range.
+6 GHz||1.5|Newest Wi-Fi band (Wi-Fi 6E and 7) with many wide channels and little interference. Shortest range.
+MIMO|Multiple Input Multiple Output|1.5|Using several antennas at once to send and receive more data. MU-MIMO serves several clients at the same time.
+RFID|Radio Frequency Identifier|1.5|A tag read by radio waves, used for badges and inventory.
+NFC|Near-field Communication|1.5|Very short-range wireless (a few centimeters), used for tap-to-pay and badges.
+Bluetooth||1.5|Short-range wireless for personal devices, about 10 m.
+Z-Wave||1.5|A low-power wireless protocol for smart home devices.
+Satellite||1.5|Internet delivered by a satellite link. Works anywhere but has high latency.
+Cellular||1.5|Wireless WAN over a mobile carrier network, such as LTE and 5G.
+
+# ===== 1.6 topologies and architectures =====
+Topology||1.6|The layout of a network, either physical (how devices are cabled) or logical (how data flows).
+Star topology||1.6|Every device connects to a central switch. The most common LAN design. One cable failing affects one device.
+Bus topology||1.6|Every device shares one backbone cable. Old and rare.
+Ring topology||1.6|Each device connects to the next, forming a loop.
+Mesh topology||1.6|Devices have many links to each other. Full mesh links every pair, giving the most redundancy and the most cost.|Links in a full mesh = n(n-1)/2.
+Hybrid topology||1.6|A combination of two or more topologies.
+Point-to-point||1.6|A direct link between exactly two devices.
+Hub-and-spoke||1.6|A central site (hub) connects to many remote sites (spokes). Common in WANs.
+Three-tier hierarchical model||1.6|A design with core, distribution and access layers.
+Core layer||1.6|The high-speed backbone of the network. Moves traffic quickly and does little else.
+Distribution layer||1.6|Aggregates access switches and applies policy such as routing, filtering and QoS.
+Access layer||1.6|Where end devices plug in. Switch ports, PoE and VLAN assignment.
+Collapsed core||1.6|A two-tier design where core and distribution are combined in the same devices.
+Spine and leaf||1.6|A data center design where every leaf switch connects to every spine switch. Predictable, low latency, easy to scale.
+North-south traffic||1.6|Traffic entering or leaving the data center.
+East-west traffic||1.6|Traffic moving between servers inside the data center.
+LAN|Local Area Network|1.6|A network in one limited area, such as a building or campus.
+WAN|Wide Area Network|1.6|A network that links sites across large distances, often using a service provider.
+MAN|Metropolitan Area Network|1.6|A network that covers a city or large campus.
+PAN|Personal Area Network|1.6|A very small network around one person, such as Bluetooth devices.
+WLAN|Wireless Local Area Network|1.6|A LAN that uses Wi-Fi.
+SOHO|Small office/home office|1.6|A very small business or home network.
+Data center||1.6|A facility that houses servers, storage and network equipment.
+Client-server||1.6|An architecture where servers provide services and clients request them.
+Peer-to-peer||1.6|An architecture where each device can act as both client and server.
+Collision domain||1.6|The set of devices that can cause collisions with each other. Each switch port is its own.
+Broadcast domain||1.6|The set of devices that receive each other's broadcasts. Routers and VLANs separate them.|Switch ports = collision domains. Routers and VLANs = broadcast domains.
+
+# ===== 1.7 IPv4 addressing =====
+IPv4||1.7|The 32-bit addressing system written as four decimal numbers, such as 192.168.1.10.
+Octet||1.7|One 8-bit section of an IPv4 address, valued 0 to 255.
+Subnet||1.7|A smaller network carved out of a larger address block.
+Subnet mask||1.7|Marks which bits of an address are the network and which are the host, such as 255.255.255.0.
+CIDR|Classless Inter-domain Routing|1.7|Writing a network as an address plus the number of network bits, such as 192.168.1.0/24. Replaced fixed classes.
+CIDR notation||1.7|The slash format, such as /24, that gives how many bits are the network part.
+VLSM|Variable Length Subnet Mask|1.7|Using different mask sizes inside one network so each subnet can be the right size.
+Network ID||1.7|The first address in a subnet. Names the network itself and cannot be given to a host.
+Usable hosts||1.7|The addresses you can give to devices: 2 to the power of host bits, minus 2 (network and broadcast).
+Default gateway||1.7|The router address a host sends traffic to when the destination is on another network.
+Class A||1.7|Addresses 1 to 126 in the first octet, default mask /8.
+Class B||1.7|Addresses 128 to 191 in the first octet, default mask /16.
+Class C||1.7|Addresses 192 to 223 in the first octet, default mask /24.
+Class D||1.7|Addresses 224 to 239. Reserved for multicast.
+Class E||1.7|Addresses 240 to 255. Reserved for experimental use.
+Host address||1.7|An address assigned to a device on a network.
+/24||1.7|Mask 255.255.255.0. 254 usable hosts.
+/25||1.7|Mask 255.255.255.128. 126 usable hosts.
+/26||1.7|Mask 255.255.255.192. 62 usable hosts.
+/27||1.7|Mask 255.255.255.224. 30 usable hosts.
+/28||1.7|Mask 255.255.255.240. 14 usable hosts.
+/29||1.7|Mask 255.255.255.248. 6 usable hosts.
+/30||1.7|Mask 255.255.255.252. 2 usable hosts. Used for point-to-point links.
+Block size||1.7|The number of addresses in a subnet, found as 256 minus the interesting octet of the mask. It tells you where subnets start.
+
+# ===== 1.8 modern networks =====
+SDN|Software-defined Network|1.8|A design that separates the control plane (decisions) from the data plane (forwarding) so the network is managed from a central controller.
+SD-WAN|Software-defined Wide Area Network|1.8|Uses software and central policy to run a WAN over several links such as broadband, MPLS and cellular, choosing the best path per application.
+VXLAN|Virtual Extensible LAN|1.8|A tunnel that carries Layer 2 frames over a Layer 3 network, supporting about 16 million segments. Used for data center overlays.|VLANs give about 4,094 IDs. VXLAN gives about 16 million.
+Overlay network||1.8|A virtual network built on top of another network using tunnels.
+Underlay network||1.8|The physical network that carries the overlay.
+Control plane||1.8|The part of a device that makes decisions, such as building routing tables.
+Data plane||1.8|The part of a device that forwards traffic.
+Management plane||1.8|The part of a device used to configure and monitor it.
+ZTA|Zero Trust Architecture|1.8|A model that trusts no user or device by default, even inside the network. Every request is verified.|Never trust, always verify. Least privilege, microsegmentation, continuous checks.
+SASE|Secure Access Service Edge|1.8|A cloud service that combines wide-area networking and security (firewall, secure web gateway, zero trust access) delivered at the edge.
+SSE|Security Service Edge|1.8|The security half of SASE, delivered from the cloud, without the networking part.
+IaC|Infrastructure as Code|1.8|Defining and deploying networks and servers with code and templates instead of by hand. Repeatable and version-controlled.
+Automation||1.8|Using scripts and tools to do network tasks without manual steps.
+Orchestration||1.8|Coordinating many automated tasks into one workflow.
+Dual stack||1.8|Running IPv4 and IPv6 at the same time on a device or network.
+IPv6||1.8|The 128-bit addressing system, written as eight groups of hex digits, such as 2001:db8::1.
+Tunneling (IPv6)||1.8|Carrying IPv6 packets inside IPv4 so they cross an IPv4-only network.
+NAT64||1.8|Translates between IPv6 and IPv4 so IPv6-only hosts can reach IPv4 servers.
+SLAAC|Stateless Address Autoconfiguration|1.8|A way for an IPv6 host to build its own address from the router's advertised prefix, with no DHCP server.
+EUI-64||1.8|A method of building the 64-bit IPv6 interface ID from a MAC address.
+Global unicast address||1.8|A public, routable IPv6 address. Starts with 2000::/3 (usually 2xxx or 3xxx).
+Unique local address||1.8|The IPv6 private address range, fc00::/7 (in practice fd00::/8).
+Link-local (IPv6)||1.8|An fe80::/10 address every IPv6 interface has. Works only on the local link.
+Prefix||1.8|The network part of an IPv6 address, written like /64.
+NDP|Neighbor Discovery Protocol|1.8|The IPv6 replacement for ARP. Finds neighbors, routers and addresses using ICMPv6.
+
+# ===== 2.1 routing =====
+Routing table||2.1|The list of networks a router knows and the next hop or interface used to reach each.
+Static route||2.1|A route an administrator enters by hand. Simple and predictable, but it does not adapt to failures.
+Dynamic routing||2.1|Routers share routes with each other using a routing protocol and adapt when the network changes.
+Default route||2.1|The route of last resort, 0.0.0.0/0. Used when no more specific route matches.
+Next hop||2.1|The next router a packet is handed to on the way to its destination.
+Longest prefix match||2.1|When several routes match, the router uses the one with the longest mask (most specific).|Beats administrative distance and metric. Specific wins first.
+Administrative distance||2.1|A number rating how trustworthy a route source is. Lower wins when different protocols offer the same route.|Connected 0, static 1, EIGRP 90, OSPF 110, RIP 120.
+Metric||2.1|A value a routing protocol uses to pick the best path among its own routes. Lower is better.
+Convergence||2.1|The state when all routers agree on the network layout after a change.
+Autonomous system||2.1|A group of networks under one administration that presents a single routing policy to the internet.
+IGP|Interior Gateway Protocol|2.1|A routing protocol used inside one autonomous system, such as OSPF, EIGRP and RIP.
+EGP|Exterior Gateway Protocol|2.1|A routing protocol used between autonomous systems. BGP is the one in use.
+Distance vector||2.1|A routing type that shares routes with neighbors and picks paths by distance, such as hop count. RIP is the example.
+Link state||2.1|A routing type where every router builds a full map of the network and finds the best path itself. OSPF and IS-IS are the examples.
+Path vector||2.1|A routing type that tracks the list of networks a route passes through. BGP is the example.
+Hop count||2.1|The number of routers a packet passes through. RIP uses it as its metric and treats 16 as unreachable.
+RIP|Routing Information Protocol|2.1|An old distance-vector protocol that uses hop count with a maximum of 15 hops.
+OSPF|Open Shortest Path First|2.1|A link-state IGP that uses cost (based on bandwidth) as its metric. Fast convergence, scales well. IP protocol 89.
+EIGRP|Enhanced Interior Gateway Routing Protocol|2.1|Cisco's advanced distance-vector IGP, with a composite metric. Fast convergence.
+BGP|Border Gateway Protocol|2.1|The routing protocol of the internet. Exchanges routes between autonomous systems over TCP 179.
+IS-IS|Intermediate System to Intermediate System|2.1|A link-state IGP similar to OSPF, used mainly by service providers.
+NAT|Network Address Translation|2.1|Rewrites IP addresses as traffic crosses a router, usually so private addresses can use a public one.
+PAT|Port Address Translation|2.1|NAT that also changes port numbers so many private hosts share one public IP. Also called NAT overload.
+Static NAT||2.1|A permanent one-to-one mapping between a private and a public address.
+Dynamic NAT||2.1|Maps private addresses to a pool of public addresses as needed.
+Subinterface||2.1|A virtual interface on one physical port, used for a separate VLAN or network.
+Router on a stick||2.1|A router with one trunk link to a switch and a subinterface per VLAN, used to route between VLANs.
+SVI|Switch Virtual Interface|2.1|A virtual Layer 3 interface on a switch that gives a VLAN an IP address and lets the switch route for it.
+Loopback interface||2.1|A virtual interface that is always up, used for stable router IDs and management.
+Routing loop||2.1|A situation where packets circle between routers and never arrive. TTL stops them eventually.
+TTL|Time to Live|2.1|A counter in each IP packet that drops by one at each router. At zero the packet is discarded.|Traceroute works by raising TTL one at a time.
+
+# ===== 2.2 switching =====
+VLAN|Virtual Local Area Network|2.2|A logical broadcast domain on a switch. Splits one physical switch into several separate networks.|Each VLAN is its own subnet. Traffic between VLANs needs routing.
+Access port||2.2|A switch port that belongs to one VLAN and carries untagged frames to an end device.
+Trunk port||2.2|A switch port that carries traffic for many VLANs between switches, using tags.
+802.1Q||2.2|The standard for VLAN tagging on trunks. Adds a 4-byte tag to the frame.
+Native VLAN||2.2|The VLAN whose frames cross a trunk untagged. Should match on both ends.|A native VLAN mismatch is a classic trunk problem.
+Voice VLAN||2.2|A separate VLAN for IP phones so voice traffic gets its own priority and segment.
+Default VLAN||2.2|VLAN 1 on most switches, where every port starts.
+Port security||2.2|A switch feature that limits which or how many MAC addresses can use a port.
+Spanning tree||2.2|A Layer 2 protocol that blocks redundant links to prevent switching loops, and unblocks them on failure.
+STP|Spanning Tree Protocol|2.2|The original spanning tree protocol (802.1D). Slow to converge, about 30 to 50 seconds.
+RSTP|Rapid Spanning Tree Protocol|2.2|Faster spanning tree (802.1w). Converges in a few seconds.
+Root bridge||2.2|The switch spanning tree picks as the center of the tree. The one with the lowest bridge ID.
+BPDU|Bridge Protocol Data Unit|2.2|The message switches send each other to run spanning tree.
+Root port||2.2|The port on a non-root switch with the best path toward the root bridge.
+Designated port||2.2|The forwarding port on each segment that is closest to the root.
+Blocking port||2.2|A port that spanning tree has disabled for data to prevent a loop.
+PortFast||2.2|A switch feature that puts an access port into forwarding right away, skipping the delay. For end devices only.
+BPDU guard||2.2|Shuts down a PortFast port if a BPDU arrives, to stop rogue switches.
+Root guard||2.2|Stops a port from becoming a path to a new root bridge.
+Switching loop||2.2|Frames circling between switches forever because of a redundant path with no spanning tree. Causes a broadcast storm.
+Broadcast storm||2.2|A flood of broadcasts that grows until the network stops. Often caused by a switching loop.
+Link aggregation||2.2|Bundling several physical links into one logical link for more bandwidth and redundancy. Also called a port channel or EtherChannel.
+LACP|Link Aggregation Control Protocol|2.2|The IEEE 802.3ad standard that negotiates a bundle of links.
+Port mirroring||2.2|Copying traffic from one port to another so a monitoring tool can see it. Also called SPAN.
+Jumbo frame||2.2|An Ethernet frame bigger than 1500 bytes of payload, usually up to 9000, used for storage traffic.
+MTU|Maximum Transmission Unit|2.2|The largest packet a link can carry without fragmenting. 1500 bytes for standard Ethernet.|An MTU mismatch causes large packets to fail while small ones work.
+Auto-negotiation||2.2|Two ports agreeing on speed and duplex automatically.
+Duplex mismatch||2.2|One end is full duplex and the other half. Produces collisions, slow speeds and late-collision counters.
+Flow control||2.2|A way for a receiver to ask a sender to pause so it does not get overwhelmed.
+MAC address||2.2|A 48-bit hardware address burned into a network interface, written as six hex pairs.
+MAC|Media Access Control|2.2|The Layer 2 sublayer and the addressing it uses. A 48-bit address, the first 24 bits identify the vendor.
+NIC|Network Interface Cards|2.2|The hardware that connects a device to a network. Has a MAC address.
+ARP|Address Resolution Protocol|2.2|Finds the MAC address that belongs to an IPv4 address on the local network.
+CDP|Cisco Discovery Protocol|2.2|A Cisco protocol that shows directly connected Cisco devices and their details.
+LLDP|Link Layer Discovery Protocol|2.2|The vendor-neutral protocol for discovering directly connected neighbors.
+PoE|Power over Ethernet|2.2|Sends power to a device over the Ethernet cable. 802.3af (15.4 W), 802.3at (30 W), 802.3bt (60 to 100 W).|Cameras, phones and APs often use PoE.
+EAPoL|Extensible Authentication Protocol over LAN|2.2|The frame format 802.1X uses to carry authentication between a device and a switch or AP.
+
+# ===== 2.3 wireless =====
+SSID|Service Set Identifier|2.3|The name of a wireless network.
+BSSID|Basic Service Set Identifier|2.3|The MAC address of one access point's radio. Identifies one AP.
+ESSID|Extended Service Set Identifier|2.3|One SSID shared by several APs so clients can roam between them.
+Channel||2.3|A slice of a Wi-Fi band. APs near each other should use different channels.|2.4 GHz non-overlapping channels: 1, 6 and 11.
+Channel overlap||2.3|Neighboring channels sharing frequencies, which causes interference.
+Co-channel interference||2.3|Interference from nearby APs using the same channel.
+Channel width||2.3|How wide a channel is (20, 40, 80, 160 MHz). Wider is faster but uses more spectrum.
+Roaming||2.3|A client moving from one AP to another without losing its connection.
+Band steering||2.3|An AP pushing dual-band clients toward 5 GHz to ease congestion on 2.4 GHz.
+WPA|Wi-Fi Protected Access|2.3|A family of Wi-Fi security standards. WPA2 uses AES-CCMP and WPA3 uses SAE with stronger protections.|WPA3 is the best. WEP and WPA/TKIP are broken.
+WPA2||2.3|The long-standing Wi-Fi security standard using AES encryption.
+WPA3||2.3|The newest Wi-Fi security standard. Uses SAE and gives each client its own encryption keys.
+WEP||2.3|An old, broken Wi-Fi encryption standard. Never use it.
+PSK|Pre-shared Key|2.3|A shared passphrase everyone uses to join a Wi-Fi network (personal mode).
+WPA2-Enterprise||2.3|Wi-Fi security that uses 802.1X and a RADIUS server so each user has their own credentials.
+802.1X||2.3|A port-based network access standard. A device must authenticate (through a RADIUS server) before it gets access.
+EAP|Extensible Authentication Protocol|2.3|A framework for authentication methods used with 802.1X, such as EAP-TLS and PEAP.
+WPS|Wi-Fi Protected Setup|2.3|A shortcut for joining Wi-Fi with a PIN or button. The PIN method is weak and should be turned off.
+Captive portal||2.3|A web page a guest must go through (to accept terms or log in) before getting network access.
+Guest network||2.3|A separate Wi-Fi network for visitors, isolated from the internal network.
+Infrastructure mode||2.3|Wi-Fi where clients connect through an access point.
+Ad hoc mode||2.3|Wi-Fi where devices connect directly to each other with no AP.
+Mesh network||2.3|APs that link to each other wirelessly to spread coverage.
+Lightweight AP||2.3|An AP that depends on a wireless controller for configuration and management.
+Autonomous AP||2.3|An AP that is configured and runs on its own.
+Omnidirectional antenna||2.3|An antenna that sends in all directions around it, like a donut. Standard on most APs.
+Directional antenna||2.3|An antenna that focuses the signal in one direction for longer range, such as a Yagi or parabolic antenna.
+Antenna gain||2.3|How much an antenna focuses signal, measured in dBi.
+Site survey||2.3|Measuring signal and interference to plan or check AP placement.
+Heat map||2.3|A colored map of Wi-Fi signal strength made during a site survey.
+Signal strength||2.3|How strong the received Wi-Fi signal is, measured as RSSI in dBm. Closer to zero is stronger.
+Geofencing||2.3|Using location to allow or block access, such as allowing Wi-Fi only inside a building.
+Wi-Fi analyzer||2.3|A tool that shows nearby networks, their channels and signal strength.
+
+# ===== 2.4 physical installs =====
+Rack||2.4|A standard frame (19 inches wide) that holds servers and network equipment.
+Rack unit||2.4|A measure of height in a rack, 1U = 1.75 inches.
+MDF|Main Distribution Frame|2.4|The main wiring room where the outside service enters the building and connects to internal cabling.
+IDF|Intermediate Distribution Frame|2.4|A secondary wiring closet, usually one per floor, that connects to the MDF and to end devices.
+Demarc||2.4|The point where the service provider's network ends and yours begins.
+Patch panel||2.4|A panel of ports that terminates cables, so devices connect with short patch cords.
+Punchdown block||2.4|A block where individual wires are pushed in with a punchdown tool. 66 and 110 blocks.
+Cable management||2.4|Neatly organizing cables with trays, ties and panels to keep airflow and labels clear.
+Cable tray||2.4|An overhead tray that carries cable runs.
+Hot aisle and cold aisle||2.4|Racks arranged so cool air enters the fronts from one aisle and hot air leaves the backs into another.
+Airflow||2.4|Moving cool air in and hot air out. Equipment typically pulls air front to back.
+HVAC||2.4|Heating, ventilation and air conditioning. Keeps equipment cool in the right temperature and humidity.
+Humidity||2.4|Too low causes static, too high causes condensation and corrosion. Aim for about 40 to 60 percent.
+UPS|Uninterruptible Power Supply|2.4|A battery backup that keeps equipment running briefly after power fails and cleans the power.
+Generator||2.4|A long-term power source for outages that last longer than a UPS can cover.
+Redundant power||2.4|Two power supplies or two feeds, so one failure does not take the device down.
+Surge protector||2.4|A device that blocks voltage spikes from damaging equipment.
+Fire suppression||2.4|Systems that put out fires. Data centers use clean-agent gas or pre-action sprinklers to avoid ruining equipment.
+Grounding||2.4|Connecting equipment to earth ground to protect against shocks and static.
+Labeling||2.4|Putting clear, consistent labels on cables, ports and devices.
+Fiber patch cord||2.4|A short fiber cable with connectors on both ends for patching.
+Lockable rack||2.4|A rack with a locking door to keep unauthorized people from reaching equipment.
+Smart jack||2.4|A network interface device that the provider uses to test the line, found at the demarc.
+Environmental monitor||2.4|A sensor that watches temperature, humidity, water and power in a room or rack.
+
+# ===== 3.1 processes and procedures =====
+Network diagram||3.1|A drawing of the network. A physical diagram shows devices and cables, a logical diagram shows addressing, VLANs and flow.
+Physical diagram||3.1|Shows devices, ports and cabling as they are laid out.
+Logical diagram||3.1|Shows how the network works: subnets, VLANs, routing and flow, regardless of where things sit.
+Floor plan||3.1|A map of a building showing where equipment, outlets and APs are.
+Rack diagram||3.1|A picture of what is in each rack and which unit it occupies.
+Asset inventory||3.1|A list of every device with its model, serial number, location, owner and warranty.
+Baseline||3.1|A record of normal performance, used to spot problems when current numbers drift from it.
+Life-cycle management||3.1|Handling a device from purchase to disposal, including patching, upgrades and replacement.
+Change management||3.1|A formal process to request, approve, schedule, document and roll back changes so they do not cause outages.|Parts: request, approval, maintenance window, rollback plan, documentation.
+Rollback plan||3.1|The steps to undo a change if it goes wrong.
+Maintenance window||3.1|A scheduled time when changes can be made with the least disruption.
+Configuration management||3.1|Tracking and controlling device configurations over time.
+Configuration backup||3.1|A saved copy of a device's configuration used to restore it after a failure or bad change.
+Golden configuration||3.1|The approved standard configuration other devices are compared with.
+Configuration drift||3.1|When a device's configuration slowly differs from its standard.
+Patch management||3.1|Testing and installing updates to fix bugs and vulnerabilities.
+Firmware||3.1|Software built into hardware, such as the OS of a switch. Needs updating like any software.
+Standard operating procedure||3.1|A written set of steps for doing a task the same way every time.
+AUP|Acceptable Use Policy|3.1|A policy that states what users may and may not do on the network.
+BYOD|Bring Your Own Device|3.1|A policy that lets employees use their personal devices for work.
+NDA|Non-disclosure agreement|3.1|A contract that stops someone sharing confidential information.
+MOU|Memorandum of understanding|3.1|A document that records an agreement between parties without being a full contract.
+Onboarding||3.1|The process of giving a new employee access and equipment.
+Offboarding||3.1|Removing access and recovering equipment when someone leaves.
+Wiring diagram||3.1|A diagram of how cables connect between devices and panels.
+Site survey report||3.1|A written record of coverage and interference measurements from a site survey.
+
+# ===== 3.2 monitoring =====
+SNMP agent||3.2|Software on a device that answers questions from the monitoring system and sends alerts.
+NMS|Network management system|3.2|The server that polls devices with SNMP and collects the results.
+MIB|Management Information Base|3.2|The database of values an SNMP device can report, identified by OIDs.
+OID|Object Identifier|3.2|A number that names one value in a MIB, such as interface traffic.
+SNMP trap||3.2|An unsolicited alert a device sends when something happens. Sent to UDP 162.
+SNMP poll||3.2|The NMS asks a device for its values on a schedule. UDP 161.
+Community string||3.2|The shared password used by SNMPv1 and v2c. Default values like public and private are a risk.
+SNMPv3||3.2|The secure version of SNMP with authentication and encryption.|Use v3. Earlier versions send in clear text.
+NetFlow||3.2|Records of who talked to whom, how much and over which ports. Used for traffic analysis. Also IPFIX and sFlow.
+Flow data||3.2|Summary records of conversations (source, destination, ports, bytes) collected from routers and switches.
+Packet capture||3.2|Recording the actual packets on a link to analyze them in detail.
+Log aggregation||3.2|Collecting logs from many devices into one place for search and analysis.
+SIEM|Security Information and Event Management|3.2|Collects and correlates logs from many sources to find security events and raise alerts.
+Threshold||3.2|A set value that triggers an alert when crossed.
+Uptime||3.2|The share of time a system is working.
+Availability||3.2|How much of the time a system can be used.
+Latency||3.2|The time data takes to travel from source to destination.
+Jitter||3.2|Variation in latency. Hurts voice and video.
+Packet loss||3.2|Packets that never arrive.
+Bandwidth utilization||3.2|The share of a link's capacity in use.
+Interface errors||3.2|Counters showing damaged or dropped frames on a port, such as CRC errors.
+Syslog server||3.2|A central server that receives logs from devices.
+Log level||3.2|The severity of a log message, from 0 Emergency to 7 Debug.|Lower number = more severe.
+Performance monitoring||3.2|Tracking CPU, memory, bandwidth and errors over time.
+Environmental sensor||3.2|A sensor that tracks temperature, humidity or water around equipment.
+
+# ===== 3.3 disaster recovery =====
+DR|Disaster Recovery|3.3|The plan and process to restore IT services after a major outage or disaster.
+RPO|Recovery Point Objective|3.3|How much data loss is acceptable, measured in time since the last backup.|RPO = how far back you restore. Think P for point in time.
+RTO|Recovery Time Objective|3.3|How long a service can be down before it must be back.|RTO = how long it takes to recover.
+MTTR|Mean Time To Repair|3.3|The average time it takes to fix a failed component.
+MTBF|Mean Time Between Failure|3.3|The average time a component runs between failures.
+Hot site||3.3|A fully equipped, running duplicate site that can take over in minutes. Most expensive.
+Warm site||3.3|A site with equipment but not fully current. Takes hours to days to bring online.
+Cold site||3.3|A space with power and connectivity but no equipment. Takes days to weeks. Cheapest.
+High availability||3.3|Designing a system so it keeps running through failures, using redundancy.
+Failover||3.3|Switching to a backup system when the primary fails.
+Active-active||3.3|Two or more systems all handling traffic at once. If one fails the rest carry the load.
+Active-passive||3.3|One system handles traffic while a standby waits to take over.
+Redundancy||3.3|Having backup components so one failure does not cause an outage.
+Backup||3.3|A copy of data kept to restore it after loss.
+Full backup||3.3|A copy of all selected data.
+Incremental backup||3.3|Copies only what changed since the last backup of any kind. Fast to take, slow to restore.
+Differential backup||3.3|Copies everything changed since the last full backup. Slower to take, easier to restore than incremental.
+Snapshot||3.3|A point-in-time copy of a system or VM state that can be restored quickly.
+Tabletop exercise||3.3|A discussion-based walk through a disaster scenario to test the plan without touching systems.
+Failback||3.3|Returning operations to the original system after it is repaired.
+Single point of failure||3.3|One component whose failure takes down the whole service.
+Cluster||3.3|A group of systems that work together as one for availability or performance.
+Business continuity plan||3.3|The plan for keeping critical business functions going during and after a disruption.
+Validation test||3.3|A test that DR steps work and meet the RTO and RPO.
+
+# ===== 3.4 network services =====
+DHCP server||3.4|The service that hands out IP configuration to clients.
+DORA||3.4|The four DHCP steps: Discover, Offer, Request, Acknowledge.|Discover and Request are broadcasts from the client.
+Scope||3.4|The range of addresses a DHCP server can hand out for one subnet.
+Lease||3.4|The length of time a client may use an address from DHCP before renewing.
+Reservation||3.4|A DHCP setting that always gives the same address to a specific MAC address.
+Exclusion||3.4|Addresses inside a scope that DHCP will not hand out, kept for static devices.
+DHCP relay||3.4|A router feature (IP helper) that forwards DHCP broadcasts to a server on another subnet.
+Address pool||3.4|The set of addresses that DHCP can lease.
+DNS server||3.4|A server that answers name lookups.
+Recursive resolver||3.4|A DNS server that does the full lookup for a client and caches the answer.
+Authoritative server||3.4|A DNS server that holds the official records for a zone.
+Forward zone||3.4|A DNS zone that maps names to IP addresses.
+Reverse zone||3.4|A DNS zone that maps IP addresses back to names, using PTR records.
+Primary zone||3.4|The writable copy of a DNS zone.
+Secondary zone||3.4|A read-only copy of a zone that gets updates from the primary.
+Zone transfer||3.4|Copying a DNS zone from a primary to a secondary server, over TCP 53.
+FQDN|Fully qualified domain name|3.4|The complete name of a host including the domain, such as www.example.com.
+A|Address|3.4|The DNS A record: maps a name to an IPv4 address.
+A record||3.4|Maps a name to an IPv4 address.
+AAAA record||3.4|Maps a name to an IPv6 address.
+CNAME|Canonical Name|3.4|A DNS record that makes one name an alias of another name.
+MX|Mail Exchange|3.4|A DNS record that names the mail server for a domain, with a priority.
+NS|Name Server|3.4|A DNS record that names the authoritative servers for a zone.
+PTR|Pointer|3.4|A DNS record that maps an IP address back to a name (reverse lookup).
+SOA|Start of Authority|3.4|The first DNS record of a zone. Holds the primary server, admin contact and timers.
+TXT|Text|3.4|A DNS record that holds text, used for domain verification, SPF and DKIM.
+SRV record||3.4|A DNS record that points to the server and port for a specific service.
+Hosts file||3.4|A local text file that maps names to addresses, checked before DNS.
+DNSSEC|Domain Name System Security Extensions|3.4|Adds digital signatures to DNS answers so clients can tell they are genuine.
+DoH|DNS over Hypertext Transfer Protocol Secure|3.4|DNS queries sent encrypted inside HTTPS on TCP 443.
+DoT|DNS over Transport Layer Security|3.4|DNS queries sent encrypted with TLS on TCP 853.
+NTS|Network Time Security|3.4|Adds authentication and encryption to NTP.
+PTP|Precision Time Protocol|3.4|Time sync accurate to nanoseconds to microseconds, for finance, voice and industry.
+Stratum||3.4|How many hops a time source is from a reference clock. Stratum 0 is the clock itself.
+TTL (DNS)||3.4|How long a DNS answer may be cached before it is refreshed.
+Name resolution||3.4|Turning a host name into an IP address.
+
+# ===== 3.5 access and management =====
+VPN|Virtual Private Network|3.5|An encrypted tunnel across a public network that makes a remote user or site act as if on the private network.
+IPSec|Internet Protocol Security|3.5|A suite of protocols that authenticates and encrypts IP packets. Uses AH and ESP.
+IKE|Internet Key Exchange|3.5|The protocol IPsec uses to negotiate keys and build a secure tunnel.
+Tunnel mode||3.5|IPsec mode that protects the whole original packet, used for site-to-site VPNs.
+Transport mode||3.5|IPsec mode that protects only the payload, used between two hosts.
+SSL|Secure Socket Layer|3.5|The old encryption protocol that TLS replaced. SSL VPN is a common name for a browser-based VPN.
+TLS|Transport Layer Security|3.5|The standard protocol that encrypts traffic between two endpoints, such as HTTPS.
+Client-to-site VPN||3.5|A VPN that connects a single user's device to a company network.
+Split tunnel||3.5|A VPN setup where only company traffic goes through the tunnel and other traffic goes directly to the internet.
+Full tunnel||3.5|A VPN setup where all traffic goes through the tunnel.
+Clientless VPN||3.5|A VPN used through a web browser with no software to install.
+Jump box||3.5|A hardened server used as a controlled stepping stone to reach devices in another network. Also called a bastion host.
+Out-of-band management||3.5|Managing a device over a separate path (console or dedicated network) that works even if the main network is down.
+In-band management||3.5|Managing a device over the same network it serves, using SSH or HTTPS.
+Console port||3.5|A physical port for direct command-line management of a device.
+Console server||3.5|A device that gives remote access to the console ports of many devices.
+Virtual terminal||3.5|A remote CLI session to a device, such as SSH.
+SSO|Single Sign-on|3.5|Logging in once to reach many applications.
+Remote access||3.5|Reaching a network from outside, such as by VPN, SSH or remote desktop.
+Remote desktop gateway||3.5|A server that brokers secure remote desktop connections.
+
+# ===== 4.1 security concepts =====
+CIA|Confidentiality, Integrity, and Availability|4.1|The three core goals of security: keep data private, keep it accurate, keep it reachable.|The CIA triad.
+Confidentiality||4.1|Keeping information from people who should not see it.
+Integrity||4.1|Making sure data is not changed without permission.
+Availability (security)||4.1|Making sure systems and data can be used when needed.
+Encryption||4.1|Scrambling data with a key so only someone with the right key can read it.
+Symmetric encryption||4.1|One shared key encrypts and decrypts. Fast. AES is the example.
+Asymmetric encryption||4.1|A public key encrypts and a private key decrypts. Slower. RSA is the example.
+Hashing||4.1|A one-way function that turns data into a fixed-length fingerprint, used to prove integrity.
+Data in transit||4.1|Data moving across a network. Protected with TLS, IPsec or VPNs.
+Data at rest||4.1|Data stored on a disk or device. Protected with disk and file encryption.
+Digital certificate||4.1|A signed file that ties a public key to an identity, such as a website.
+CA|Certificate authority|4.1|A trusted organization that issues and signs digital certificates.
+PKI|Public Key Infrastructure|4.1|The system of certificate authorities, certificates and keys that handles trust.
+Self-signed certificate||4.1|A certificate signed by its own key instead of a CA. Browsers will warn about it.
+Public key||4.1|The key you share. Used to encrypt data for you or to verify your signature.
+Private key||4.1|The secret key you never share. Used to decrypt and to sign.
+AAA||4.1|Authentication, authorization and accounting.
+Authentication||4.1|Proving who you are.
+Authorization||4.1|Deciding what you are allowed to do.
+Accounting||4.1|Recording what you did.
+IAM|Identity and Access Management|4.1|Managing user identities and what they can access.
+MFA|Multifactor Authentication|4.1|Using two or more factor types: something you know, have or are.|Two passwords is NOT MFA. Needs different factor types.
+SAML|Security Assertion Markup Language|4.1|An XML standard that lets one system tell another a user has been authenticated, used for SSO.
+Kerberos||4.1|A ticket-based authentication protocol used in Active Directory. Uses UDP and TCP 88.
+RBAC|Role-based access control|4.1|Giving permissions to roles, then putting users in roles.
+Least privilege||4.1|Giving users only the access they need for their job.
+Biometrics||4.1|Authentication using a body feature such as a fingerprint or face.
+Access control vestibule||4.1|A small room with two doors where only one opens at a time. Stops tailgating. Formerly a mantrap.
+Badge reader||4.1|A reader that grants entry when a badge or card is presented.
+Security camera||4.1|A camera for monitoring and recording an area. A detective and deterrent control.
+Honeypot||4.1|A decoy system built to attract and study attackers.
+Honeynet||4.1|A network of honeypots.
+Threat||4.1|Something that could cause harm.
+Vulnerability||4.1|A weakness that a threat could use.
+Exploit||4.1|A method or code that uses a vulnerability.
+Risk||4.1|The chance and impact of a threat using a vulnerability.
+Vulnerability assessment||4.1|Scanning for known weaknesses.
+Penetration test||4.1|Authorized attempts to break into a system to find weaknesses.
+Posture assessment||4.1|Checking a device's security state, such as patches and antivirus, before allowing access.
+Audit||4.1|A review that checks whether controls and rules are followed.
+Compliance||4.1|Following laws, standards and policies.
+GDPR|General Data Protection Regulation|4.1|The EU law that protects personal data and gives people rights over it.
+PCI DSS|Payment Card Industry Data Security Standards|4.1|The standard for organizations that handle credit card data.
+DLP|Data Loss Prevention|4.1|Tools that detect and block sensitive data leaving the organization.
+Segmentation||4.1|Splitting a network into zones to limit how far a problem or attacker can spread.
+Screened subnet||4.1|A network zone between the internet and the internal network for public-facing servers. Formerly called a DMZ.
+DMZ||4.1|The old name for a screened subnet.
+Microsegmentation||4.1|Very fine-grained segmentation that controls traffic between individual workloads.
+Defense in depth||4.1|Using several layers of security so one failure does not expose everything.
+Preventive control||4.1|A control that stops an incident, such as a lock or firewall.
+Detective control||4.1|A control that finds an incident, such as a camera or log review.
+Corrective control||4.1|A control that fixes damage after an incident.
+Deterrent control||4.1|A control that discourages an attack, such as a warning sign.
+Local authentication||4.1|Credentials stored on the device itself.
+
+# ===== 4.2 attacks =====
+DoS|Denial-of-service|4.2|An attack that overloads a system so real users cannot use it.
+DDoS|Distributed Denial-of-service|4.2|A DoS attack from many compromised devices (a botnet) at once.
+Botnet||4.2|A group of infected devices controlled by an attacker.
+Amplification attack||4.2|A DoS attack where small requests to a third-party server cause large replies sent at a victim.
+VLAN hopping||4.2|Getting onto another VLAN by tricking a switch, using double tagging or switch spoofing.
+MAC flooding||4.2|Filling a switch's MAC table so it floods frames out every port, letting the attacker see traffic.
+MAC spoofing||4.2|Changing a device's MAC address to impersonate another.
+ARP spoofing||4.2|Sending fake ARP replies to link the attacker's MAC to someone else's IP, redirecting traffic. Also ARP poisoning.
+DNS poisoning||4.2|Putting false records into a DNS cache so users are sent to a wrong site.
+Rogue DHCP server||4.2|An unauthorized DHCP server that gives clients bad settings such as a malicious gateway.
+Rogue access point||4.2|An unauthorized AP plugged into the network, creating a back door.
+Evil twin||4.2|A malicious AP that copies a real SSID to trick users into connecting.
+On-path attack||4.2|An attacker secretly sits between two parties to read or change traffic. Formerly man-in-the-middle.
+Deauthentication attack||4.2|Sending fake disconnect frames to kick clients off Wi-Fi.
+Phishing||4.2|A fake email that tricks people into giving up information or clicking a link.
+Spear phishing||4.2|A phishing attack aimed at a specific person or group.
+Whaling||4.2|Phishing aimed at senior executives.
+Vishing||4.2|Phishing by phone call.
+Smishing||4.2|Phishing by text message.
+Tailgating||4.2|Following an authorized person through a door without permission.
+Shoulder surfing||4.2|Looking over someone's shoulder to see passwords or data.
+Dumpster diving||4.2|Searching trash for useful information.
+Social engineering||4.2|Tricking people instead of attacking systems.
+Malware||4.2|Software designed to cause harm.
+Ransomware||4.2|Malware that encrypts files and demands payment.
+Brute force||4.2|Trying every possible password.
+Dictionary attack||4.2|Trying common words and passwords from a list.
+Password spraying||4.2|Trying a few common passwords against many accounts to avoid lockouts.
+Insider threat||4.2|Harm from someone who already has legitimate access.
+Zero-day||4.2|An attack on a vulnerability the vendor does not yet know about or has not fixed.
+Buffer overflow||4.2|Sending more data than a program expects, to crash it or run code.
+Ping of death||4.2|Sending an oversized ICMP packet to crash a system.
+SYN flood||4.2|A DoS attack that sends many TCP SYN requests and never completes the handshake.
+Spoofing||4.2|Faking a source address or identity.
+Evil portal||4.2|A fake captive portal used to steal credentials.
+Rogue device||4.2|Any unauthorized device connected to the network.
+
+# ===== 4.3 defenses =====
+Device hardening||4.3|Reducing a device's attack surface: turn off unused services and ports, change default credentials and patch.
+Default credentials||4.3|The factory username and password. Must be changed on every device.
+Disable unused ports||4.3|Shutting down switch ports and services that are not in use.
+ACL|Access Control List|4.3|An ordered list of permit and deny rules that filters traffic or access.|Processed top to bottom. First match wins. Implicit deny at the end.
+Implicit deny||4.3|The hidden last rule of a firewall or ACL that blocks anything not explicitly allowed.
+Stateful firewall||4.3|A firewall that tracks connections and automatically allows return traffic for allowed sessions.
+Stateless firewall||4.3|A firewall that checks each packet alone against the rules, with no memory of connections.
+WAF|Web application firewall|4.3|A firewall that protects web applications from attacks such as SQL injection.
+IDS|Intrusion Detection System|4.3|Watches traffic and alerts on suspicious activity. Does not block.
+IPS|Intrusion Prevention System|4.3|Watches traffic and blocks suspicious activity inline.|IDS = detects (alert). IPS = prevents (blocks).
+NAC|Network Access Control|4.3|Checks a device's identity and health before it is allowed on the network.
+DHCP snooping||4.3|A switch feature that blocks DHCP replies from untrusted ports to stop rogue DHCP servers.
+Dynamic ARP inspection||4.3|A switch feature that checks ARP packets against the DHCP snooping table to stop ARP spoofing.
+Key management||4.3|Creating, storing, rotating and revoking encryption keys safely.
+Trusted zone||4.3|A network area with more trust, such as the internal LAN.
+Untrusted zone||4.3|A network area with no trust, such as the internet.
+URL filtering||4.3|Blocking access to websites by address or category.
+Security rule||4.3|A rule on a firewall or ACL that allows or denies traffic based on source, destination, port and protocol.
+Quarantine network||4.3|An isolated network where non-compliant devices are placed until fixed.
+Patching||4.3|Installing updates that fix vulnerabilities.
+Network segmentation||4.3|Using VLANs, subnets and firewalls to separate parts of a network.
+ICS|Industrial Control System|4.3|Systems that run industrial processes such as factories and power plants.
+SCADA|Supervisory Control and Data Acquisition|4.3|A kind of ICS that monitors and controls equipment across wide areas.
+OT|Operational Technology|4.3|Hardware and software that monitors and controls physical equipment.
+IoT|Internet of Things|4.3|Everyday devices with network connections, such as cameras and sensors. Often poorly secured.
+IIoT|Industrial Internet of Things|4.3|IoT devices used in industry.
+
+# ===== 5.1 troubleshooting methodology =====
+Troubleshooting methodology||5.1|The CompTIA seven steps: identify the problem, establish a theory of probable cause, test the theory, establish a plan of action, implement the solution or escalate, verify full system functionality, document.|Memorize the order. Many questions ask which step comes next.
+Identify the problem||5.1|Step 1. Gather information, question users, duplicate the problem, identify symptoms, determine what changed, and approach multiple problems one at a time.
+Theory of probable cause||5.1|Step 2. Question the obvious and consider multiple approaches such as top to bottom, bottom to top, or divide and conquer.
+Test the theory||5.1|Step 3. Confirm the cause. If it is confirmed, go to step 4. If not, form a new theory or escalate.
+Plan of action||5.1|Step 4. Plan the fix and think about its effects before changing anything.
+Implement the solution||5.1|Step 5. Apply the fix, or escalate to someone else if needed.
+Verify full functionality||5.1|Step 6. Confirm everything works and put preventive measures in place.
+Document||5.1|Step 7. Record findings, actions and outcomes.
+Escalate||5.1|Hand a problem to someone with more access or skill.
+Divide and conquer||5.1|Troubleshooting approach that starts in the middle of the OSI model and moves up or down depending on results.
+Top-to-bottom approach||5.1|Troubleshooting starting at the Application layer and working down.
+Bottom-to-top approach||5.1|Troubleshooting starting at the Physical layer and working up.
+Probable cause||5.1|The most likely reason for a problem, which you must test.
+
+# ===== 5.2 cabling and interface issues =====
+Attenuation||5.2|Signal getting weaker with distance. Too long a cable run or poor quality cable.
+Crosstalk||5.2|Signal leaking between neighboring pairs of wires.
+Near-end crosstalk||5.2|Crosstalk measured at the end where the signal is sent. Usually from poor termination.
+EMI|Electromagnetic interference|5.2|Noise from motors, lights and power lines that corrupts signals.
+Open||5.2|A cable with a wire broken or not connected, so there is no signal.
+Short||5.2|Two wires touching that should not.
+Pinout||5.2|Which wire goes to which pin. A wrong pinout causes a failed or slow link.
+Transposed wires||5.2|Wires in the wrong order at one end.
+Bad connector||5.2|A damaged or badly crimped connector that causes intermittent link problems.
+Bend radius||5.2|The tightest bend a cable can take without damage. Tight bends harm fiber and copper.
+CRC|Cyclic Redundancy Check|5.2|A check value on a frame that tells if it was damaged. A rising CRC error counter points to a bad cable, port or interference.
+Runt||5.2|A frame smaller than 64 bytes. Often caused by collisions.
+Giant||5.2|A frame larger than the allowed size, usually over 1518 bytes (or the jumbo setting).
+Collision||5.2|Two devices sending at once on a shared medium. Normal on half duplex only.
+Late collision||5.2|A collision after the first 64 bytes. Points to a duplex mismatch or a too-long cable.
+Input errors||5.2|Counter of frames received with errors.
+Output drops||5.2|Counter of frames dropped because the outgoing queue was full.
+Interface counters||5.2|Statistics on a port: packets, errors, drops, collisions. Used to find physical and duplex problems.
+Link light||5.2|The LED on a port that shows whether it has a link, and often the speed or activity.
+Err-disabled||5.2|A port automatically shut down by the switch because of a problem, such as port security violation or loop.
+Administratively down||5.2|A port that has been turned off in the configuration.
+Up/up||5.2|An interface state where the physical link and the line protocol are both working.
+Up/down||5.2|An interface state where the physical link is up but the protocol is not, often a Layer 2 problem.
+Down/down||5.2|An interface with no physical link, often a cable or far-end problem.
+PoE budget||5.2|The total power a switch can supply across all its ports. Exceeding it makes devices fail to power.
+Transceiver mismatch||5.2|Using the wrong type, speed, wavelength or fiber on the two ends of a link.
+Wrong fiber type||5.2|Mixing single-mode and multimode fiber or connectors, so the link fails or is weak.
+TX/RX reversed||5.2|Fiber transmit and receive swapped, so no link comes up. Flip one end.
+Cable length||5.2|Copper Ethernet is limited to 100 m (328 ft). Longer needs a switch, repeater or fiber.
+Cable certification||5.2|Testing a cable run to prove it meets a category standard.
+
+# ===== 5.3 network service issues =====
+STP issues||5.3|Problems from spanning tree, such as the wrong root bridge, a blocked port, or a loop.
+Duplicate IP address||5.3|Two devices using the same IP, causing intermittent connectivity.
+Wrong subnet mask||5.3|A host can reach some addresses but not others because its mask is wrong.
+Wrong default gateway||5.3|A host can reach its own subnet but nothing beyond it.
+Incorrect VLAN||5.3|A port in the wrong VLAN so the host gets the wrong subnet or no connectivity.
+Missing route||5.3|No route to a destination, so packets are dropped.
+Asymmetric routing||5.3|Traffic goes out one path and returns by another, which can break stateful firewalls.
+Route flapping||5.3|A route that keeps appearing and disappearing, causing instability.
+DHCP exhaustion||5.3|All addresses in the scope are leased, so new clients cannot get one.
+DNS failure||5.3|A host can reach IP addresses but not names. Check the DNS server setting.
+ACL misconfiguration||5.3|A wrong or misplaced rule that blocks or permits traffic by mistake.
+Certificate expired||5.3|A TLS certificate that is past its date. Browsers show a warning or fail to connect.
+Time sync issues||5.3|Clocks that differ enough to break certificates, Kerberos or log correlation.
+
+# ===== 5.4 performance issues =====
+Congestion||5.4|More traffic than a link can carry, causing delay and loss.
+Bottleneck||5.4|The slowest part of a path that limits overall speed.
+Capacity||5.4|The amount of traffic a link or device can handle.
+Oversubscription||5.4|Providing less capacity than all users could use at once. Normal up to a point.
+Interference||5.4|Unwanted signals that degrade wireless or cable performance.
+Signal-to-noise ratio||5.4|How strong the signal is compared with background noise. Higher is better.
+RSSI|Received Signal Strength Indicator|5.4|A measure of Wi-Fi signal strength, in dBm. -50 is strong, -80 is weak.
+Dead spot||5.4|An area with little or no Wi-Fi signal.
+Insufficient coverage||5.4|Too few APs or poor placement leaving gaps in wireless coverage.
+Client disassociation||5.4|Clients dropping off Wi-Fi, often from interference or roaming problems.
+Channel utilization||5.4|How busy a Wi-Fi channel is.
+Roaming problem||5.4|A client holds on to a weak AP instead of moving to a better one.
+QoS|Quality of Service|5.4|Giving priority to important traffic such as voice so it gets through during congestion.
+Traffic prioritization||5.4|Marking and handling some traffic ahead of others.
+VoIP|Voice over IP|5.4|Phone calls sent as IP packets. Needs low latency and jitter.
+Speed test||5.4|A tool that measures bandwidth, latency and jitter.
+Duplex issue||5.4|A speed or duplex mismatch that causes slow performance.
+
+# ===== 5.5 tools and commands =====
+ping||5.5|Sends ICMP echo requests to check whether a host is reachable and how long a round trip takes.
+traceroute||5.5|Shows each router hop on the path to a destination, using TTL. On Windows the command is tracert.
+tracert||5.5|The Windows version of traceroute.
+nslookup||5.5|Queries DNS servers for a name or address. Used to test name resolution.
+dig||5.5|A more detailed DNS query tool on Linux and macOS.
+ipconfig||5.5|Windows command that shows or renews IP settings. ipconfig /all shows full detail, /release and /renew refresh DHCP, /flushdns clears the DNS cache.
+ifconfig||5.5|The older Linux and macOS command that shows interface settings.
+ip||5.5|The newer Linux command to show and configure interfaces and routes, such as ip addr and ip route.
+arp||5.5|Shows or edits the ARP cache that maps IP addresses to MAC addresses. arp -a lists it.
+netstat||5.5|Shows active connections, listening ports and statistics.
+route||5.5|Shows or edits the host's routing table.
+nmap||5.5|A port scanner that finds hosts and open ports.
+tcpdump||5.5|A command-line packet capture tool.
+Wireshark||5.5|A graphical protocol analyzer that captures and decodes packets.
+show interface||5.5|Router/switch command that displays the status and counters of an interface.
+show ip route||5.5|Router command that displays the routing table.
+show mac address-table||5.5|Switch command that displays which MAC addresses were learned on which ports.
+show vlan||5.5|Switch command that lists VLANs and their ports.
+show running-config||5.5|Displays the active configuration of a device.
+show version||5.5|Displays the OS version, uptime and hardware of a device.
+Cable tester||5.5|A tool that checks a cable for continuity, opens, shorts and wiring order.
+Toner and probe||5.5|A tone generator and probe used to trace a cable through walls and panels. Also called a fox and hound.
+Multimeter||5.5|A tool that measures voltage, resistance and continuity.
+OTDR|Optical time-domain reflectometer|5.5|A fiber tool that sends light pulses to find breaks and measure loss along a fiber and where problems are.
+Optical power meter||5.5|Measures the light power in fiber.
+Loopback plug||5.5|A plug that connects transmit to receive on a port or cable to test it.
+Punchdown tool||5.5|Pushes wires into a punchdown block.
+Crimper||5.5|Attaches connectors to cable ends.
+Cable stripper||5.5|Removes the jacket from cable.
+Fusion splicer||5.5|Joins two fibers by melting them together.
+Spectrum analyzer||5.5|Shows radio signals across frequencies to find interference.
+Protocol analyzer||5.5|A tool that captures and decodes traffic, such as Wireshark.
+Port scanner||5.5|A tool that checks which ports on a host are open.
+Looking glass||5.5|A public web page that lets you run network commands from a provider's router.
+Terminal emulator||5.5|Software used to reach a device's CLI, such as PuTTY.

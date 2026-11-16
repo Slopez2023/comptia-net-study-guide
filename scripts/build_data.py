@@ -5,6 +5,7 @@ Sources:
   ~/Study/Comptia Network+/data/*   objectives, flashcards, questions, ports, acronyms
   data/videos.json                  curated YouTube video map (this repo)
   data/images.json                  openly licensed photos in assets/img (this repo)
+  data/dictionary.txt               hand-written terms and definitions (this repo)
 
 Re-run after editing any of those files:
   python3 scripts/build_data.py [--study PATH]
@@ -21,6 +22,30 @@ DEFAULT_STUDY = Path.home() / "Study" / "Comptia Network+"
 def read_csv(path):
     with open(path, newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f))
+
+
+def read_dictionary(path, acronyms):
+    """Parse data/dictionary.txt: term | spelled out | objective | meaning | exam tip (optional)."""
+    official = {a["acronym"].lower() for a in acronyms}
+    entries, seen = [], set()
+    for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        if not line.strip() or line.startswith("#"):
+            continue
+        f = [x.strip() for x in line.split("|")]
+        if len(f) not in (4, 5) or not f[0] or not f[3]:
+            raise SystemExit(f"{path.name}:{n}: expected 4 or 5 fields separated by |")
+        key = (f[0].lower(), f[1].lower())
+        if key in seen:
+            raise SystemExit(f"{path.name}:{n}: duplicate term {f[0]!r} ({f[1]!r})")
+        seen.add(key)
+        e = {"t": f[0], "f": f[1], "o": f[2], "d": f[3]}
+        if len(f) == 5 and f[4]:
+            e["x"] = f[4]
+        if f[1] and f[0].lower() in official:
+            e["a"] = 1  # on the official CompTIA acronym list
+        entries.append(e)
+    entries.sort(key=lambda e: (e["t"].lower(), e["f"].lower()))
+    return entries
 
 
 def main():
@@ -61,6 +86,8 @@ def main():
     videos = json.loads((ROOT / "data" / "videos.json").read_text(encoding="utf-8"))["videos"]
     images = json.loads((ROOT / "data" / "images.json").read_text(encoding="utf-8"))
 
+    dictionary = read_dictionary(ROOT / "data" / "dictionary.txt", acronyms)
+
     bundle = {
         "objectives": list(objectives.values()),
         "cards": cards,
@@ -69,6 +96,7 @@ def main():
         "acronyms": acronyms,
         "videos": videos,
         "images": images,
+        "dictionary": dictionary,
     }
     out = ROOT / "assets" / "js" / "data.js"
     out.write_text(
@@ -77,7 +105,7 @@ def main():
         encoding="utf-8",
     )
     print(f"wrote {out.relative_to(ROOT)}: {len(objectives)} objectives, {len(cards)} cards, "
-          f"{len(questions)} questions, {len(videos)} videos, {len(images)} images")
+          f"{len(questions)} questions, {len(videos)} videos, {len(images)} images, {len(dictionary)} dictionary terms")
 
 
 if __name__ == "__main__":

@@ -118,6 +118,7 @@
     eye: '<path d="M3 12s4-6 9-6 9 6 9 6-4 6-9 6-9-6-9-6z"/><circle cx="12" cy="12" r="2.5"/>',
     download: '<path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 20h14"/>',
     upload: '<path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 20h14"/>',
+    book: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7.5h6"/>',
     printer: '<path d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/>',
   };
   const icon = (n) => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ""}</svg>`;
@@ -186,6 +187,7 @@
       <a class="brand" href="${ROOT}index.html"><span class="brand-mark">N+</span><span>Network+ Guide</span></a>
       <div class="crumb">${esc(document.body.dataset.crumb || "")}</div>
       <div class="topbar-actions">
+        <a class="btn small ghost dict-link" href="${ROOT}dictionary.html" title="Look up any term or acronym">${icon("book")}<span>Dictionary</span></a>
         ${nxt ? `<a class="btn small primary" href="${lessonUrl(nxt)}" title="Your next unfinished lesson">Next: ${esc(nxt.id)} →</a>` : ""}
         <button class="btn small timer" type="button" title="25-minute focus timer">${icon("timer")}<span>25:00</span></button>
         <button class="btn small ghost theme icon-only" type="button" title="Light / dark" aria-label="Toggle light or dark mode">${icon("contrast")}</button>
@@ -416,7 +418,7 @@
       const qs = shuffle(D.questions.filter((q) => q.objective === obj)).slice(0, n);
       qs.forEach((q) => box.appendChild(questionEl(q)));
       const more = document.createElement("p");
-      more.innerHTML = `<a href="${ROOT}practice/quiz.html?obj=${obj}">More ${obj} questions →</a> · <a href="${ROOT}practice/flashcards.html?obj=${obj}">${obj} flashcards →</a>`;
+      more.innerHTML = `<a href="${ROOT}practice/quiz.html?obj=${obj}">More ${obj} questions →</a> · <a href="${ROOT}practice/flashcards.html?obj=${obj}">${obj} flashcards →</a> · <a href="${ROOT}dictionary.html?obj=${obj}">${obj} terms →</a>`;
       box.appendChild(more);
     });
   }
