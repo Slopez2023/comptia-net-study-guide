@@ -6,7 +6,9 @@ A set of linked HTML pages for passing Network+ by **Mon Nov 30, 2026**. One hub
 
 ## Open it
 
-Double-click **`Start Study Guide.command`** in Finder, or run:
+**Online:** https://slopez2023.github.io/comptia-net-study-guide/ (works on your phone; progress is saved per browser).
+
+**On this Mac:** Double-click **`Start Study Guide.command`** in Finder, or run:
 
 ```sh
 ./serve.sh          # → http://localhost:8742
