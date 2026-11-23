@@ -187,12 +187,37 @@
     document.documentElement.dataset.theme = S.theme;
   }
 
+  /* ---------------- Network map (decorative banner art) ---------------- */
+  function nocMap(cls) {
+    const still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const N = { wan: [48, 112, "WAN"], fw: [150, 112, "FW"], r1: [258, 112, "R1"], sw1: [374, 58, "SW1"], sw2: [374, 166, "SW2"], ap: [496, 24, "AP"], srv: [496, 88, "SRV"], pc1: [496, 140, "PC"], pc2: [496, 200, "PC"] };
+    const LINKS = [["wan", "fw"], ["fw", "r1"], ["r1", "sw1"], ["r1", "sw2"], ["sw1", "ap"], ["sw1", "srv"], ["sw2", "pc1"], ["sw2", "pc2"]];
+    const COL = ["#60a5fa", "#2dd4bf", "#fb923c", "#fb7185", "#a78bfa", "#4ade80"];
+    const path = (a, b) => `M${N[a][0]} ${N[a][1]} L${N[b][0]} ${N[b][1]}`;
+    const PK = [["wan", "fw", 0, 2.2, 0], ["fw", "r1", 1, 1.6, 0.4], ["r1", "sw1", 2, 1.8, 0.9], ["r1", "sw2", 3, 1.8, 0.2], ["sw1", "srv", 4, 1.4, 1.1], ["sw2", "pc1", 5, 1.5, 0.6],
+      ["sw1", "ap", 0, 1.5, 1.6], ["sw2", "pc2", 2, 1.7, 1.3], ["r1", "fw", 4, 1.6, 1.2], ["srv", "sw1", 1, 1.4, 0.3], ["pc2", "sw2", 5, 1.7, 0.8], ["fw", "wan", 3, 2.2, 1.5]];
+    const node = (id) => { const [x, y, t] = N[id], w = id === "wan" ? 64 : 46;
+      return `<g class="nn ${id === "wan" ? "wan" : ""}" transform="translate(${x},${y})"><rect x="${-w / 2}" y="-15" width="${w}" height="30" rx="8"/><text y="4.5" text-anchor="middle">${t}</text>${id === "wan" ? "" : `<circle class="nled" cx="${w / 2 - 6}" cy="-9" r="2.4" style="animation-delay:${(x + y) % 17 / 10}s"/>`}</g>`; };
+    return `<svg class="noc-map ${cls || ""}" viewBox="0 0 560 224" aria-hidden="true" focusable="false">
+      ${LINKS.map(([a, b]) => `<path class="nlink" d="${path(a, b)}"/>`).join("")}
+      ${still ? "" : PK.map(([a, b, c, d, st]) => `<circle class="pkt" r="3.2" fill="${COL[c]}"><animateMotion dur="${d}s" begin="-${st}s" repeatCount="indefinite" path="${path(a, b)}"/></circle>`).join("")}
+      ${Object.keys(N).map(node).join("")}
+    </svg>`;
+  }
+  const nocChip = (led, txt) => `<span class="chip-noc"><i class="led ${led}"></i>${txt}</span>`;
+  /* Every page hero becomes a dark network-operations banner with the map on the right. */
+  function decorateHero() {
+    const hero = $(".hero"); if (!hero || $(".noc-map", hero)) return;
+    hero.classList.add("hero-noc");
+    hero.insertAdjacentHTML("beforeend", nocMap("hero-map"));
+  }
+
   /* ---------------- Top bar ---------------- */
   function renderTopbar() {
     const bar = $(".topbar"); if (!bar) return;
     const nxt = firstUndone();
     bar.innerHTML = `<div class="topbar-in">
-      <a class="brand" href="${ROOT}index.html"><span class="brand-mark">N+</span><span>Network+ Guide</span></a>
+      <a class="brand" href="${ROOT}index.html"><span class="brand-mark">N+<i class="led good" aria-hidden="true"></i></span><span>Network+ Guide</span></a>
       <div class="crumb">${esc(document.body.dataset.crumb || "")}</div>
       <div class="topbar-actions">
         <a class="btn small primary study-link" href="${ROOT}practice/exam.html" title="Study & Test hub: today's session, practice exams, readiness">${icon("target")}<span>Study &amp; Test</span></a>
@@ -753,6 +778,21 @@
     const nx = firstUndone(), dl = daysLeft(), tp = todayPlan();
     const doneCount = ALL_LESSONS.filter((l) => isDone(l.id)).length;
 
+    const due0 = srsDue().length;
+    let noc = $("#hub-noc");
+    if (!noc) { hub.insertAdjacentHTML("afterbegin", `<section class="noc" id="hub-noc" aria-label="Status"></section>`); noc = $("#hub-noc"); }
+    noc.innerHTML = `<div class="noc-text">
+        <div class="noc-eyebrow">CompTIA Network+ · N10-009</div>
+        <h1>Network+ Study Guide</h1>
+        <p class="noc-prompt"><span class="ps">netplus@guide:~$</span> <span class="cmd">show status</span><span class="cursor" aria-hidden="true"></span></p>
+        <div class="noc-chips">
+          ${nocChip(dl <= 3 ? "warn" : "good", `${Math.max(dl, 0)} day${dl === 1 ? "" : "s"} to exam`)}
+          ${nocChip(doneCount === ALL_LESSONS.length ? "good" : doneCount ? "warn" : "off", `Lessons ${doneCount}/${ALL_LESSONS.length}`)}
+          ${nocChip(due0 ? "warn" : "good", due0 ? `${due0} due for review` : "Reviews clear")}
+        </div>
+        <a class="main-cta" href="practice/exam.html">Open Study &amp; Test →</a>
+      </div>${nocMap()}`;
+
     $("#nextup").innerHTML = nx
       ? `<div class="eyebrow">Do this next</div>
          <div class="what">${esc(nx.id)} · ${esc(nx.title)}</div>
@@ -784,7 +824,7 @@
     $("#chapters").innerHTML = CHAPTERS.map((c) => {
       const p = chapterProgress(c);
       return `<a class="chapter-card" href="chapters/${c.slug}.html" style="--c:var(--d${c.n > 5 ? 0 : c.n})">
-        <div class="k">Chapter ${c.n}${c.weight ? ` · ${c.weight}% of exam` : ""}</div>
+        <div class="k"><i class="led ${p.pct === 100 ? "good" : p.done ? "warn" : "off"}" aria-hidden="true"></i>Chapter ${c.n}${c.weight ? ` · ${c.weight}% of exam` : ""}<span class="port-id">Gi0/${c.n}</span></div>
         <h3>${esc(c.title)}</h3><p>${esc(c.blurb)}</p>
         <div class="progress"><span style="width:${p.pct}%"></span></div>
         <div class="progress-label">${p.done}/${p.total} lessons</div></a>`;
@@ -835,8 +875,9 @@
   }
 
   /* ---------------- Boot ---------------- */
-  window.NP = { D, S: () => S, icon, save, srs, srsDue, CHAPTERS, ALL_LESSONS, PLAN, questionEl, shuffle, esc, toast, lessonUrl, lessonById, videoCard, objStats, $, $$ };
+  window.NP = { nocMap, nocChip, D, S: () => S, icon, save, srs, srsDue, CHAPTERS, ALL_LESSONS, PLAN, questionEl, shuffle, esc, toast, lessonUrl, lessonById, videoCard, objStats, $, $$ };
   renderTopbar();
+  decorateHero();
   renderVideos();
   renderPortTables();
   renderChecks();

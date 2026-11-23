@@ -949,7 +949,7 @@ ol.ex-steps li::before { counter-increment: s; content: counter(s) ". "; font-we
   --noc-bg: #0b1020; --noc-bg2: #111a33; --noc-line: #243256; --noc-ink: #e6ecff; --noc-dim: #8b9bc4;
   --noc-green: #4ade80; --noc-amber: #fbbf24; --noc-red: #f87171; --noc-cyan: #67e8f9;
 }
-body[data-page="exam"] .page { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.2px); background-size: 22px 22px; }
+.page { background-image: radial-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1.2px); background-size: 22px 22px; }
 .led { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--line-2); flex: none; vertical-align: middle; }
 .led.good { background: var(--good); box-shadow: 0 0 0 3px color-mix(in srgb, var(--good) 22%, transparent); }
 .led.warn { background: var(--warn); box-shadow: 0 0 0 3px color-mix(in srgb, var(--warn) 22%, transparent); }
@@ -1050,7 +1050,7 @@ body[data-page="exam"] .page { background-image: radial-gradient(color-mix(in sr
 .pkt-tag { font-family: var(--mono); font-size: .74rem; letter-spacing: .1em; padding: 2px 8px; border-radius: 6px; border: 1px solid currentColor; flex: none; }
 pre.ping { background: var(--noc-bg); color: var(--noc-ink); border: 1px solid var(--noc-line); font-size: .84rem; white-space: pre-wrap; }
 @media (prefers-reduced-motion: reduce) { .led.blink, .nled, .noc-prompt .cursor, .rj45 .led.act { animation: none; } .ex-mode:hover:not(:disabled) { transform: none; } }
-@media print { .noc { display: none; } body[data-page="exam"] .page { background: none; } }
+@media print { .noc { display: none; } .page { background: none; } }
 .ex-mode, .ex-dom, .kpi, .tool-link { max-width: none; }
 .ex-mode.main > .main-cta:last-child { color: #06210f; }
 .hub-top { align-items: stretch; }
@@ -1060,3 +1060,69 @@ pre.ping { background: var(--noc-bg); color: var(--noc-ink); border: 1px solid v
 .spec > div { background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 12px; font-size: .78rem; color: var(--ink-3); }
 .spec .n { display: block; font-family: var(--mono); font-size: 1.25rem; font-weight: 600; color: var(--ink); }
 @media (max-width: 480px) { .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---------- Network theme, site-wide ----------
+   Page heroes are the same fixed-dark NOC screen as the Study & Test banner,
+   the top bar carries a link light and a moving "wire", cards read as switch ports. */
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent) no-repeat; background-size: 22% 100%; animation: wire 7s linear infinite; }
+@keyframes wire { from { background-position: -30% 0; } to { background-position: 130% 0; } }
+.brand-mark { position: relative; }
+.brand-mark .led { position: absolute; right: -3px; top: -3px; width: 8px; height: 8px; border: 2px solid var(--bg); box-shadow: none; animation: led-blink 2.4s infinite; }
+
+.hero.hero-noc { overflow: hidden; background: radial-gradient(120% 140% at 100% 0%, var(--noc-bg2) 0%, var(--noc-bg) 60%); color: var(--noc-ink);
+  border: 1px solid var(--noc-line); border-radius: 18px; padding: 26px 28px; box-shadow: var(--shadow-lg); }
+.hero.hero-noc::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(var(--noc-line) 1px, transparent 1px), linear-gradient(90deg, var(--noc-line) 1px, transparent 1px);
+  background-size: 28px 28px; opacity: .25; mask-image: linear-gradient(90deg, transparent 20%, #000 75%); -webkit-mask-image: linear-gradient(90deg, transparent 20%, #000 75%); }
+.hero.hero-noc > * { position: relative; }
+.hero-noc .eyebrow { font-family: var(--mono); font-weight: 600; letter-spacing: .14em; color: var(--noc-cyan); }
+.hero-noc h1 { color: #fff; }
+.hero-noc p.lead { color: #c3cdea; }
+.hero-noc .meta li { font-family: var(--mono); font-size: .78rem; color: var(--noc-ink); background: rgba(255, 255, 255, .06); border-color: var(--noc-line); }
+.hero-noc .meta li::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--noc-green); box-shadow: 0 0 6px var(--noc-green); margin-right: 7px; vertical-align: 1px; }
+.hero-noc .hero-num { color: color-mix(in srgb, var(--dom) 70%, #fff); text-shadow: 0 0 24px color-mix(in srgb, var(--dom) 60%, transparent); }
+.hero-noc .progress { background: rgba(255, 255, 255, .1); }
+.hero-noc .progress > span { box-shadow: 0 0 10px var(--dom); }
+.hero-noc .progress-label { color: var(--noc-dim); }
+.hero-noc a { color: var(--noc-cyan); }
+.hero-noc code { background: rgba(255, 255, 255, .08); border-color: var(--noc-line); color: var(--noc-ink); }
+.hero-map { position: absolute !important; right: 14px; top: 50%; transform: translateY(-50%); width: 36%; max-width: 360px; opacity: .9; pointer-events: none; }
+@media (min-width: 761px) { .hero.hero-noc { padding-right: calc(min(36%, 360px) + 40px); } }
+@media (max-width: 760px) { .hero.hero-noc { padding: 20px 18px; } .hero-map { display: none; } }
+
+/* home banner */
+#hub-noc .main-cta { display: inline-block; margin-top: 16px; text-decoration: none; }
+#hub-noc .main-cta:hover { filter: brightness(1.08); }
+.nextup { background: radial-gradient(120% 160% at 100% 0%, var(--noc-bg2), var(--noc-bg) 65%); color: var(--noc-ink); border-color: var(--noc-line); }
+.nextup .eyebrow { font-family: var(--mono); font-weight: 600; letter-spacing: .14em; color: var(--noc-cyan); }
+.nextup .what { color: #fff; }
+.nextup .muted { color: var(--noc-dim); }
+.nextup .btn.primary { background: var(--noc-green); color: #06210f; border-color: var(--noc-green); }
+
+/* chapter + tool cards read as switch ports */
+.chapter-card { transition: border-color .15s, transform .15s, box-shadow .15s; }
+.chapter-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: color-mix(in srgb, var(--c) 55%, var(--line)); }
+.chapter-card .k { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-weight: 600; letter-spacing: .06em; }
+.chapter-card .k .port-id { margin-left: auto; letter-spacing: 0; text-transform: none; }
+.chapter-card .progress > span { box-shadow: 0 0 8px color-mix(in srgb, var(--c) 60%, transparent); }
+
+/* panels, lessons, plan */
+.panel > h2:first-child, .panel-h h2 { display: flex; align-items: center; gap: 9px; }
+.panel > h2:first-child::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); flex: none; }
+.obj-chip { position: relative; }
+.lesson .obj-chip::after { content: ""; position: absolute; right: -3px; top: -3px; width: 7px; height: 7px; border-radius: 50%; background: var(--line-2); border: 2px solid var(--surface); }
+.lesson.open .obj-chip::after { background: var(--warn); animation: led-blink 1.4s infinite; }
+.lesson.is-done .obj-chip::after { background: var(--good); animation: none; }
+.lesson-body > .step::before { background: repeating-linear-gradient(to bottom, var(--line-2) 0 6px, transparent 6px 11px); }
+.plan-day.today .date::after { content: "● LIVE"; display: block; font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; color: var(--good); margin-top: 2px; }
+.flow li::before { content: "hop " counter(f, decimal-leading-zero); }
+.pager a { transition: border-color .15s, box-shadow .15s; }
+.pager a:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.flashcard { background-image: radial-gradient(color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1.2px); background-size: 18px 18px; }
+@media (prefers-reduced-motion: reduce) { .topbar::after { animation: none; opacity: 0; } }
+@media print { .hero.hero-noc { background: none; color: var(--ink); border: 0; box-shadow: none; padding: 0 0 20px; } .hero-noc h1 { color: var(--ink); } .hero-noc p.lead { color: var(--ink-2); } .hero-map, .hero.hero-noc::before, .topbar::after { display: none; } }
+.hero.hero-noc:not(:has(.hero-num)) { grid-template-columns: minmax(0, 1fr); }
+.hero.hero-noc:not(:has(.hero-num)) > * { grid-column: 1; }
+.chapter-card .k { font-size: .7rem; letter-spacing: .02em; white-space: nowrap; }
+.chapter-card .k .port-id { font-size: .7rem; }

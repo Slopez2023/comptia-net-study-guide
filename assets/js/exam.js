@@ -153,15 +153,6 @@
   };
   // Animated topology banner: packets moving through WAN → firewall → router → switches → hosts.
   function banner(r, st, dl, nDone, total) {
-    const still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const N = { wan: [48, 112, "WAN"], fw: [150, 112, "FW"], r1: [258, 112, "R1"], sw1: [374, 58, "SW1"], sw2: [374, 166, "SW2"], ap: [496, 24, "AP"], srv: [496, 88, "SRV"], pc1: [496, 140, "PC"], pc2: [496, 200, "PC"] };
-    const LINKS = [["wan", "fw"], ["fw", "r1"], ["r1", "sw1"], ["r1", "sw2"], ["sw1", "ap"], ["sw1", "srv"], ["sw2", "pc1"], ["sw2", "pc2"]];
-    const COL = ["#60a5fa", "#2dd4bf", "#fb923c", "#fb7185", "#a78bfa", "#4ade80"];
-    const path = (a, b) => `M${N[a][0]} ${N[a][1]} L${N[b][0]} ${N[b][1]}`;
-    const PK = [["wan", "fw", 0, 2.2, 0], ["fw", "r1", 1, 1.6, 0.4], ["r1", "sw1", 2, 1.8, 0.9], ["r1", "sw2", 3, 1.8, 0.2], ["sw1", "srv", 4, 1.4, 1.1], ["sw2", "pc1", 5, 1.5, 0.6],
-      ["sw1", "ap", 0, 1.5, 1.6], ["sw2", "pc2", 2, 1.7, 1.3], ["r1", "fw", 4, 1.6, 1.2], ["srv", "sw1", 1, 1.4, 0.3], ["pc2", "sw2", 5, 1.7, 0.8], ["fw", "wan", 3, 2.2, 1.5]];
-    const node = (id) => { const [x, y, t] = N[id], w = id === "wan" ? 64 : 46;
-      return `<g class="nn ${id === "wan" ? "wan" : ""}" transform="translate(${x},${y})"><rect x="${-w / 2}" y="-15" width="${w}" height="30" rx="8"/><text y="4.5" text-anchor="middle">${t}</text>${id === "wan" ? "" : `<circle class="nled" cx="${w / 2 - 6}" cy="-9" r="2.4" style="animation-delay:${(x + y) % 17 / 10}s"/>`}</g>`; };
     const chip = (cls, txt) => `<span class="chip-noc"><i class="led ${cls}"></i>${txt}</span>`;
     return `<section class="noc" aria-label="Study and Test overview">
       <div class="noc-text">
@@ -174,11 +165,7 @@
           ${chip(nDone === total ? "good" : "warn", `Session ${nDone}/${total}`)}
         </div>
       </div>
-      <svg class="noc-map" viewBox="0 0 560 224" aria-hidden="true" focusable="false">
-        ${LINKS.map(([a, b]) => `<path class="nlink" d="${path(a, b)}"/>`).join("")}
-        ${still ? "" : PK.map(([a, b, c, d, s]) => `<circle class="pkt" r="3.2" fill="${COL[c]}"><animateMotion dur="${d}s" begin="-${s}s" repeatCount="indefinite" path="${path(a, b)}"/></circle>`).join("")}
-        ${Object.keys(N).map(node).join("")}
-      </svg>
+      ${NP.nocMap()}
     </section>`;
   }
 
