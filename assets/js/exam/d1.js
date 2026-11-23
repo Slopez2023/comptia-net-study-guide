@@ -1,4 +1,4 @@
-/* Exam drill bank, Domain 1: Networking concepts (23% of the exam).
+/* Study & Test question bank, Domain 1: Networking concepts (23% of the exam).
    Fields: id, o (objective), q (stem, HTML ok), c (choices), a (index or array of indexes),
    why (why the answer is right), no (why each choice is wrong; "" for correct ones),
    clue (memory hook), trig (exam trigger words). */

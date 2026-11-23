@@ -1,4 +1,4 @@
-/* Exam drill bank: performance-based questions (PBQs).
+/* Study & Test question bank: performance-based questions (PBQs).
    type "order": items listed in the CORRECT order (shuffled on screen); each item {t, why}.
    type "match": rows {label, a, why, options?}; shared q.options unless a row has its own.
    Optional: answer (summary line), no (common traps), clue, trig. */

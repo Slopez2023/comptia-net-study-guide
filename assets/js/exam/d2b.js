@@ -1,4 +1,4 @@
-/* Exam drill bank, Domain 2 "twins". Format: see d1.js. */
+/* Study & Test question bank, Domain 2 "twins". Format: see d1.js. */
 (window.NP_EXAM = window.NP_EXAM || { mc: [], pbq: [] }).mc.push(
 {
   id: "t2-01", o: "2.1",

@@ -1,4 +1,4 @@
-/* Exam drill bank, Domain 3: Network operations (19% of the exam). Format: see d1.js. */
+/* Study & Test question bank, Domain 3: Network operations (19% of the exam). Format: see d1.js. */
 (window.NP_EXAM = window.NP_EXAM || { mc: [], pbq: [] }).mc.push(
 {
   id: "e3-01", o: "3.1",

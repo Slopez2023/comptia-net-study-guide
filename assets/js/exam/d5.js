@@ -1,4 +1,4 @@
-/* Exam drill bank, Domain 5: Network troubleshooting (24% of the exam, the biggest domain). Format: see d1.js. */
+/* Study & Test question bank, Domain 5: Network troubleshooting (24% of the exam, the biggest domain). Format: see d1.js. */
 (window.NP_EXAM = window.NP_EXAM || { mc: [], pbq: [] }).mc.push(
 {
   id: "e5-01", o: "5.1",

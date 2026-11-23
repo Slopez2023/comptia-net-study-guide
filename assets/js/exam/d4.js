@@ -1,4 +1,4 @@
-/* Exam drill bank, Domain 4: Network security (14% of the exam). Format: see d1.js. */
+/* Study & Test question bank, Domain 4: Network security (14% of the exam). Format: see d1.js. */
 (window.NP_EXAM = window.NP_EXAM || { mc: [], pbq: [] }).mc.push(
 {
   id: "e4-01", o: "4.1",

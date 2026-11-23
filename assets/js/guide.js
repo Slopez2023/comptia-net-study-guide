@@ -69,25 +69,26 @@
       { id: "due", text: "Clear your due-today review", href: "practice/review.html" } ] },
     { date: "2026-11-22", title: "DHCP, DNS, remote access + practice exam #1", lessons: ["3.4", "3.5"], tasks: [
       { id: "pe1", text: "Full practice exam #1 (sources in 6.2). Log every miss.", href: "chapters/06-final-review.html#L6-2" },
-      { id: "ex", text: "Exam drill: full practice exam (answers shown as you go)", href: "practice/exam.html?mode=full" } ] },
+      { id: "ex", text: "Study & Test: today's session (then a full practice exam)", href: "practice/exam.html" } ] },
     { date: "2026-11-23", title: "Security in one day", lessons: ["4.1", "4.2", "4.3"], tasks: [
       { id: "d3", text: "Domain 3 + 4 quiz", href: "practice/quiz.html?domain=4" },
-      { id: "ex", text: "Exam drill: Fix my misses", href: "practice/exam.html?mode=missed" } ] },
+      { id: "ex", text: "Study & Test: today's session", href: "practice/exam.html" } ] },
     { date: "2026-11-24", title: "Troubleshooting part 1", lessons: ["5.1", "5.2", "5.3"], tasks: [
       { id: "sub", text: "10 subnet drills", href: "practice/subnetting.html" },
-      { id: "ex", text: "Exam drill: PBQs only", href: "practice/exam.html?mode=pbq" } ] },
+      { id: "ex", text: "Study & Test: today's session + all PBQs", href: "practice/exam.html" } ] },
     { date: "2026-11-25", title: "Troubleshooting part 2 (biggest domain)", lessons: ["5.4", "5.5"], tasks: [
       { id: "d5", text: "Domain 5 quiz", href: "practice/quiz.html?domain=5" },
-      { id: "ex", text: "Exam drill: Fix my misses", href: "practice/exam.html?mode=missed" } ] },
+      { id: "ex", text: "Study & Test: today's session", href: "practice/exam.html" } ] },
     { date: "2026-11-26", title: "Thanksgiving: light day, weak spots only", lessons: [], tasks: [
       { id: "weak", text: "Weak-spot quiz (auto-picks your misses)", href: "practice/quiz.html?weak=1" },
       { id: "fc", text: "Ports + acronyms flashcards (15 min)", href: "practice/flashcards.html?set=ports" },
-      { id: "ex", text: "Exam drill: Fix my misses", href: "practice/exam.html?mode=missed" } ] },
+      { id: "ex", text: "Study & Test: today's session", href: "practice/exam.html" } ] },
     { date: "2026-11-27", title: "Brain-dump sheet + PBQ day", lessons: ["6.1", "6.2"], tasks: [
-      { id: "pe2", text: "Full practice exam #2. Log every miss.", href: "chapters/06-final-review.html#L6-2" } ] },
+      { id: "pe2", text: "Full practice exam #2. Log every miss.", href: "chapters/06-final-review.html#L6-2" },
+      { id: "ex", text: "Study & Test: all 21 PBQs, then print your cram sheet", href: "practice/exam.html?mode=pbq" } ] },
     { date: "2026-11-28", title: "Practice exam #3 + fix weak spots", lessons: [], tasks: [
       { id: "pe3", text: "Full practice exam #3. Target 85%+.", href: "chapters/06-final-review.html#L6-2" },
-      { id: "ex", text: "Exam drill: full practice exam again. Target 85%+.", href: "practice/exam.html?mode=full" },
+      { id: "ex", text: "Study & Test: full practice exam. Target 85%+.", href: "practice/exam.html?mode=full" },
       { id: "weak", text: "Rewatch videos for anything rated 1–3", href: "index.html#confidence" } ] },
     { date: "2026-11-29", title: "Light review, then rest", lessons: ["6.3"], tasks: [
       { id: "dump", text: "Write the brain-dump sheet from memory twice", href: "chapters/06-final-review.html#L6-1" },

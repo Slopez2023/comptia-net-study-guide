@@ -1,4 +1,4 @@
-/* Exam drill bank, Domain 1 "twins": the same key ideas asked a different way. Format: see d1.js. */
+/* Study & Test question bank, Domain 1 "twins": the same key ideas asked a different way. Format: see d1.js. */
 (window.NP_EXAM = window.NP_EXAM || { mc: [], pbq: [] }).mc.push(
 {
   id: "t1-01", o: "1.1",

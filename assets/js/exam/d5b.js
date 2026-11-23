@@ -1,4 +1,4 @@
-/* Exam drill bank, Domain 5 "twins" (the biggest domain, 24%). Format: see d1.js. */
+/* Study & Test question bank, Domain 5 "twins" (the biggest domain, 24%). Format: see d1.js. */
 (window.NP_EXAM = window.NP_EXAM || { mc: [], pbq: [] }).mc.push(
 {
   id: "t5-01", o: "5.1",
