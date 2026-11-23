@@ -138,6 +138,50 @@
   const dayDone = () => (P.day[today()] = P.day[today()] || {});
   const stepDone = (k) => { dayDone()[k] = 1; save(); };
 
+  /* ---------- network-themed visuals ---------- */
+  const svgIc = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+  const ICON = {
+    terminal: svgIc('<rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="m7 9.5 3 2.5-3 2.5M12.5 15H17"/>'),
+    timer: svgIc('<circle cx="12" cy="13" r="7.5"/><path d="M12 9.5V13l2.5 2M9.5 2.5h5"/>'),
+    wrench: svgIc('<path d="M14.5 4a4.5 4.5 0 0 0-4.2 6.1L4 16.4 7.6 20l6.3-6.3A4.5 4.5 0 0 0 20 9.5l-2.8 2.8-3.3-.7-.7-3.3L16 5.5A4.5 4.5 0 0 0 14.5 4z"/>'),
+    dice: svgIc('<rect x="4" y="4" width="16" height="16" rx="3.5"/><path d="M9 9h.01M15 9h.01M9 15h.01M15 15h.01" stroke-width="3"/>'),
+    split: svgIc('<circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.3 11 15.7 7M8.3 13l7.4 4"/>'),
+    topology: svgIc('<rect x="9" y="3" width="6" height="5" rx="1.2"/><rect x="3" y="16" width="6" height="5" rx="1.2"/><rect x="15" y="16" width="6" height="5" rx="1.2"/><path d="M12 8v4M6 16v-4h12v4"/>'),
+    bolt: svgIc('<path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/>'),
+    sheet: svgIc('<path d="M6 3h8.5L19 7.5V21H6z"/><path d="M14 3v5h5M9 12h7M9 15.5h7M9 19h4"/>'),
+    switch: svgIc('<rect x="2.5" y="8" width="19" height="8" rx="2"/><path d="M6.5 12h.01M9.5 12h.01M12.5 12h.01M15.5 12h.01" stroke-width="2.6"/><path d="M18.5 10.8v2.4"/>')
+  };
+  // Animated topology banner: packets moving through WAN → firewall → router → switches → hosts.
+  function banner(r, st, dl, nDone, total) {
+    const still = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const N = { wan: [48, 112, "WAN"], fw: [150, 112, "FW"], r1: [258, 112, "R1"], sw1: [374, 58, "SW1"], sw2: [374, 166, "SW2"], ap: [496, 24, "AP"], srv: [496, 88, "SRV"], pc1: [496, 140, "PC"], pc2: [496, 200, "PC"] };
+    const LINKS = [["wan", "fw"], ["fw", "r1"], ["r1", "sw1"], ["r1", "sw2"], ["sw1", "ap"], ["sw1", "srv"], ["sw2", "pc1"], ["sw2", "pc2"]];
+    const COL = ["#60a5fa", "#2dd4bf", "#fb923c", "#fb7185", "#a78bfa", "#4ade80"];
+    const path = (a, b) => `M${N[a][0]} ${N[a][1]} L${N[b][0]} ${N[b][1]}`;
+    const PK = [["wan", "fw", 0, 2.2, 0], ["fw", "r1", 1, 1.6, 0.4], ["r1", "sw1", 2, 1.8, 0.9], ["r1", "sw2", 3, 1.8, 0.2], ["sw1", "srv", 4, 1.4, 1.1], ["sw2", "pc1", 5, 1.5, 0.6],
+      ["sw1", "ap", 0, 1.5, 1.6], ["sw2", "pc2", 2, 1.7, 1.3], ["r1", "fw", 4, 1.6, 1.2], ["srv", "sw1", 1, 1.4, 0.3], ["pc2", "sw2", 5, 1.7, 0.8], ["fw", "wan", 3, 2.2, 1.5]];
+    const node = (id) => { const [x, y, t] = N[id], w = id === "wan" ? 64 : 46;
+      return `<g class="nn ${id === "wan" ? "wan" : ""}" transform="translate(${x},${y})"><rect x="${-w / 2}" y="-15" width="${w}" height="30" rx="8"/><text y="4.5" text-anchor="middle">${t}</text>${id === "wan" ? "" : `<circle class="nled" cx="${w / 2 - 6}" cy="-9" r="2.4" style="animation-delay:${(x + y) % 17 / 10}s"/>`}</g>`; };
+    const chip = (cls, txt) => `<span class="chip-noc"><i class="led ${cls}"></i>${txt}</span>`;
+    return `<section class="noc" aria-label="Study and Test overview">
+      <div class="noc-text">
+        <div class="noc-eyebrow">CompTIA Network+ · N10-009</div>
+        <h1>Study &amp; Test</h1>
+        <p class="noc-prompt"><span class="ps">netplus@study:~$</span> <span class="cmd">start session --today</span><span class="cursor" aria-hidden="true"></span></p>
+        <div class="noc-chips">
+          ${chip(dl.n <= 3 ? "warn" : "good", `${Math.max(dl.n, 0)} day${dl.n === 1 ? "" : "s"} to exam`)}
+          ${chip(st.cls === "none" ? "off" : st.cls, `Readiness ${r.overall == null ? "–" : r.overall + "%"}`)}
+          ${chip(nDone === total ? "good" : "warn", `Session ${nDone}/${total}`)}
+        </div>
+      </div>
+      <svg class="noc-map" viewBox="0 0 560 224" aria-hidden="true" focusable="false">
+        ${LINKS.map(([a, b]) => `<path class="nlink" d="${path(a, b)}"/>`).join("")}
+        ${still ? "" : PK.map(([a, b, c, d, s]) => `<circle class="pkt" r="3.2" fill="${COL[c]}"><animateMotion dur="${d}s" begin="-${s}s" repeatCount="indefinite" path="${path(a, b)}"/></circle>`).join("")}
+        ${Object.keys(N).map(node).join("")}
+      </svg>
+    </section>`;
+  }
+
   /* ---------- home ---------- */
   const root = $("#exam");
   function home() {
@@ -162,24 +206,41 @@
       </div>`;
     }).join("");
 
+    const port = (d) => {
+      const qs = ALL.filter((q) => dom(q) === d), m = qs.filter((q) => mastered(q.id)).length, x = r.per[d];
+      const led = x.n >= 5 ? status(x.pct).cls : x.n ? "warn" : "off";
+      return `<button class="ex-dom port-card" type="button" data-dom="${d}" style="--c:var(--d${d})">
+        <span class="port-top"><span class="rj45" aria-hidden="true"><i class="led ${led}"></i><i class="led act"></i></span><span class="port-id">Gi0/${d}</span></span>
+        <span class="k">Domain ${d} · ${WEIGHT[d]}% of exam</span><b>${DOMAINS[d]}</b>
+        <span class="bar" role="img" aria-label="${m} of ${qs.length} locked in"><span style="width:${qs.length ? Math.round((m / qs.length) * 100) : 0}%"></span></span>
+        <small>${m}/${qs.length} locked in${x.n ? ` · last ${x.n}: ${x.pct}%` : ""}</small></button>`;
+    };
+    const mode = (key, icon, k, title, body, dis) => `<button class="ex-mode" type="button" data-mode="${key}" ${dis ? "disabled" : ""}>
+        <span class="mode-ic" aria-hidden="true">${ICON[icon]}</span><span class="k">${k}</span><b>${title}</b><span class="mode-body">${body}</span></button>`;
+
     root.innerHTML = `
+      ${banner(r, st, dl, nDone, steps.length)}
       <div class="hub-top">
         <section class="panel rd">
-          <div class="eyebrow">Readiness</div>
+          <div class="panel-h"><span class="eyebrow">Readiness · link health</span><span class="led ${st.cls === "none" ? "off" : st.cls}" aria-hidden="true"></span></div>
           <div class="rd-hero">
             <span class="rd-big">${r.overall == null ? "–" : r.overall + "%"}</span>
             <span class="rd-status ${st.cls}">${st.icon} ${st.label}</span>
           </div>
           <p class="muted rd-note">${r.overall == null ? "Answer at least 5 questions in a domain to start the meter." : `Weighted by exam domain, from your last 30 answers per domain. Guesses count as misses. Pass line is about ${PASS}%.`}</p>
           <div class="rd-list">${meters}</div>
+          <div class="spec" aria-label="Real exam format">
+            <div><span class="n">≤ 90</span>questions</div><div><span class="n">90</span>minutes</div>
+            <div><span class="n">720</span>to pass /900</div><div><span class="n">~${PASS}%</span>correct</div>
+          </div>
           <div class="rd-key"><span><i class="goal"></i>Pass line ${PASS}%</span><span>✓ on track</span><span>▲ close (${CLOSE}–${PASS - 1}%)</span><span>✕ not yet</span></div>
         </section>
         <section class="panel today">
           <div class="today-head">
             <div><div class="eyebrow">Today's session</div><div class="what">${nDone === steps.length ? "Session complete ✓" : `Step ${nDone + 1} of ${steps.length}`}</div></div>
-            <div class="dl"><span class="n">${Math.max(dl.n, 0)}</span><span>day${dl.n === 1 ? "" : "s"} to<br>exam</span></div>
+            <span class="tr-cmd" aria-hidden="true">traceroute exam-day</span>
           </div>
-          <ol class="steps">${steps.map((s) => `<li class="${isDone(s) ? "done" : s === nextStep ? "now" : ""}"><button type="button" data-step="${s.key}"><span class="dot">${isDone(s) ? "✓" : ""}</span><span><b>${esc(s.title)}</b><small>${esc(s.sub)}</small></span></button></li>`).join("")}</ol>
+          <ol class="steps hops">${steps.map((s, n) => { const c = isDone(s) ? "done" : s === nextStep ? "now" : ""; return `<li class="${c}"><button type="button" data-step="${s.key}"><span class="hop">${n + 1}</span><span class="led ${c === "done" ? "good" : c === "now" ? "warn blink" : "off"}" aria-hidden="true"></span><span class="txt"><b>${esc(s.title)}</b><small>${esc(s.sub)}</small></span><span class="hop-st">${c === "done" ? "done" : c === "now" ? "next" : "* * *"}</span></button></li>`; }).join("")}</ol>
           ${nextStep ? `<button class="btn primary big wide" type="button" id="go-next">Start: ${esc(nextStep.title)} →</button>` : `<p class="muted">Done for today. Run a <b>full practice exam</b> or <b>Fix my misses</b> again if you have energy left.</p>`}
         </section>
       </div>
@@ -191,32 +252,32 @@
         <div class="kpi"><span class="n">${r.pace == null ? "–" : r.pace + "s"}</span>avg per question <small>(aim ≤ ${PACE.mc}s)</small></div>
       </div>
 
-      <h2 class="ex-h">Test yourself</h2>
+      <h2 class="ex-h"><span class="h-ic" aria-hidden="true">${ICON.terminal}</span>Test yourself</h2>
       <div class="ex-modes">
-        <button class="ex-mode main" type="button" data-mode="full"><span class="k">Most like the real thing</span><b>Full practice exam</b><span>5 PBQs, then multiple choice. 90 questions, 90-minute clock, weighted like the exam.</span></button>
-        <button class="ex-mode" type="button" data-mode="mini"><span class="k">30 minutes</span><b>Mini mock exam</b><span>30 questions with a clock.</span></button>
-        <button class="ex-mode" type="button" data-mode="missed" ${work ? "" : "disabled"}><span class="k">Best use of time</span><b>Fix my misses</b><span>${work ? `${work} to lock in. They keep coming back until you get each right twice in a row.` : "Nothing yet. Misses and guesses land here."}</span></button>
-        <button class="ex-mode" type="button" data-mode="guessed" ${guessed ? "" : "disabled"}><span class="k">Lucky guesses</span><b>Guessed ones</b><span>${guessed ? `${guessed} you got right but marked as a guess.` : "Tap 'I guessed' after a lucky answer and it shows up here."}</span></button>
-        <button class="ex-mode" type="button" data-mode="trap"><span class="k">Speed drill</span><b>Trap pairs</b><span>${trapDeck().length} look-alike terms (RPO vs RTO, SSE vs SASE…). 8 seconds each.</span></button>
-        <button class="ex-mode" type="button" data-mode="pbq"><span class="k">Hands-on</span><b>All PBQs</b><span>${PBQ.length} performance-based questions: configs, diagrams, CLI output, ordering.</span></button>
-        <button class="ex-mode" type="button" data-mode="quick"><span class="k">10 minutes</span><b>Quick 20</b><span>20 multiple choice, new ones first.</span></button>
-        <button class="ex-mode" type="button" data-mode="cram"><span class="k">Night before</span><b>Cram sheet</b><span>Every clue and trigger for what you've missed, on one printable page.</span></button>
+        <button class="ex-mode main" type="button" data-mode="full">
+          <span class="main-grid" aria-hidden="true"></span>
+          <span class="k"><span class="led good blink"></span> Most like the real thing</span><b>Full practice exam</b>
+          <span class="mode-body">5 PBQs, then multiple choice. 90 questions, 90-minute clock, weighted like the exam.</span>
+          <span class="main-cta">Start exam →</span></button>
+        ${mode("mini", "timer", "30 minutes", "Mini mock exam", "30 questions with a clock.")}
+        ${mode("missed", "wrench", "Best use of time", "Fix my misses", work ? `${work} to lock in. They keep coming back until you get each right twice in a row.` : "Nothing yet. Misses and guesses land here.", !work)}
+        ${mode("guessed", "dice", "Lucky guesses", "Guessed ones", guessed ? `${guessed} you got right but marked as a guess.` : "Tap 'I guessed' after a lucky answer and it shows up here.", !guessed)}
+        ${mode("trap", "split", "Speed drill", "Trap pairs", `${trapDeck().length} look-alike terms (RPO vs RTO, SSE vs SASE…). 8 seconds each.`)}
+        ${mode("pbq", "topology", "Hands-on", "All PBQs", `${PBQ.length} performance-based questions: configs, diagrams, CLI output, ordering.`)}
+        ${mode("quick", "bolt", "10 minutes", "Quick 20", "20 multiple choice, new ones first.")}
+        ${mode("cram", "sheet", "Night before", "Cram sheet", "Every clue and trigger for what you've missed, on one printable page.")}
       </div>
 
-      <h2 class="ex-h">Drill one domain</h2>
-      <div class="ex-doms">${[1, 2, 3, 4, 5].map((d) => {
-        const qs = ALL.filter((q) => dom(q) === d), m = qs.filter((q) => mastered(q.id)).length;
-        return `<button class="ex-dom" type="button" data-dom="${d}" style="--c:var(--d${d})"><span class="k">Domain ${d} · ${WEIGHT[d]}% of exam</span><b>${DOMAINS[d]}</b>
-          <span class="bar" role="img" aria-label="${m} of ${qs.length} locked in"><span style="width:${qs.length ? Math.round((m / qs.length) * 100) : 0}%"></span></span><small>${m}/${qs.length} locked in</small></button>`;
-      }).join("")}</div>
+      <h2 class="ex-h"><span class="h-ic" aria-hidden="true">${ICON.switch}</span>Patch into a domain</h2>
+      <div class="ex-doms">${[1, 2, 3, 4, 5].map(port).join("")}</div>
 
-      <h2 class="ex-h">Quick tools</h2>
+      <h2 class="ex-h"><span class="h-ic" aria-hidden="true">${ICON.wrench}</span>Quick tools</h2>
       <div class="tools-row">
-        <a class="tool-link" href="subnetting.html"><b>Subnetting</b><small>timed drill</small></a>
-        <a class="tool-link" href="ports.html"><b>Ports</b><small>speed drill</small></a>
-        <a class="tool-link" href="flashcards.html"><b>Flashcards</b><small>430+ cards</small></a>
-        <a class="tool-link" href="../dictionary.html"><b>Dictionary</b><small>look up a term</small></a>
-        <a class="tool-link" href="../index.html#chapters"><b>Chapters</b><small>re-read a topic</small></a>
+        <a class="tool-link" href="subnetting.html"><span class="cmd">subnet</span><b>Subnetting</b><small>timed drill</small></a>
+        <a class="tool-link" href="ports.html"><span class="cmd">netstat</span><b>Ports</b><small>speed drill</small></a>
+        <a class="tool-link" href="flashcards.html"><span class="cmd">cards</span><b>Flashcards</b><small>430+ cards</small></a>
+        <a class="tool-link" href="../dictionary.html"><span class="cmd">man</span><b>Dictionary</b><small>look up a term</small></a>
+        <a class="tool-link" href="../index.html#chapters"><span class="cmd">cat</span><b>Chapters</b><small>re-read a topic</small></a>
       </div>
 
       <p class="muted ex-note">All ${ALL.length} questions are original, written to match the style, difficulty and topics of the real N10-009 exam. CompTIA's real questions are confidential, and sites that sell them are braindumps that can get a cert revoked. Progress is saved in this browser only.</p>
@@ -382,7 +443,7 @@
     const fb = document.createElement("div");
     fb.className = `ex-fb ${ok ? "ok" : "no"}`;
     fb.innerHTML = `
-      <div class="ex-verdict">${ok ? "✓ Correct" : `✗ Not this time. You picked ${[...picked].map(letter).sort().join(", ")}`}</div>
+      <div class="ex-verdict"><span>${ok ? "✓ Correct" : `✗ Not this time. You picked ${[...picked].map(letter).sort().join(", ")}`}</span><span class="pkt-tag">${ok ? "ACK" : "DROP"}</span></div>
       <section><h4><span>1</span>The answer</h4><p class="ex-ans">${answers.map((k) => `${letter(k)}. ${esc(q.c[k])}`).join(" + ")}</p></section>
       <section><h4><span>2</span>Why it's right</h4><p>${q.why}</p></section>
       <section><h4><span>3</span>Why the others can't be it</h4><ul class="ex-no">${wrong.map((k) => `<li class="${picked.has(k) ? "you" : ""}"><b>${letter(k)}. ${esc(q.c[k])}</b>${picked.has(k) ? ` <em>your pick</em>` : ""}<br>${q.no[k] || ""}</li>`).join("")}</ul></section>
@@ -502,7 +563,7 @@
     fb.className = `ex-fb ${ok ? "ok" : "no"}`;
     let k = 1;
     fb.innerHTML = `
-      <div class="ex-verdict">${ok ? `✓ All ${n} right` : `✗ ${nRight} of ${n} right. Real PBQs give partial credit, but aim for all of them.`}</div>
+      <div class="ex-verdict"><span>${ok ? `✓ All ${n} right` : `✗ ${nRight} of ${n} right. Real PBQs give partial credit, but aim for all of them.`}</span><span class="pkt-tag">${ok ? "ACK" : `${nRight}/${n}`}</span></div>
       ${q.answer ? `<section><h4><span>${k++}</span>The answer</h4><p class="ex-ans">${q.answer}</p></section>` : ""}
       <section><h4><span>${k++}</span>Each part, and why</h4>${partsHtml}</section>
       ${q.no ? `<section><h4><span>${k++}</span>Traps they set</h4><p>${q.no}</p></section>` : ""}
@@ -525,6 +586,8 @@
     root.innerHTML = `<div class="panel ex-result">
       <div class="eyebrow">${esc(R.title)} · results</div>
       <div class="rd-hero"><span class="rd-big">${pct}%</span><span class="rd-status ${st.cls}">${st.icon} ${pct >= PASS ? "Passing range" : pct >= CLOSE ? "Close" : "Below the line"}</span></div>
+      <pre class="ping" aria-label="Summary">--- ${esc(R.title.toLowerCase())} statistics ---
+${res.length} questions sent, ${right} correct, ${100 - pct}% loss${avg != null ? `\nround-trip avg ${avg}s per question (target ≤ ${PACE.mc}s)` : ""}</pre>
       <p class="muted">${right} of ${res.length} right${guessed.length ? ` (${guessed.length} guesses counted as misses)` : ""}. ${avg != null ? `Average ${avg}s per multiple-choice question` : ""}${slow ? `, ${slow} over pace.` : "."} The real exam needs about ${PASS}%.</p>
       <div class="rd-list">${byDom.map((x) => { const p = Math.round((x.ok / x.n) * 100), s = status(p); return `<div class="rd-row"><span class="rd-name"><b>D${x.d}</b> ${DOMAINS[x.d]}</span><span class="rd-track ${s.cls}"><span class="rd-fill" style="width:${p}%"></span><span class="rd-goal" style="left:${PASS}%"></span></span><span class="rd-fig">${p}% <small>${s.icon} ${x.ok}/${x.n}</small></span></div>`; }).join("")}</div>
       <p class="ex-actions">${redo.length ? `<button class="btn primary big" type="button" id="ex-retry">Redo the ${redo.length} I missed or guessed</button>` : ""}<button class="btn big" type="button" id="ex-home">Back to the hub</button></p>
