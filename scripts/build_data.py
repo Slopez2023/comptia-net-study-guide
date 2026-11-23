@@ -6,6 +6,7 @@ Sources:
   data/videos.json                  curated YouTube video map (this repo)
   data/images.json                  openly licensed photos in assets/img (this repo)
   data/dictionary.txt               hand-written terms and definitions (this repo)
+  data/dictionary-extras.txt        pronunciations and look-alike comparisons for the dictionary (this repo)
 
 Re-run after editing any of those files:
   python3 scripts/build_data.py [--study PATH]
@@ -48,6 +49,50 @@ def read_dictionary(path, acronyms):
     return entries
 
 
+def read_extras(path, entries):
+    """Attach pronunciations and look-alike groups from data/dictionary-extras.txt to the entries."""
+    by_term = {}
+    for e in entries:
+        by_term.setdefault(e["t"].lower(), []).append(e)
+
+    def find(ref, n):
+        term, _, full = ref.partition("@")
+        hits = by_term.get(term.strip().lower(), [])
+        if full:
+            hits = [e for e in hits if e["f"].lower() == full.strip().lower()]
+        if len(hits) > 1:  # ARP the protocol vs arp the command: an exact-case match wins
+            hits = [e for e in hits if e["t"] == term.strip()] or hits
+        if len(hits) != 1:
+            raise SystemExit(f"{path.name}:{n}: {ref!r} matches {len(hits)} dictionary terms (use TERM@Spelled out)")
+        return hits[0]
+
+    mixups, section = [], None
+    for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("["):
+            section = line.strip("[]")
+            continue
+        f = [x.strip() for x in line.split("|")]
+        if section == "say":
+            if len(f) != 3:
+                raise SystemExit(f"{path.name}:{n}: expected term | respelling | spoken")
+            find(f[0], n)["s"] = [f[1], f[2]]
+        elif section == "mixups":
+            if len(f) != 3:
+                raise SystemExit(f"{path.name}:{n}: expected title | rule | TERM = note ; TERM = note")
+            items = []
+            for part in f[2].split(" ; "):
+                ref, _, note = part.partition(" = ")
+                e = find(ref, n)
+                items.append({"r": e["t"] + "|" + e["f"], "n": note.strip()})
+            for it in items:
+                find(it["r"].split("|")[0] + ("@" + it["r"].split("|")[1] if it["r"].split("|")[1] else ""), n).setdefault("m", []).append(len(mixups))
+            mixups.append({"title": f[0], "rule": f[1], "items": items})
+    return mixups
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--study", type=Path, default=DEFAULT_STUDY)
@@ -87,6 +132,7 @@ def main():
     images = json.loads((ROOT / "data" / "images.json").read_text(encoding="utf-8"))
 
     dictionary = read_dictionary(ROOT / "data" / "dictionary.txt", acronyms)
+    mixups = read_extras(ROOT / "data" / "dictionary-extras.txt", dictionary)
 
     bundle = {
         "objectives": list(objectives.values()),
@@ -97,6 +143,7 @@ def main():
         "videos": videos,
         "images": images,
         "dictionary": dictionary,
+        "mixups": mixups,
     }
     out = ROOT / "assets" / "js" / "data.js"
     out.write_text(
@@ -105,7 +152,7 @@ def main():
         encoding="utf-8",
     )
     print(f"wrote {out.relative_to(ROOT)}: {len(objectives)} objectives, {len(cards)} cards, "
-          f"{len(questions)} questions, {len(videos)} videos, {len(images)} images, {len(dictionary)} dictionary terms")
+          f"{len(questions)} questions, {len(videos)} videos, {len(images)} images, {len(dictionary)} dictionary terms, {len(mixups)} look-alike groups")
 
 
 if __name__ == "__main__":

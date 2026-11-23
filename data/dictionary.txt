@@ -49,7 +49,6 @@ Content filtering||1.2|Blocking or allowing web traffic by category, URL or cont
 Traffic shaping||1.2|Controlling the rate or priority of traffic so important applications get bandwidth first.
 CDN|Content Delivery Network|1.2|A network of distributed servers that stores copies of content close to users so pages and files load faster.
 AP|Access Point|1.2|A device that lets wireless clients join the wired network. Bridges Wi-Fi to Ethernet.
-Wireless access point||1.2|See AP. Provides Wi-Fi coverage and connects wireless clients to the LAN.
 UTM|Unified Threat Management|1.2|One appliance that bundles firewall, intrusion prevention, antivirus, content filtering and VPN.
 CAM|Content-addressable Memory|1.2|Fast memory in a switch that holds the MAC address table, mapping MAC addresses to ports.|A full or flooded CAM table is how MAC flooding attacks turn a switch into a hub.
 MAC address table||1.2|The switch's list of which MAC address was learned on which port. Also called the CAM table.
@@ -387,7 +386,6 @@ Site survey||2.3|Measuring signal and interference to plan or check AP placement
 Heat map||2.3|A colored map of Wi-Fi signal strength made during a site survey.
 Signal strength||2.3|How strong the received Wi-Fi signal is, measured as RSSI in dBm. Closer to zero is stronger.
 Geofencing||2.3|Using location to allow or block access, such as allowing Wi-Fi only inside a building.
-Wi-Fi analyzer||2.3|A tool that shows nearby networks, their channels and signal strength.
 
 # ===== 2.4 physical installs =====
 Rack||2.4|A standard frame (19 inches wide) that holds servers and network equipment.
@@ -410,9 +408,6 @@ Surge protector||2.4|A device that blocks voltage spikes from damaging equipment
 Fire suppression||2.4|Systems that put out fires. Data centers use clean-agent gas or pre-action sprinklers to avoid ruining equipment.
 Grounding||2.4|Connecting equipment to earth ground to protect against shocks and static.
 Labeling||2.4|Putting clear, consistent labels on cables, ports and devices.
-Fiber patch cord||2.4|A short fiber cable with connectors on both ends for patching.
-Lockable rack||2.4|A rack with a locking door to keep unauthorized people from reaching equipment.
-Smart jack||2.4|A network interface device that the provider uses to test the line, found at the demarc.
 Environmental monitor||2.4|A sensor that watches temperature, humidity, water and power in a room or rack.
 
 # ===== 3.1 processes and procedures =====
@@ -463,12 +458,8 @@ Availability||3.2|How much of the time a system can be used.
 Latency||3.2|The time data takes to travel from source to destination.
 Jitter||3.2|Variation in latency. Hurts voice and video.
 Packet loss||3.2|Packets that never arrive.
-Bandwidth utilization||3.2|The share of a link's capacity in use.
 Interface errors||3.2|Counters showing damaged or dropped frames on a port, such as CRC errors.
-Syslog server||3.2|A central server that receives logs from devices.
 Log level||3.2|The severity of a log message, from 0 Emergency to 7 Debug.|Lower number = more severe.
-Performance monitoring||3.2|Tracking CPU, memory, bandwidth and errors over time.
-Environmental sensor||3.2|A sensor that tracks temperature, humidity or water around equipment.
 
 # ===== 3.3 disaster recovery =====
 DR|Disaster Recovery|3.3|The plan and process to restore IT services after a major outage or disaster.
@@ -485,7 +476,6 @@ Active-active||3.3|Two or more systems all handling traffic at once. If one fail
 Active-passive||3.3|One system handles traffic while a standby waits to take over.
 Redundancy||3.3|Having backup components so one failure does not cause an outage.
 Backup||3.3|A copy of data kept to restore it after loss.
-Full backup||3.3|A copy of all selected data.
 Incremental backup||3.3|Copies only what changed since the last backup of any kind. Fast to take, slow to restore.
 Differential backup||3.3|Copies everything changed since the last full backup. Slower to take, easier to restore than incremental.
 Snapshot||3.3|A point-in-time copy of a system or VM state that can be restored quickly.
@@ -494,7 +484,6 @@ Failback||3.3|Returning operations to the original system after it is repaired.
 Single point of failure||3.3|One component whose failure takes down the whole service.
 Cluster||3.3|A group of systems that work together as one for availability or performance.
 Business continuity plan||3.3|The plan for keeping critical business functions going during and after a disruption.
-Validation test||3.3|A test that DR steps work and meet the RTO and RPO.
 
 # ===== 3.4 network services =====
 DHCP server||3.4|The service that hands out IP configuration to clients.
@@ -551,10 +540,7 @@ Out-of-band management||3.5|Managing a device over a separate path (console or d
 In-band management||3.5|Managing a device over the same network it serves, using SSH or HTTPS.
 Console port||3.5|A physical port for direct command-line management of a device.
 Console server||3.5|A device that gives remote access to the console ports of many devices.
-Virtual terminal||3.5|A remote CLI session to a device, such as SSH.
 SSO|Single Sign-on|3.5|Logging in once to reach many applications.
-Remote access||3.5|Reaching a network from outside, such as by VPN, SSH or remote desktop.
-Remote desktop gateway||3.5|A server that brokers secure remote desktop connections.
 
 # ===== 4.1 security concepts =====
 CIA|Confidentiality, Integrity, and Availability|4.1|The three core goals of security: keep data private, keep it accurate, keep it reachable.|The CIA triad.
@@ -647,13 +633,10 @@ Buffer overflow||4.2|Sending more data than a program expects, to crash it or ru
 Ping of death||4.2|Sending an oversized ICMP packet to crash a system.
 SYN flood||4.2|A DoS attack that sends many TCP SYN requests and never completes the handshake.
 Spoofing||4.2|Faking a source address or identity.
-Evil portal||4.2|A fake captive portal used to steal credentials.
-Rogue device||4.2|Any unauthorized device connected to the network.
 
 # ===== 4.3 defenses =====
 Device hardening||4.3|Reducing a device's attack surface: turn off unused services and ports, change default credentials and patch.
 Default credentials||4.3|The factory username and password. Must be changed on every device.
-Disable unused ports||4.3|Shutting down switch ports and services that are not in use.
 ACL|Access Control List|4.3|An ordered list of permit and deny rules that filters traffic or access.|Processed top to bottom. First match wins. Implicit deny at the end.
 Implicit deny||4.3|The hidden last rule of a firewall or ACL that blocks anything not explicitly allowed.
 Stateful firewall||4.3|A firewall that tracks connections and automatically allows return traffic for allowed sessions.
@@ -691,7 +674,6 @@ Escalate||5.1|Hand a problem to someone with more access or skill.
 Divide and conquer||5.1|Troubleshooting approach that starts in the middle of the OSI model and moves up or down depending on results.
 Top-to-bottom approach||5.1|Troubleshooting starting at the Application layer and working down.
 Bottom-to-top approach||5.1|Troubleshooting starting at the Physical layer and working up.
-Probable cause||5.1|The most likely reason for a problem, which you must test.
 
 # ===== 5.2 cabling and interface issues =====
 Attenuation||5.2|Signal getting weaker with distance. Too long a cable run or poor quality cable.
@@ -701,16 +683,12 @@ EMI|Electromagnetic interference|5.2|Noise from motors, lights and power lines t
 Open||5.2|A cable with a wire broken or not connected, so there is no signal.
 Short||5.2|Two wires touching that should not.
 Pinout||5.2|Which wire goes to which pin. A wrong pinout causes a failed or slow link.
-Transposed wires||5.2|Wires in the wrong order at one end.
-Bad connector||5.2|A damaged or badly crimped connector that causes intermittent link problems.
 Bend radius||5.2|The tightest bend a cable can take without damage. Tight bends harm fiber and copper.
 CRC|Cyclic Redundancy Check|5.2|A check value on a frame that tells if it was damaged. A rising CRC error counter points to a bad cable, port or interference.
 Runt||5.2|A frame smaller than 64 bytes. Often caused by collisions.
 Giant||5.2|A frame larger than the allowed size, usually over 1518 bytes (or the jumbo setting).
 Collision||5.2|Two devices sending at once on a shared medium. Normal on half duplex only.
 Late collision||5.2|A collision after the first 64 bytes. Points to a duplex mismatch or a too-long cable.
-Input errors||5.2|Counter of frames received with errors.
-Output drops||5.2|Counter of frames dropped because the outgoing queue was full.
 Interface counters||5.2|Statistics on a port: packets, errors, drops, collisions. Used to find physical and duplex problems.
 Link light||5.2|The LED on a port that shows whether it has a link, and often the speed or activity.
 Err-disabled||5.2|A port automatically shut down by the switch because of a problem, such as port security violation or loop.
@@ -720,10 +698,8 @@ Up/down||5.2|An interface state where the physical link is up but the protocol i
 Down/down||5.2|An interface with no physical link, often a cable or far-end problem.
 PoE budget||5.2|The total power a switch can supply across all its ports. Exceeding it makes devices fail to power.
 Transceiver mismatch||5.2|Using the wrong type, speed, wavelength or fiber on the two ends of a link.
-Wrong fiber type||5.2|Mixing single-mode and multimode fiber or connectors, so the link fails or is weak.
 TX/RX reversed||5.2|Fiber transmit and receive swapped, so no link comes up. Flip one end.
 Cable length||5.2|Copper Ethernet is limited to 100 m (328 ft). Longer needs a switch, repeater or fiber.
-Cable certification||5.2|Testing a cable run to prove it meets a category standard.
 
 # ===== 5.3 network service issues =====
 STP issues||5.3|Problems from spanning tree, such as the wrong root bridge, a blocked port, or a loop.
@@ -749,15 +725,8 @@ Interference||5.4|Unwanted signals that degrade wireless or cable performance.
 Signal-to-noise ratio||5.4|How strong the signal is compared with background noise. Higher is better.
 RSSI|Received Signal Strength Indicator|5.4|A measure of Wi-Fi signal strength, in dBm. -50 is strong, -80 is weak.
 Dead spot||5.4|An area with little or no Wi-Fi signal.
-Insufficient coverage||5.4|Too few APs or poor placement leaving gaps in wireless coverage.
-Client disassociation||5.4|Clients dropping off Wi-Fi, often from interference or roaming problems.
-Channel utilization||5.4|How busy a Wi-Fi channel is.
-Roaming problem||5.4|A client holds on to a weak AP instead of moving to a better one.
 QoS|Quality of Service|5.4|Giving priority to important traffic such as voice so it gets through during congestion.
-Traffic prioritization||5.4|Marking and handling some traffic ahead of others.
 VoIP|Voice over IP|5.4|Phone calls sent as IP packets. Needs low latency and jitter.
-Speed test||5.4|A tool that measures bandwidth, latency and jitter.
-Duplex issue||5.4|A speed or duplex mismatch that causes slow performance.
 
 # ===== 5.5 tools and commands =====
 ping||5.5|Sends ICMP echo requests to check whether a host is reachable and how long a round trip takes.
@@ -792,6 +761,33 @@ Cable stripper||5.5|Removes the jacket from cable.
 Fusion splicer||5.5|Joins two fibers by melting them together.
 Spectrum analyzer||5.5|Shows radio signals across frequencies to find interference.
 Protocol analyzer||5.5|A tool that captures and decodes traffic, such as Wireshark.
-Port scanner||5.5|A tool that checks which ports on a host are open.
 Looking glass||5.5|A public web page that lets you run network commands from a provider's router.
-Terminal emulator||5.5|Software used to reach a device's CLI, such as PuTTY.
+
+# ===== additions =====
+Ethernet||1.5|The family of wired LAN standards (IEEE 802.3). Defines frames, MAC addressing and the speeds of twisted pair and fiber links.
+Full duplex||1.5|Both ends send and receive at the same time. No collisions. The normal mode on a switch.
+Half duplex||1.5|Only one end can send at a time. Collisions are possible. Found on hubs and misconfigured ports.
+CSMA/CD|Carrier Sense Multiple Access with Collision Detection|1.5|How half-duplex Ethernet shares a wire: listen first, send, and back off and retry if a collision is detected. Not needed on full-duplex switch ports.
+CSMA/CA|Carrier Sense Multiple Access with Collision Avoidance|1.5|How Wi-Fi shares the air: it cannot hear collisions, so it waits for a quiet moment and uses acknowledgements.|Ethernet = collision detection. Wi-Fi = collision avoidance.
+Fragmentation||2.2|Splitting a packet into smaller pieces because it is bigger than a link's MTU. The receiver reassembles it.
+MPLS|Multiprotocol Label Switching|1.6|A carrier WAN technology that forwards traffic by short labels instead of full IP lookups. Often sold as a private WAN with guaranteed service.
+Route summarization||2.1|Advertising several contiguous networks as one larger route to keep routing tables small. Also called route aggregation.
+Port forwarding||2.1|A NAT rule that sends traffic arriving on one public port to a specific private host and port.
+DSCP|Differentiated Services Code Point|5.4|A value in the IP header that marks a packet's priority class for QoS.
+CoS|Class of Service|5.4|A 3-bit priority value in the 802.1Q VLAN tag that marks Layer 2 frames for QoS.
+AES|Advanced Encryption Standard|4.1|The standard symmetric cipher. Used by WPA2, WPA3, IPsec and TLS.
+TKIP|Temporal Key Integrity Protocol|2.3|The old WPA encryption method, now deprecated because it is weak.
+CCMP|Counter Mode with CBC-MAC Protocol|2.3|The AES-based encryption used by WPA2.
+SAE|Simultaneous Authentication of Equals|2.3|The WPA3 handshake that replaces the PSK exchange. Resists offline password guessing.
+RSA||4.1|A widely used asymmetric algorithm for encryption, key exchange and digital signatures.
+SHA||4.1|A family of hash functions (SHA-256 and others) that make a fixed-size fingerprint of data.
+CRL|Certificate Revocation List|4.1|A list published by a CA of certificates that are no longer valid before they expire.
+Telemetry||3.2|Automatic, continuous collection of measurements from devices, usually streamed to a monitoring system.
+POP3|Post Office Protocol v3|1.4|Downloads email from a server to a client on TCP 110. Usually removes the mail from the server.
+POP3S|Post Office Protocol v3 Secure|1.4|POP3 protected with TLS on TCP 995.
+IMAP|Internet Message Access Protocol|1.4|Reads email while leaving it on the server, so many devices stay in sync. TCP 143.|POP3 downloads. IMAP syncs.
+IMAPS|Internet Message Access Protocol Secure|1.4|IMAP protected with TLS on TCP 993.
+MySQL||1.4|A popular open-source database server. Listens on TCP 3306.
+Proxy ARP||2.2|A router answering ARP requests on behalf of a host on another network.
+Trunking||2.2|Carrying several VLANs over one link between switches, using 802.1Q tags.
+Network interface||2.1|A point where a device attaches to a network, physical or virtual. Each router interface sits in a different subnet.

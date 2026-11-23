@@ -1,0 +1,159 @@
+# Extra dictionary data, merged into assets/js/data.js by scripts/build_data.py.
+# Names must match a term in dictionary.txt. Use TERM@Spelled out when a term has two meanings.
+#
+# [say]      term | how it is said (respelling shown on the page) | what the speaker reads aloud
+# [mixups]   title | rule of thumb | TERM = how to tell it apart ; TERM = ...     (no semicolons inside the text)
+
+[say]
+SQL | SEE-kwul | sequel
+SAML | SAM-ul | sam-ul
+CIDR | SY-der | cider
+SLAAC | SLAK | slack
+EIGRP | EE-grip | ee grip
+VLAN | VEE-lan | vee lan
+VXLAN | VEX-lan | vex lan
+LAN | lan | lan
+WAN | wan | wan
+WLAN | WUB-ee-ay-lan | double you lan
+NAT | nat | nat
+PAT | pat | pat
+QoS | kwahs | kwos
+MIB | mib | mib
+APIPA | ah-PEE-puh | ah pee puh
+GRE | grey | grey
+IKE | ike | ike
+IPSec | EYE-pee-sek | eye pee sec
+LDAP | EL-dap | el dap
+LDAPS | EL-daps | el daps
+SIEM | sim | sim
+TACACS+ | TAK-aks plus | tack axe plus
+RADIUS | RAY-dee-us | radius
+Kerberos | KUR-ber-os | kerberos
+SCADA | SKAY-duh | skay duh
+SASE | SASS-ee | sassy
+IPAM | EYE-pam | eye pam
+IaaS | EYE-az | eye az
+PaaS | pass | pass
+SaaS | sass | sass
+IaC | eye-ay-SEE | eye a c
+IoT | eye-oh-TEE | eye oh tee
+NIC | nik | nick
+CAM | kam | cam
+DAC | dak | dack
+SAN | san | san
+NAS | nazz | naz
+MAC | mak | mack
+MDIX | em-dee-eye-EX | m d i x
+SOHO | SOH-hoh | so ho
+SSID | ess-ess-eye-DEE | s s i d
+BSSID | bee-ess-ess-eye-DEE | b s s i d
+PoE | poh-ee | p o e
+ESSID | ee-ess-ess-eye-DEE | e s s i d
+PSK | pee-ess-KAY | p s k
+WEP | wep | wep
+TKIP | TEE-kip | tee kip
+ARP | arp | arp
+NDP | en-dee-PEE | n d p
+EUI-64 | YOO-eye sixty-four | you eye sixty four
+RJ45 | AR-jay forty-five | r j forty five
+RJ11 | AR-jay eleven | r j eleven
+nmap | EN-map | en map
+tcpdump | TEE-see-pee dump | t c p dump
+dig | dig | dig
+ping | ping | ping
+traceroute | TRAYSS-root | trace route
+tracert | TRAYSS-ert | trace r t
+nslookup | EN-es-look-up | n s lookup
+ifconfig | EYE-eff-config | i f config
+ipconfig | EYE-pee-config | i p config
+netstat | NET-stat | net stat
+Wireshark | WY-er-shark | wireshark
+OTDR | oh-tee-dee-AR | o t d r
+HSRP | aitch-ess-ar-PEE | h s r p
+VRRP | vee-ar-ar-PEE | v r r p
+SFTP | ess-eff-tee-PEE | s f t p
+TFTP | tee-eff-tee-PEE | t f t p
+PKI | pee-kay-EYE | p k i
+GDPR | jee-dee-pee-AR | g d p r
+CRC | see-ar-SEE | c r c
+OID | oh-eye-DEE | o i d
+MTU | em-tee-YOO | m t u
+BNC | bee-en-SEE | b n c
+SYN flood | sin flud | sin flood
+WPA2 | double-you-pee-ay TOO | w p a two
+WPA3 | double-you-pee-ay THREE | w p a three
+802.1Q | eight-oh-two dot one cue | eight oh two dot one q
+802.1X | eight-oh-two dot one ex | eight oh two dot one x
+Wi-Fi 6 | WY-fy six | wi fi six
+
+[mixups]
+IDS vs IPS | IDS tells you. IPS stops it. | IDS = watches a copy of traffic and raises an alert ; IPS = sits inline in the traffic path and blocks the attack
+RPO vs RTO | RPO is about data. RTO is about time. | RPO = how much data you can afford to lose, counted back from the failure ; RTO = how long you can be down before the service must be back
+RADIUS vs TACACS+ | RADIUS lets users onto the network. TACACS+ lets admins into devices. | RADIUS = UDP 1812 and 1813, combines authentication and authorization, encrypts only the password ; TACACS+ = TCP 49, separates AAA, encrypts the whole payload
+TCP vs UDP | TCP is careful. UDP is fast. | TCP = connection-oriented, handshake, acknowledgements, retransmits lost data ; UDP = connectionless, no guarantee, low overhead, good for voice and DNS queries
+Hub vs switch vs router | Hub repeats. Switch learns MACs. Router connects networks. | Hub = Layer 1, repeats everything out every port, one collision domain ; Switch = Layer 2, forwards by MAC to one port, each port its own collision domain ; Router = Layer 3, forwards by IP between networks, each interface its own broadcast domain
+MTBF vs MTTR | B for between failures, R for repair. | MTBF = average time a component runs before it fails ; MTTR = average time it takes to repair it and get it running again
+Hot vs warm vs cold site | Temperature is how ready it is. | Hot site = running duplicate, takes over in minutes, most expensive ; Warm site = has equipment but needs data and setup, hours to days ; Cold site = empty space with power, days to weeks, cheapest
+NAT vs PAT | PAT is NAT that uses ports. | NAT = rewrites IP addresses, can be one-to-one ; PAT = many private hosts share one public IP by using different port numbers
+Static route vs dynamic routing | Static is typed in. Dynamic is learned. | Static route = set by hand, no overhead, does not adapt ; Dynamic routing = routers share routes with a protocol and adapt to failures
+DoS vs DDoS | The extra D is for distributed. | DoS = one source overloads a target ; DDoS = many compromised devices in a botnet attack at the same time
+Phishing family | The name shows who or how it is aimed. | Phishing = mass fake email ; Spear phishing = aimed at one person or group ; Whaling = aimed at senior executives ; Vishing = by voice call ; Smishing = by text message
+Symmetric vs asymmetric | Symmetric has one key. Asymmetric has a pair. | Symmetric encryption = one shared key, fast, used for bulk data ; Asymmetric encryption = public and private key pair, slower, used for key exchange and signatures
+AAA | Who are you, what can you do, what did you do. | Authentication = proves identity ; Authorization = decides what you may access ; Accounting = records what you did
+SSL vs TLS | TLS replaced SSL. | SSL = the older protocol, now deprecated and insecure ; TLS = the current standard that secures HTTPS and other traffic
+IaaS vs PaaS vs SaaS | The more letters you manage, the more you own. | IaaS = you manage the OS and up, provider gives the virtual hardware ; PaaS = you manage the app and data, provider gives the platform ; SaaS = you just use the finished application
+Bandwidth vs throughput | Bandwidth is the pipe size. Throughput is the water that flows. | Bandwidth = the maximum capacity of the link ; Throughput = the data that actually gets through, always lower
+Latency vs jitter vs packet loss | Delay, delay variation, and missing data. | Latency = how long a packet takes to arrive ; Jitter = how much that delay changes from packet to packet ; Packet loss = packets that never arrive
+Attenuation vs crosstalk vs EMI | Weak, leaking, or noisy. | Attenuation = signal gets weaker over distance ; Crosstalk = signal leaks between neighboring wire pairs ; EMI = outside electrical noise corrupts the signal
+DHCP scope vs reservation vs exclusion | Scope is the pool. Reservation pins one MAC. Exclusion keeps addresses out. | Scope = the range of addresses DHCP can hand out ; Reservation = always gives the same address to one MAC ; Exclusion = addresses in the range that DHCP never gives out
+Trunk vs access port | Access is one VLAN. Trunk is many. | Access port = belongs to one VLAN and carries untagged frames to a device ; Trunk port = carries many VLANs between switches using 802.1Q tags
+Collision vs broadcast domain | Switch ports split collisions. Routers and VLANs split broadcasts. | Collision domain = devices that can collide on the same wire, each switch port is its own ; Broadcast domain = devices that hear each other's broadcasts, split by routers and VLANs
+WEP vs WPA2 vs WPA3 | Newer is stronger. Never use WEP. | WEP = broken, never use ; WPA2 = AES with CCMP, still common ; WPA3 = SAE handshake, stronger protection and per-client keys
+DoH vs DoT | Same goal, different wrapper and port. | DoH = DNS inside HTTPS on TCP 443, blends in with web traffic ; DoT = DNS inside TLS on its own port TCP 853, easy to see and manage
+SDN vs SD-WAN | SDN is the idea. SD-WAN applies it to the WAN. | SDN = central controller separates the control plane from the data plane ; SD-WAN = software chooses the best path across many WAN links per application
+SASE vs SSE | SSE is the security half of SASE. | SASE = networking and security delivered together from the cloud ; SSE = only the security services, without the network part
+RIP vs OSPF vs EIGRP vs BGP | Match the protocol to its metric and its job. | RIP = distance vector, hop count, max 15 ; OSPF = link state, cost, scales well ; EIGRP = Cisco advanced distance vector ; BGP = path vector, between autonomous systems, runs the internet
+Incremental vs differential backup | Incremental since last backup. Differential since last full. | Incremental backup = only what changed since the last backup of any kind, fast to take, slowest to restore ; Differential backup = everything changed since the last full backup, bigger each day, easier to restore
+Active-active vs active-passive | Everyone works, or one waits. | Active-active = all nodes handle traffic and share the load ; Active-passive = one node works while a standby waits for a failure
+DAS vs NAS vs SAN | Direct, on the network, or a network of its own. | DAS = storage attached to one server ; NAS = file storage shared over the LAN ; SAN = dedicated high-speed network giving servers block storage
+Evil twin vs rogue AP | The twin copies a name. The rogue is just not allowed. | Evil twin = a malicious AP that imitates a real SSID to trap users ; Rogue access point = any unauthorized AP connected to your network
+Layer 2 and DNS spoofing attacks | Know what each one lies about. | MAC flooding = fills the MAC table so the switch floods traffic ; ARP spoofing = fake ARP replies redirect traffic ; DNS poisoning = fake DNS answers send users to the wrong site ; VLAN hopping = tricks a switch to reach another VLAN
+Tailgating vs shoulder surfing vs dumpster diving | Following, watching, digging. | Tailgating = following someone through a door ; Shoulder surfing = watching a screen or keyboard ; Dumpster diving = searching trash for information
+Honeypot vs honeynet | One decoy or a whole decoy network. | Honeypot = a single decoy system ; Honeynet = a network of honeypots
+SFP vs SFP+ vs QSFP | The more letters and symbols, the faster. | SFP = up to 1 Gbps ; SFP+ = 10 Gbps ; QSFP = four lanes, 40 or 100 Gbps
+Single-mode vs multimode fiber | Single-mode goes far. Multimode goes short. | Single-mode fiber = thin core, laser, many kilometers ; Multimode fiber = wider core, shorter distances, usually cheaper optics
+Plenum vs riser cable | Plenum is for air spaces. Riser is for floors. | Plenum cable = low-smoke jacket required in air-handling spaces ; Riser cable = rated for vertical runs between floors
+MDF vs IDF | Main versus intermediate. | MDF = main wiring room where the provider connects ; IDF = closet that connects to the MDF and serves a floor or area
+Stateful vs stateless firewall | Stateful remembers. Stateless rereads every packet. | Stateful firewall = tracks sessions and automatically allows return traffic ; Stateless firewall = checks each packet against the rules with no memory
+Flow data vs packet capture | Flows are the summary. Captures are the whole conversation. | Flow data = who talked to whom, how much and on which ports ; Packet capture = every packet in full, needed for deep analysis
+ping vs traceroute | Ping asks if it is there. Traceroute asks the way. | ping = tests reachability and round-trip time with ICMP echo ; traceroute = lists each router hop on the path using TTL
+nslookup vs dig | Same job, dig gives more detail. | nslookup = DNS lookup tool on Windows and others ; dig = detailed DNS queries on Linux and macOS
+ipconfig vs ifconfig vs ip | Windows, older Unix, newer Linux. | ipconfig = Windows IP settings and DHCP renew ; ifconfig = older Linux and macOS interface settings ; ip = newer Linux tool for addresses and routes
+Split vs full tunnel | Split sends only company traffic. Full sends everything. | Split tunnel = only company traffic uses the VPN, the rest goes straight out ; Full tunnel = all traffic goes through the VPN
+Site-to-site vs client-to-site VPN | Networks joining, or one person joining. | Site-to-site VPN = connects two networks permanently ; Client-to-site VPN = connects one user device to the company network
+In-band vs out-of-band management | Out-of-band works when the network is down. | In-band management = uses the production network, such as SSH ; Out-of-band management = separate path such as a console, works during outages
+SNMP poll vs trap | Poll asks. Trap tells. | SNMP poll = the NMS asks on a schedule, UDP 161 ; SNMP trap = the device sends an alert when something happens, UDP 162
+SMTP vs POP3 vs IMAP | SMTP sends. POP3 downloads. IMAP syncs. | SMTP = sends mail between servers, TCP 25 ; POP3 = downloads mail to a device, TCP 110 ; IMAP = reads mail on the server and keeps devices in sync, TCP 143
+FTP vs SFTP vs TFTP | Secure one uses SSH. Trivial one has no login. | FTP = TCP 20 and 21, clear text ; SFTP = file transfer over SSH, TCP 22, encrypted ; TFTP = UDP 69, no authentication, used for boot files and configs
+Telnet vs SSH | Same job, only SSH is safe. | Telnet = clear text, TCP 23 ; SSH = encrypted, TCP 22
+HTTP vs HTTPS | The S is TLS. | HTTP = clear text web traffic on TCP 80 ; HTTPS = web traffic secured by TLS on TCP 443
+STP: shielded vs spanning | Cable or protocol? Look at the sentence. | STP@Shielded Twisted Pair = copper cable with a shield around the pairs ; STP@Spanning Tree Protocol = Layer 2 protocol that blocks loops
+PDU: data vs power | Packets or power strip? | PDU@Protocol data unit = the name of data at a layer, such as a frame or packet ; PDU@Power Distribution Unit = the power strip in a rack
+Public vs private vs hybrid cloud | Who shares the hardware. | Public cloud = shared provider infrastructure ; Private cloud = dedicated to one organization ; Hybrid cloud = a mix of both that works together
+Cat 5e vs Cat 6 vs Cat 6a vs Cat 8 | Know the speed and the distance. | Cat 5e = 1 Gbps to 100 m ; Cat 6 = 1 Gbps to 100 m or 10 Gbps to about 55 m ; Cat 6a = 10 Gbps to 100 m ; Cat 8 = 25 or 40 Gbps up to about 30 m
+Straight-through vs crossover vs rollover | Like devices cross. Console rolls. | Straight-through cable = same wiring both ends, unlike devices ; Crossover cable = transmit and receive swapped, like devices ; Rollover cable = console cable to manage a device
+2.4 vs 5 vs 6 GHz | Lower goes farther. Higher goes faster. | 2.4 GHz = longest range, most interference, channels 1 6 and 11 ; 5 GHz = more channels, faster, shorter range ; 6 GHz = newest band, little interference, shortest range
+Unicast vs multicast vs broadcast vs anycast | One, some, all, or nearest. | Unicast = one sender to one receiver ; Multicast = one sender to a group ; Broadcast = one sender to everyone on the network ; Anycast = one address on many servers, goes to the nearest
+Threat vs vulnerability vs exploit vs risk | Who, where, how, and how bad. | Threat = something that could cause harm ; Vulnerability = the weakness ; Exploit = the method that uses the weakness ; Risk = the chance and impact of that happening
+APIPA vs loopback vs link-local | Know each special address range. | APIPA = 169.254.x.x self-assigned when DHCP fails ; Loopback address = 127.0.0.1 points at the local machine ; Link-local address = only valid on the local link, 169.254.0.0/16 in IPv4 and fe80 in IPv6
+EOL vs EOS | Sale ends first. Support ends later. | EOL = the vendor stops selling the product ; EOS = the vendor stops patches and support
+Full vs half duplex | Both at once, or one at a time. | Full duplex = send and receive together, no collisions ; Half duplex = one direction at a time, collisions possible
+CSMA/CD vs CSMA/CA | Ethernet detects. Wi-Fi avoids. | CSMA/CD = wired half-duplex Ethernet detects collisions and retries ; CSMA/CA = Wi-Fi avoids collisions by waiting and acknowledging
+Switch-port defenses | Each one stops a different Layer 2 attack. | Port security = limits MAC addresses on a port ; DHCP snooping = blocks rogue DHCP servers ; Dynamic ARP inspection = blocks forged ARP replies
+DHCP vs SLAAC | Server or self-built. | DHCP = a server hands out the address and options ; SLAAC = the IPv6 host builds its own address from the router's prefix
+DNS record types | Match the record to the question it answers. | A = name to IPv4 address ; AAAA record = name to IPv6 address ; CNAME = alias to another name ; MX = mail server for the domain ; NS = authoritative name servers ; PTR = IP address back to a name ; SOA = start of the zone with timers ; SRV record = server and port for a service ; TXT = text such as verification and SPF
+Forward vs reverse zone | Name to number, or number to name. | Forward zone = names to IP addresses ; Reverse zone = IP addresses back to names using PTR records
+Recursive vs authoritative DNS | One asks around. One owns the answer. | Recursive resolver = does the full lookup for clients and caches ; Authoritative server = holds the official records for a zone
+VLAN vs VXLAN | VXLAN is a bigger, routed VLAN. | VLAN = Layer 2 segmentation on switches, about 4000 IDs ; VXLAN = tunnels Layer 2 over Layer 3, about 16 million segments
+HSRP vs VRRP | Cisco-only versus open standard. | HSRP = Cisco first hop redundancy with an active and a standby router ; VRRP = open standard with a master and backups
+Power protection | From a blip to a long outage. | Surge protector = blocks voltage spikes ; UPS = battery for short outages and clean power ; Generator = long outages ; Redundant power = two supplies or feeds so one failure is not an outage
