@@ -68,20 +68,26 @@
     { date: "2026-11-21", title: "Documentation, monitoring, recovery", lessons: ["3.1", "3.2", "3.3"], tasks: [
       { id: "due", text: "Clear your due-today review", href: "practice/review.html" } ] },
     { date: "2026-11-22", title: "DHCP, DNS, remote access + practice exam #1", lessons: ["3.4", "3.5"], tasks: [
-      { id: "pe1", text: "Full practice exam #1 (sources in 6.2). Log every miss.", href: "chapters/06-final-review.html#L6-2" } ] },
+      { id: "pe1", text: "Full practice exam #1 (sources in 6.2). Log every miss.", href: "chapters/06-final-review.html#L6-2" },
+      { id: "ex", text: "Exam drill: full practice exam (answers shown as you go)", href: "practice/exam.html?mode=full" } ] },
     { date: "2026-11-23", title: "Security in one day", lessons: ["4.1", "4.2", "4.3"], tasks: [
-      { id: "d3", text: "Domain 3 + 4 quiz", href: "practice/quiz.html?domain=4" } ] },
+      { id: "d3", text: "Domain 3 + 4 quiz", href: "practice/quiz.html?domain=4" },
+      { id: "ex", text: "Exam drill: Fix my misses", href: "practice/exam.html?mode=missed" } ] },
     { date: "2026-11-24", title: "Troubleshooting part 1", lessons: ["5.1", "5.2", "5.3"], tasks: [
-      { id: "sub", text: "10 subnet drills", href: "practice/subnetting.html" } ] },
+      { id: "sub", text: "10 subnet drills", href: "practice/subnetting.html" },
+      { id: "ex", text: "Exam drill: PBQs only", href: "practice/exam.html?mode=pbq" } ] },
     { date: "2026-11-25", title: "Troubleshooting part 2 (biggest domain)", lessons: ["5.4", "5.5"], tasks: [
-      { id: "d5", text: "Domain 5 quiz", href: "practice/quiz.html?domain=5" } ] },
+      { id: "d5", text: "Domain 5 quiz", href: "practice/quiz.html?domain=5" },
+      { id: "ex", text: "Exam drill: Fix my misses", href: "practice/exam.html?mode=missed" } ] },
     { date: "2026-11-26", title: "Thanksgiving: light day, weak spots only", lessons: [], tasks: [
       { id: "weak", text: "Weak-spot quiz (auto-picks your misses)", href: "practice/quiz.html?weak=1" },
-      { id: "fc", text: "Ports + acronyms flashcards (15 min)", href: "practice/flashcards.html?set=ports" } ] },
+      { id: "fc", text: "Ports + acronyms flashcards (15 min)", href: "practice/flashcards.html?set=ports" },
+      { id: "ex", text: "Exam drill: Fix my misses", href: "practice/exam.html?mode=missed" } ] },
     { date: "2026-11-27", title: "Brain-dump sheet + PBQ day", lessons: ["6.1", "6.2"], tasks: [
       { id: "pe2", text: "Full practice exam #2. Log every miss.", href: "chapters/06-final-review.html#L6-2" } ] },
     { date: "2026-11-28", title: "Practice exam #3 + fix weak spots", lessons: [], tasks: [
       { id: "pe3", text: "Full practice exam #3. Target 85%+.", href: "chapters/06-final-review.html#L6-2" },
+      { id: "ex", text: "Exam drill: full practice exam again. Target 85%+.", href: "practice/exam.html?mode=full" },
       { id: "weak", text: "Rewatch videos for anything rated 1–3", href: "index.html#confidence" } ] },
     { date: "2026-11-29", title: "Light review, then rest", lessons: ["6.3"], tasks: [
       { id: "dump", text: "Write the brain-dump sheet from memory twice", href: "chapters/06-final-review.html#L6-1" },
@@ -119,6 +125,7 @@
     download: '<path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 20h14"/>',
     upload: '<path d="M12 15V4M7.5 8.5 12 4l4.5 4.5M5 20h14"/>',
     book: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7.5h6"/>',
+    target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>',
     printer: '<path d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/>',
   };
   const icon = (n) => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ""}</svg>`;
@@ -187,6 +194,7 @@
       <a class="brand" href="${ROOT}index.html"><span class="brand-mark">N+</span><span>Network+ Guide</span></a>
       <div class="crumb">${esc(document.body.dataset.crumb || "")}</div>
       <div class="topbar-actions">
+        <a class="btn small primary study-link" href="${ROOT}practice/exam.html" title="Study & Test hub: today's session, practice exams, readiness">${icon("target")}<span>Study &amp; Test</span></a>
         <a class="btn small ghost dict-link" href="${ROOT}dictionary.html" title="Look up any term or acronym">${icon("book")}<span>Dictionary</span></a>
         ${nxt ? `<a class="btn small primary" href="${lessonUrl(nxt)}" title="Your next unfinished lesson">Next: ${esc(nxt.id)} →</a>` : ""}
         <button class="btn small timer" type="button" title="25-minute focus timer">${icon("timer")}<span>25:00</span></button>
@@ -826,7 +834,7 @@
   }
 
   /* ---------------- Boot ---------------- */
-  window.NP = { D, S: () => S, save, srs, srsDue, CHAPTERS, ALL_LESSONS, PLAN, questionEl, shuffle, esc, toast, lessonUrl, lessonById, videoCard, objStats, $, $$ };
+  window.NP = { D, S: () => S, icon, save, srs, srsDue, CHAPTERS, ALL_LESSONS, PLAN, questionEl, shuffle, esc, toast, lessonUrl, lessonById, videoCard, objStats, $, $$ };
   renderTopbar();
   renderVideos();
   renderPortTables();
@@ -836,6 +844,9 @@
   initPlan();
   if (document.querySelector("[data-activity]") && !document.querySelector('script[src$="activities.js"]')) {
     const sc = document.createElement("script"); sc.src = ROOT + "assets/js/activities.js"; document.body.appendChild(sc);
+  }
+  if (document.body.dataset.chapter !== undefined && D.dictionary) {
+    const sc = document.createElement("script"); sc.src = ROOT + "assets/js/glossary.js"; document.body.appendChild(sc);
   }
   if (location.protocol === "file:") {
     const n = $(".file-notice");
